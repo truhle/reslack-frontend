@@ -53,6 +53,12 @@ body {
   box-sizing: border-box;
 }
 
+ol, ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
 .channel-switcher {
   z-index: 10;
   position: absolute;
@@ -64,23 +70,33 @@ body {
   color: #ab9ba9;
 }
 
+.clear {
+  clear: both;
+}
+
 .cs-header {
-  font-size: 1.225rem;
+  font-size: 1.125rem;
   font-weight: 700;
   line-height: 1.375rem;
   display: block;
-  text-overflow: ellipsis;
-  overflow: hidden;
   color: #fff;
   cursor: pointer;
-  margin-top: 0.75rem;
+  margin-top: 0.6rem;
   margin-left: 1rem;
-  margin-bottom: 1.2rem;
+  margin-bottom: 0.75rem;
+  max-width: 8rem;
+}
+
+.overflow-ellipses {
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
 }
 
 .channels-container {
   font-size: 0.9rem;
-  margin-left: 1rem;
+  overflow: hidden;
+  padding-top: 0.25rem;
 }
 
 .channels-count {
@@ -89,39 +105,109 @@ body {
 }
 
 .channels-header {
-  margin-bottom: 1rem;
-  padding-bottom: 0.8rem;
+  margin-bottom: 0.4rem;
+  margin-left: 1rem;
+  cursor: pointer;
+  float: left;
+  font-size: 0.8rem;
+  width: 162px;
+  
+  &:hover {
+    opacity: 1;
+    color: #fff;
+  }
 }
 
 .channels-header-name {
   float: left;
   margin-right: 0.15rem;
   text-transform: uppercase;
+  max-width: 14rem;
 }
 
 .plus-circle {
   float: right;
-  margin-right: 1rem;
-  font-size: 1.2rem;
+  margin-right: 1.2rem;
+  font-size: 0.95rem;
   color: #ab9ba9;
   border-radius: 50%;
-  width: 0.8rem;
-  height: 0.8rem;
+  width: 0.7rem;
+  height: 0.7rem;
   font-family: inherit;
-  // font-weight: 700;
   border: 1.5px solid #ab9ba9;
-  // padding-top: -0.4rem;
-  // padding-bottom: -0.4rem;
   padding:0.05rem;
-  // line-height: 1rem;
   text-align: center;
-  vertical-align: center;
-  line-height: 0.75rem;
+  line-height: 0.65rem;
   cursor: pointer;
   opacity: 0.3;
-  margin-top: -0.15rem;
+  margin-top: -0.1rem;
+  transition: opacity 50ms;
   
   &:hover {
     opacity: 1;
   }
+  
+}
+
+.x-circle {
+  float: right;
+  margin-right: 0.25rem;
+  font-size: 0.7rem;
+  color: #ab9ba9;
+  border-radius: 50%;
+  width: 0.75rem;
+  height: 0.75rem;
+  font-family: inherit;
+  border: 1.5px solid #ab9ba9;
+  text-align: center;
+  line-height: 0.565rem;
+  cursor: pointer;
+  margin-top: 0.2rem;
+}
+
+.dm-container {
+  font-family: 'Lato', Helvetica, sans-serif; 
+  font-size: 1rem;
+  font-weight: 300;
+  line-height: 1.5rem;
+  padding-left: 1.2rem;
+  margin-right: 1rem;
+  border-radius: 0 0.25rem 0.25rem 0;
+  cursor: pointer;
+  
+  &:hover {
+    background: #3E313C;
+    z-index: 20;
+  }
+}
+
+.dm-username {
+  margin-left: 0.3rem;
+  font-style: italic;
+}
+
+.presence {
+  float: left;
+  border-radius: 50%;
+  width: 0.4rem;
+  height: 0.4rem;
+  margin-top: 0.6rem;
+}
+
+.presence-false {
+  border: 1.5px solid #ab9ba9;
+  opacity: 0.7;
+}
+
+.presence-true {
+  background: #38978D;
+  border: 1.5px solid #38978D;
+}
+
+.hidden {
+  display: none;
+}
+
+.no-italic-true {
+  font-style: normal;
 }
