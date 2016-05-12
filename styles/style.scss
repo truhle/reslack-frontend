@@ -59,6 +59,10 @@ ol, ul {
   padding: 0;
 }
 
+img {
+  margin-bottom: -1px;
+}
+
 .channel-switcher {
   z-index: 10;
   position: absolute;
@@ -97,6 +101,7 @@ ol, ul {
   font-size: 0.9rem;
   overflow: hidden;
   padding-top: 0.25rem;
+  margin-bottom: 2rem;
 }
 
 .channels-count {
@@ -165,7 +170,7 @@ ol, ul {
   margin-top: 0.2rem;
 }
 
-.dm-container {
+.channel-container {
   font-family: 'Lato', Helvetica, sans-serif; 
   font-size: 1rem;
   font-weight: 300;
@@ -179,6 +184,10 @@ ol, ul {
     background: #3E313C;
     z-index: 20;
   }
+}
+
+.channel-name {
+  margin-left: 0.3rem;
 }
 
 .dm-username {
@@ -202,6 +211,10 @@ ol, ul {
 .presence-true {
   background: #38978D;
   border: 1.5px solid #38978D;
+}
+
+.hash-indicator {
+  opacity: 0.5;
 }
 
 .hidden {
