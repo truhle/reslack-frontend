@@ -20,8 +20,29 @@ const ChannelSwitcher = React.createClass({
 
 const CSHeader = React.createClass({
   render() {
-    return <div className="cs-header overflow-ellipses">
-      MetaTree
+    return <div className="cs-header">
+        <CSHeaderName group_name="MetaTree" />
+        <UserIndicator present="true" username="taliesin" /> 
+        <div className="clear"></div>
+    </div>
+  }
+});
+
+const CSHeaderName = React.createClass({
+  render() {
+    return <div className="cs-header-name overflow-ellipses">
+      {this.props.group_name} <span className="cs-header-or">&or;</span>
+    </div>
+  }
+});
+
+const UserIndicator = React.createClass({
+  render() {
+    return <div>
+      <PresenceIndicator present={this.props.present} header="true" />
+      <CSUsername present={this.props.present} 
+                  username={this.props.username}
+                  header="true" />
     </div>
   }
 });
@@ -91,7 +112,7 @@ const DMContainer = React.createClass({
                onMouseOver={this.addXCircle}
                onMouseOut={this.removeXCircle}>
       <PresenceIndicator present={this.props.present} />
-      <DMUsername present={this.props.present}     
+      <CSUsername present={this.props.present}     
                   username={this.props.username} />
       <div className={"x-circle " + this.state.hidden}>x</div>
     </li>
@@ -120,9 +141,13 @@ const ChannelTypeIndicator = React.createClass({
   }
 });
 
-const DMUsername = React.createClass({
+const CSUsername = React.createClass({
   render() {
-    return <span className={"dm-username overflow-ellipses no-italic-" + this.props.present}>
+    let extraClass = "";
+    if (this.props.header == "true") {
+      extraClass = " cs-username-header";
+    }
+    return <span className={"cs-username overflow-ellipses no-italic-" + this.props.present + extraClass}>
       {this.props.username}
     </span>
   }
@@ -130,7 +155,11 @@ const DMUsername = React.createClass({
 
 const PresenceIndicator = React.createClass({
   render() {
-    return <div className={"presence presence-" + this.props.present}>
+    let extraClass = "";
+    if (this.props.header == "true") {
+      extraClass = " cs-header-presence";
+    }
+    return <div className={"presence presence-" + this.props.present + extraClass}>
     </div>
   }
 });

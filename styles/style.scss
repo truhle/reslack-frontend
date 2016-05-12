@@ -1,3 +1,6 @@
+$cs-text-color: #ab9ba9;
+$cs-hover-background: #3E313C;
+
 html, body, div, span, applet, object, iframe,
 h1, h2, h3, h4, h5, h6, p, blockquote, pre,
 a, abbr, acronym, address, big, cite, code,
@@ -79,16 +82,50 @@ img {
 }
 
 .cs-header {
+  width: 220px;
+  height: 61px;
+  margin-bottom: 0.5rem;
+  cursor: pointer;
+  &:hover {
+    color: #fff;
+    background: $cs-hover-background;
+    span {
+      color: #fff;
+    }
+  }
+}
+
+.cs-header-name {
   font-size: 1.125rem;
   font-weight: 700;
   line-height: 1.375rem;
-  display: block;
+  display: inline-block;
   color: #fff;
   cursor: pointer;
   margin-top: 0.6rem;
   margin-left: 1rem;
-  margin-bottom: 0.75rem;
   max-width: 8rem;
+}
+
+.cs-header-or {
+  color: #ab9ba9;
+  font-weight: 300;
+  font-size: 0.5rem;
+  width: 1rem;
+  display:inline-block;
+    -webkit-transform:scale(1.6,1); 
+    -ms-transform:scale(1.6,1);
+    -o-transform:scale(1.6,1); 
+    transform:scale(1.6,1);
+  margin-left: 0.5rem;
+  vertical-align: middle;
+  line-height: 0.75rem;
+  padding-bottom: 0.3rem;
+}
+
+.cs-header-presence {
+  margin-left: 1.2rem;
+  margin-top: 0.32rem !important;
 }
 
 .overflow-ellipses {
@@ -167,7 +204,7 @@ img {
   text-align: center;
   line-height: 0.565rem;
   cursor: pointer;
-  margin-top: 0.2rem;
+  margin-top: 0.3rem;
 }
 
 .channel-container {
@@ -190,9 +227,14 @@ img {
   margin-left: 0.3rem;
 }
 
-.dm-username {
+.cs-username {
   margin-left: 0.3rem;
   font-style: italic;
+}
+
+.cs-username-header {
+  font-weight: 300;
+  font-size: 0.875rem;
 }
 
 .presence {
