@@ -1,4 +1,5 @@
 $cs-text-color: #ab9ba9;
+$cs-background: #4D394B;
 $cs-hover-background: #3E313C;
 
 html, body, div, span, applet, object, iframe,
@@ -69,7 +70,7 @@ img {
 .channel-switcher {
   z-index: 10;
   position: absolute;
-  background-color: #4D394B;
+  background: #4D394B;
   width: 220px;
   height: 100%;
   float: left;
@@ -86,11 +87,15 @@ img {
   height: 61px;
   margin-bottom: 0.5rem;
   cursor: pointer;
+  transition: color 0.1s;
   &:hover {
     color: #fff;
     background: $cs-hover-background;
     span {
       color: #fff;
+    }
+    .bell-inner {
+      fill: $cs-hover-background;
     }
   }
 }
@@ -128,6 +133,28 @@ img {
   margin-top: 0.32rem !important;
 }
 
+.notifications-icon {
+  float: right;
+  width: 20px;
+  height: 46px;
+  margin-right: 0.9rem;
+  padding-top: 15px;
+  &:hover {
+    .bell {
+      opacity: 1;
+      fill: #fff;
+    }
+  }
+}
+
+.bell {
+  opacity: 0.5;
+}
+
+.bell-inner {
+
+}
+
 .overflow-ellipses {
   text-overflow: ellipsis;
   overflow: hidden;
@@ -153,6 +180,7 @@ img {
   float: left;
   font-size: 0.8rem;
   width: 162px;
+  transition: all 0.1s;
   
   &:hover {
     opacity: 1;
