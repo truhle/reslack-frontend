@@ -47,7 +47,7 @@ table {
 }
 
 body {
-  background: goldenrod;
+  background: #fff;
   height: 100%;
   margin: 0;
   font-size: 1rem;
@@ -87,7 +87,7 @@ img {
   height: 61px;
   margin-bottom: 0.5rem;
   cursor: pointer;
-  transition: color 0.1s;
+  transition: all 0.1s;
   &:hover {
     color: #fff;
     background: $cs-hover-background;
@@ -136,9 +136,9 @@ img {
 .notifications-icon {
   float: right;
   width: 20px;
-  height: 46px;
-  margin-right: 0.9rem;
-  padding-top: 15px;
+  height: 48px;
+  margin-right: 1rem;
+  padding-top: 13px;
   &:hover {
     .bell {
       opacity: 1;

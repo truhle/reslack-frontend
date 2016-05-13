@@ -31,8 +31,8 @@ const CSHeader = React.createClass({
 
 const CSHeaderName = React.createClass({
   render() {
-    return <div className="cs-header-name overflow-ellipses">
-      {this.props.group_name} <span className="cs-header-or">&or;</span>
+    return <div className="cs-header-name">
+      <span className="overflow-ellipses">{this.props.group_name}</span> <span className="cs-header-or">&or;</span>
     </div>
   }
 });
