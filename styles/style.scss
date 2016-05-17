@@ -48,13 +48,15 @@ table {
 
 body {
   background: #fff;
+  color: #555459;
   height: 100%;
   margin: 0;
   font-size: 1rem;
+  -ms-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
   box-sizing: border-box;
-  box-sizing: border-box;
-  box-sizing: border-box;
-  box-sizing: border-box;
+  font-family: 'Lato', Helvetica, sans-serif;
 }
 
 ol, ul {
@@ -65,6 +67,32 @@ ol, ul {
 
 img {
   margin-bottom: -1px;
+}
+
+.channel-header {
+  margin-left: 220px;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3.075rem;
+  padding-top: 0.7rem;
+  width: auto;
+  border-bottom: 1px solid #e8e8e8;
+  padding-left: 1.3rem;
+}
+
+.channel-header-name {
+  font-weight: 900;
+  color: #2c2d30;
+  font-size: 1.1rem;
+  margin-left: 2px;
+}
+
+.star-toggle {
+  display: inline-block;
+  margin-left: 4px;
+  margin-bottom: -8px;
 }
 
 .channel-switcher {
