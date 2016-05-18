@@ -82,17 +82,81 @@ img {
   padding-left: 1.3rem;
 }
 
+.channel-title {
+  float: left;
+}
+
+.lock {
+  display: inline-block;
+  vertical-align: -1.5%;
+}
+
+.lock.CH {
+  margin-left: -2px;
+  
+}
+
+.lock.CS {
+  margin-left: -0.8px;
+  fill: $cs-text-color;
+  opacity: 0.5;
+}
+
 .channel-header-name {
   font-weight: 900;
   color: #2c2d30;
-  font-size: 1.1rem;
+  font-size: 1.125rem;
   margin-left: 2px;
 }
 
 .star-toggle {
   display: inline-block;
-  margin-left: 4px;
-  margin-bottom: -8px;
+  margin-left: 5px;
+  vertical-align: -2%;
+  
+  &:hover {
+    fill: #F8CF34;
+  }
+}
+
+.member-count {
+  display: inline-block;
+  color: #9e9ea6;
+  font-size: 0.8125rem;
+  font-weight: 300;
+  margin-top: 3px;
+  line-height: 1.13rem;
+  cursor: pointer;
+  &:hover {
+    color: #3aa3e3;
+  }
+}
+
+.topic-divider {
+  color: #e8e8e8;
+  padding: 0.4rem;
+  font-weight: 300;
+  font-size: 0.8125rem;
+}
+
+.topic {
+  display: inline-block;
+  color: #9e9ea6;
+  font-size: 0.8125rem;
+  font-weight: 300;
+  margin-top: 3px;
+  line-height: 1.13rem;
+  font-style: italic;
+  cursor: pointer;
+  border: 1px solid #fff;
+  padding-left: 3px;
+  &:hover {
+    padding-right: 16px;
+    background: url("../svg/inline-edit.svg") center right no-repeat;
+    z-index: 40;
+    border: 1px solid #e8e8e8;
+    border-radius: 4px;
+  }
 }
 
 .channel-switcher {

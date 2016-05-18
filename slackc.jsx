@@ -23,7 +23,7 @@ const ChannelHeader = React.createClass({
       <ChannelTitle name="webschool" 
                     private={true}
                     members={2}
-                    topic="Sundry webby web stuff"
+                    topic="Add a topic"
                     starred={false} />
     </div>
   }
@@ -31,10 +31,16 @@ const ChannelHeader = React.createClass({
 
 const ChannelTitle = React.createClass({
   render() {
-    return <div className="channel-title">
-      <ChannelTypeIndicator private={this.props.private} size="16px" />
+    return <div className="channel-title overflow-ellipses">
+      <ChannelTypeIndicator private={this.props.private}
+                            size="13.2px"
+                            extraClass="CH" />
       <span className="channel-header-name">{this.props.name}</span>
-      <StarToggle starred={this.props.starred} />
+      <StarToggle starred={this.props.starred} /> 
+      <br />
+      <MemberCount members={this.props.members} />
+      <span className="topic-divider">|</span>
+      <Topic topic={this.props.topic} />
     </div>
   }
 });
@@ -47,6 +53,24 @@ const StarToggle = React.createClass({
     
     return <div className="star-toggle">
       {svg}
+    </div>
+  }
+});
+
+const MemberCount = React.createClass({
+  render() {
+    let pluralized = this.props.members == 1 ? "member" : "members";
+    
+    return <div className="member-count">
+      {this.props.members} {pluralized}
+    </div>
+  }
+});
+
+const Topic = React.createClass({
+  render() {
+    return <div className="topic">
+      {this.props.topic}
     </div>
   }
 });
@@ -180,7 +204,9 @@ const DMContainer = React.createClass({
 const ChannelContainer = React.createClass({
   render() {
     return <li className="channel-container">
-      <ChannelTypeIndicator private={this.props.private} size="11px" />
+      <ChannelTypeIndicator private={this.props.private} 
+                            size="10.5px"
+                            extraClass="CS" />
       <span className="channel-name overflow-ellipses">{this.props.name}</span>
     </li>
   }
@@ -188,13 +214,17 @@ const ChannelContainer = React.createClass({
 
 const ChannelTypeIndicator = React.createClass({
   render() {
+    let svg = <svg xmlns="http://www.w3.org/2000/svg" height={this.props.size} viewBox="0 0 82.5 82.5" width={this.props.size} version="1.1">
+     <path d="m16.092 78.992c-2.09-0.419-5.507-4.107-5.975-6.45-0.2229-1.113-0.4051-8.452-0.4051-16.309 0-11.639 0.18528-14.747 1.0006-16.785 1.0742-2.6846 3.5897-4.6049 6.9682-5.3194l2.0312-0.42958 0.0074-6.6691c0.01146-10.303 1.662-14.953 7.0787-19.946 7.7945-7.1848 23.033-7.1848 30.828 0 5.4168 4.993 7.0673 9.6438 7.0787 19.946l0.0074 6.6691 2.0312 0.42958c3.5062 0.7415 5.9337 2.6463 7.0296 5.516 0.86652 2.269 0.99058 5.0194 0.82343 18.256-0.29094 23.041 2.4526 21.183-31.447 21.294-14.094 0.04625-26.27-0.04519-27.057-0.20313zm39.241-50.974c-0.0041-6.8233-0.69504-9.7175-2.9634-12.413-4.8097-5.716-15.506-5.716-20.316 0-2.2684 2.6958-2.9593 5.59-2.9634 12.413l-0.0035 5.7812h13.125 13.125l-0.0035-5.7812z"/>
+    </svg>;
+    
     if (this.props.private) {
-      return <img src="svg/lock.svg" 
-      height={this.props.size} 
-      width={this.props.size} /> 
+      return <div className={"lock " + this.props.extraClass}>
+               {svg}
+             </div>
     }
     else {
-      return <span className="hash-indicator">#</span>;
+      return <span className={"hash-indicator " + this.props.extraClass}>#</span>;
     }
   }
 });
