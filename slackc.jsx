@@ -22,7 +22,7 @@ const ChannelHeader = React.createClass({
     return <div className="channel-header">
       <ChannelTitle name="webschool" 
                     private={true}
-                    members={2}
+                    members={5}
                     topic="Add a topic"
                     starred={false} />
     </div>
