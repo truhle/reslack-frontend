@@ -1,6 +1,5 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-// import './styles/_normalize.scss';
 import './styles/style.scss';
 
 const App = () => ( 
@@ -44,12 +43,6 @@ const ChannelTitle = React.createClass({
       ReactDOM.findDOMNode(this.refs.myStarToggle).classList.toggle("hidden");
     }
   },
-  
-  // hideStarToggle() {
-  //   if (this.refs.myStarToggle != null) {
-  //     ReactDOM.findDOMNode(this.refs.myStarToggle).classList.add("hidden");
-  //   }
-  // },
   
   render() {
     return <div className="channel-title overflow-ellipses">
