@@ -206,27 +206,32 @@ const ChannelsCount = React.createClass({
 
 const DMContainer = React.createClass({
   getInitialState() {
-    return {hidden: "hidden"};
+    return {hidden: true};
   },
 
-  addXCircle(e) {
-    this.setState({hidden: ""});
-  },
-  
-  removeXCircle(e) {
-    this.setState({hidden: "hidden"});
+  toggleXCircle(e) {
+    this.setState({hidden: !this.state.hidden});
   },
   
   render() {
     return <li className="channel-container"
-               onMouseOver={this.addXCircle}
-               onMouseOut={this.removeXCircle}>
+               onMouseOver={this.toggleXCircle}
+               onMouseOut={this.toggleXCircle}>
       <PresenceIndicator present={this.props.present} />
       <CSUsername present={this.props.present}     
                   username={this.props.username} />
-      <div className={"x-circle " + this.state.hidden}>x</div>
+      <XCircle hidden={this.state.hidden} />
     </li>
   }  
+});
+
+const XCircle = React.createClass({
+  render() {
+    let hidden = this.props.hidden ? "hidden" : "";
+    return <div className={"x-circle " + hidden}>
+      x
+    </div>
+  }
 });
 
 const ChannelContainer = React.createClass({
