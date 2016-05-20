@@ -124,6 +124,11 @@ img {
   &:hover {
     fill: #F8CF34;
   }
+  
+  img {
+    margin-left: -1px;
+    visibility: visible;
+  }
 }
 
 .member-count {
