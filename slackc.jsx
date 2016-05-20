@@ -39,16 +39,18 @@ const ChannelHeader = React.createClass({
 });
 
 const ChannelTitle = React.createClass({
-  revealStarToggle() {
+  toggleStarToggle() {
     if (this.refs.myStarToggle != null) {
-      ReactDOM.findDOMNode(this.refs.myStarToggle).classList.remove("hidden");
+      ReactDOM.findDOMNode(this.refs.myStarToggle).classList.toggle("hidden");
     }
   },
-  hideStarToggle() {
-    if (this.refs.myStarToggle != null) {
-      ReactDOM.findDOMNode(this.refs.myStarToggle).classList.add("hidden");
-    }
-  },
+  
+  // hideStarToggle() {
+  //   if (this.refs.myStarToggle != null) {
+  //     ReactDOM.findDOMNode(this.refs.myStarToggle).classList.add("hidden");
+  //   }
+  // },
+  
   render() {
     return <div className="channel-title overflow-ellipses">
       <ChannelTypeIndicator private={this.props.private}
@@ -62,8 +64,7 @@ const ChannelTitle = React.createClass({
       <MemberCount members={this.props.members} />
       <span className="topic-divider">|</span>
       <Topic topic={this.props.topic}
-             revealStarToggle={this.revealStarToggle}
-             hideStarToggle={this.hideStarToggle} />
+             toggleStarToggle={this.toggleStarToggle} />
     </div>
   }
 });
@@ -97,7 +98,9 @@ const MemberCount = React.createClass({
 
 const Topic = React.createClass({
   render() {
-    return <div className="topic" onMouseOver={this.props.hideStarToggle} onMouseOut={this.props.revealStarToggle}>
+    return <div className="topic" 
+                onMouseOver={this.props.toggleStarToggle}
+                onMouseOut={this.props.toggleStarToggle}>
       {this.props.topic}
     </div>
   }
@@ -228,6 +231,7 @@ const DMContainer = React.createClass({
 const XCircle = React.createClass({
   render() {
     let hidden = this.props.hidden ? "hidden" : "";
+    
     return <div className={"x-circle " + hidden}>
       x
     </div>
@@ -265,9 +269,11 @@ const ChannelTypeIndicator = React.createClass({
 const CSUsername = React.createClass({
   render() {
     let extraClass = "";
+    
     if (this.props.header) {
       extraClass = " cs-username-header";
     }
+    
     return <span className={"cs-username overflow-ellipses no-italic-" + this.props.present + extraClass}>
       {this.props.username}
     </span>
@@ -277,9 +283,11 @@ const CSUsername = React.createClass({
 const PresenceIndicator = React.createClass({
   render() {
     let extraClass = "";
+    
     if (this.props.header) {
       extraClass = " cs-header-presence";
     }
+    
     return <div className={"presence presence-" + this.props.present + extraClass}>
     </div>
   }
