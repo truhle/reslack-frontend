@@ -148,7 +148,7 @@ const ShowStarredItems = React.createClass({
 
 const ShowMentions = React.createClass({
   getInitialState() {
-    return {open: true};
+    return {open: false};
   },
   
   toggleStarredItems() {
@@ -173,9 +173,8 @@ const ShowMentions = React.createClass({
 
 const SearchBar = React.createClass({
   render() {
-    return <div className="search-bar">
-      
-    </div>
+    return <input type="text" placeholder="Search" className="search-bar" />
+
   }
 });
 

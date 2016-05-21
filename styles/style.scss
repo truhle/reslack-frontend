@@ -3,6 +3,8 @@ $cs-background: #4D394B;
 $cs-hover-background: #3E313C;
 $divider-color: #e8e8e8;
 $channel-text-color: #2c2d30;
+$icon-blue: #3aa3e3;
+$hover-blue: #439fe0;
 
 html, body, div, span, applet, object, iframe,
 h1, h2, h3, h4, h5, h6, p, blockquote, pre,
@@ -46,6 +48,20 @@ q:before, q:after {
 table {
   border-collapse: collapse;
   border-spacing: 0;
+}
+
+textarea:hover, 
+input:hover, 
+textarea:active, 
+input:active, 
+textarea:focus, 
+input:focus,
+button:focus,
+button:active,
+button:hover
+{
+    outline:0px !important;
+    -webkit-appearance:none;
 }
 
 body {
@@ -235,14 +251,27 @@ img {
 .search-bar {
   float: right;
   width: 134px;
-  height: 32px;
+  max-width: 100%;
+  height: 30px;
   border: 1px solid $divider-color;
   border-radius: 0.35rem;
   margin-top: 2px;
   margin-right: 8px;
-  padding-left: 30.4px;
-  padding-right: 30.4px;
+  padding-left: 1.9rem;
+  padding-right: 1.9rem;
   background: url("../svg/search.svg") 3% 50% no-repeat;
+  font-size: 0.9375rem;
+  font-family: inherit;
+  color: #555459;
+  transition: border-color, width 0.15s;
+  
+  &:focus, &:hover {
+    border-color: $hover-blue;
+  }
+  
+  &:focus {
+    width: 211px;
+  }
 }
 
 .channel-switcher {
