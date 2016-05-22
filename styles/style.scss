@@ -200,7 +200,6 @@ img {
 .header-icon {
   float: right;
   margin-top: 3px;
-  // margin-left: -1px;
   border-radius: 0.25rem;
   height: 32px;
   width: 33px;
@@ -208,11 +207,11 @@ img {
   &.open {
     background: #f2f2f5;
     z-index: 100;
+    svg {
+      fill: #2c2d30 !important;
+    }
     &:hover {
       background: $divider-color;
-      svg {
-        fill: #2c2d30;
-      }
     }
   }
 }
@@ -248,6 +247,51 @@ img {
   }
 }
 
+.show-channel-details {
+  svg {
+    margin-top: 4px;
+    margin-left: 5px;
+    fill: #a2a2a2;
+  }
+  
+  &:hover {
+    svg {
+      fill: $icon-blue;
+    }
+  }
+  
+  &.open {
+    svg {
+      fill: #a2a2a2 !important;
+    }
+    &:hover {
+      svg {
+        fill: #2c2d30 !important;
+      }
+    }
+  }
+}
+
+.channel-settings {
+  float: right;
+  margin-top: 3px;
+  border-radius: 0.25rem;
+  height: 32px;
+  width: 33px;
+  
+  svg {
+    margin-top: 6px;
+    margin-left: 2px;
+    fill: #a2a2a2;
+  }
+  
+  &:hover {
+    svg {
+      fill: $icon-blue;
+    }
+  }
+}
+
 .search-bar {
   float: right;
   width: 134px;
@@ -273,6 +317,19 @@ img {
     width: 211px;
   }
 }
+
+.divider-bar {
+  float: right;
+  display: inline-block;
+  width: 1px;
+  height: 1.6rem;
+  background: $divider-color;
+  margin-right: 15px;
+  margin-left: 10px;
+  margin-top: 5px;
+}
+
+
 
 .channel-switcher {
   z-index: 10;
