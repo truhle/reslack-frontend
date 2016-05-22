@@ -21,10 +21,12 @@ const ChannelHeader = React.createClass({
     return {
       starred: false
     }
-  },
+  }
+  
   toggleStar() {
     this.setState({starred: !this.state.starred})
-  },
+  }
+  
   render() {
     return <div className="channel-header">
       <ChannelTitle name="webschool" 
@@ -49,7 +51,7 @@ const ChannelTitle = React.createClass({
     if (this.refs.myStarToggle != null) {
       ReactDOM.findDOMNode(this.refs.myStarToggle).classList.toggle("hidden");
     }
-  },
+  }
   
   render() {
     return <div className="channel-title overflow-ellipses">
@@ -133,11 +135,11 @@ const MoreItems = React.createClass({
 const ShowStarredItems = React.createClass({
   getInitialState() {
     return {open: false};
-  },
+  }
   
   toggleStarredItems() {
     this.setState({open: !this.state.open});
-  },
+  }
   
   render() {
     let open = this.state.open ? "open" : "";
@@ -152,11 +154,11 @@ const ShowStarredItems = React.createClass({
 const ShowMentions = React.createClass({
   getInitialState() {
     return {open: false};
-  },
+  }
   
   toggleStarredItems() {
     this.setState({open: !this.state.open});
-  },
+  }
   
   render() {
     let open = this.state.open ? "open" : "";
@@ -177,18 +179,17 @@ const ShowMentions = React.createClass({
 const SearchBar = React.createClass({
   render() {
     return <input type="text" placeholder="Search" className="search-bar" />
-
   }
 });
 
 const ShowChannelDetails = React.createClass({
   getInitialState() {
     return {open: false};
-  },
+  }
   
   toggleStarredItems() {
     this.setState({open: !this.state.open});
-  },
+  }
   
   render() {
     let open = this.state.open ? "open" : "";
@@ -327,11 +328,11 @@ const ChannelsCount = React.createClass({
 const DMContainer = React.createClass({
   getInitialState() {
     return {hidden: true};
-  },
+  }
 
   toggleXCircle(e) {
     this.setState({hidden: !this.state.hidden});
-  },
+  }
   
   render() {
     return <li className="channel-container"
