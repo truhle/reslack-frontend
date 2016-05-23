@@ -12,6 +12,29 @@ const ChannelView = React.createClass({
   render() {
     return <div>
       <ChannelHeader />
+      <MessagesContainer />
+    </div>
+  }
+});
+
+const MessagesContainer = React.createClass({
+  render() {
+    return <div className="messages-container">
+      Hello world! <br/>
+      Hello world! <br/>
+      Hello world! <br/>
+      Hello world! <br/>
+      Hello world! <br/>
+      Hello world! <br/>
+      Hello world! <br/>
+      Hello world! <br/>
+      Hello world! <br/>
+      Hello world! <br/>
+      Hello world! <br/>
+      Hello world! <br/>
+      Hello world! <br/>
+      Hello world! <br/>
+      
     </div>
   }
 });
@@ -20,12 +43,12 @@ const ChannelHeader = React.createClass({
   getInitialState() {
     return {
       starred: false
-    }
-  }
+    };
+  },
   
   toggleStar() {
-    this.setState({starred: !this.state.starred})
-  }
+    this.setState({starred: !this.state.starred});
+  },
   
   render() {
     return <div className="channel-header">
@@ -51,7 +74,7 @@ const ChannelTitle = React.createClass({
     if (this.refs.myStarToggle != null) {
       ReactDOM.findDOMNode(this.refs.myStarToggle).classList.toggle("hidden");
     }
-  }
+  },
   
   render() {
     return <div className="channel-title overflow-ellipses">
@@ -135,11 +158,11 @@ const MoreItems = React.createClass({
 const ShowStarredItems = React.createClass({
   getInitialState() {
     return {open: false};
-  }
+  },
   
   toggleStarredItems() {
     this.setState({open: !this.state.open});
-  }
+  },
   
   render() {
     let open = this.state.open ? "open" : "";
@@ -154,11 +177,11 @@ const ShowStarredItems = React.createClass({
 const ShowMentions = React.createClass({
   getInitialState() {
     return {open: false};
-  }
+  },
   
   toggleStarredItems() {
     this.setState({open: !this.state.open});
-  }
+  },
   
   render() {
     let open = this.state.open ? "open" : "";
@@ -185,11 +208,11 @@ const SearchBar = React.createClass({
 const ShowChannelDetails = React.createClass({
   getInitialState() {
     return {open: false};
-  }
+  },
   
   toggleStarredItems() {
     this.setState({open: !this.state.open});
-  }
+  },
   
   render() {
     let open = this.state.open ? "open" : "";
@@ -328,11 +351,11 @@ const ChannelsCount = React.createClass({
 const DMContainer = React.createClass({
   getInitialState() {
     return {hidden: true};
-  }
+  },
 
   toggleXCircle(e) {
     this.setState({hidden: !this.state.hidden});
-  }
+  },
   
   render() {
     return <li className="channel-container"

@@ -87,6 +87,18 @@ img {
   margin-bottom: -1px;
 }
 
+.messages-container {
+  position: absolute;
+  // margin-left: 220px;
+  top: 3.775rem;
+  left: 220px;
+  right: 0px;
+  bottom: 100px;
+  width: auto;
+  overflow:auto;
+  font-size: 3rem;
+}
+
 .channel-header {
   margin-left: 220px;
   position: fixed;
@@ -98,6 +110,10 @@ img {
   width: auto;
   border-bottom: 1px solid $divider-color;
   padding-left: 1.3rem;
+  background: #fff;
+  white-space: nowrap;
+  min-width: 600px;
+  z-index:20;
   &:hover {
     .star-toggle {
       visibility: visible;
@@ -107,6 +123,8 @@ img {
 
 .channel-title {
   float: left;
+  max-width: 200px;
+  text-overflow: ellipses;
 }
 
 .lock {
