@@ -93,10 +93,36 @@ img {
   top: 3.775rem;
   left: 220px;
   right: 0px;
-  bottom: 100px;
-  width: auto;
+  bottom: 64px;
   overflow:auto;
-  font-size: 3rem;
+  font-size: 1rem;
+  color: $channel-text-color;
+}
+
+.day-divider {
+  position: relative;
+  text-align: center;
+}
+
+.messages-divider-line {
+  height: 1px;
+  left: 0;
+  right: 0;
+  background-color: $divider-color;
+}
+
+.day-divider-label {
+  display: inline-block;
+  position: relative;
+  top: -0.7rem;
+  padding: 0.25rem 0.75rem;
+  background: #fff;
+  border-radius: 1rem;
+  margin: 0 auto;
+  font-size: 0.9rem;
+  font-weight: 700;
+  cursor: default;
+  
 }
 
 .channel-header {
@@ -213,6 +239,12 @@ img {
   margin-top: 8px;
   margin-left: 2px;
   margin-right: 11px;
+  
+  &:hover {
+    svg {
+      fill: $hover-blue;
+    }
+  }
 }
 
 .header-icon {

@@ -20,21 +20,35 @@ const ChannelView = React.createClass({
 const MessagesContainer = React.createClass({
   render() {
     return <div className="messages-container">
-      Hello world! <br/>
-      Hello world! <br/>
-      Hello world! <br/>
-      Hello world! <br/>
-      Hello world! <br/>
-      Hello world! <br/>
-      Hello world! <br/>
-      Hello world! <br/>
-      Hello world! <br/>
-      Hello world! <br/>
-      Hello world! <br/>
-      Hello world! <br/>
-      Hello world! <br/>
-      Hello world! <br/>
+      <DayContainer />
       
+    </div>
+  }
+});
+
+const DayContainer = React.createClass({
+  render() {
+    return <div className="day-container">  
+      <br/>
+      <DayDivider date="May 23rd" />
+    </div>
+  }
+});
+
+const DayDivider = React.createClass({
+  render() {
+    return <div className="day-divider">
+      <div className="messages-divider-line">
+        <DayDividerLabel date={this.props.date} />
+      </div>
+    </div>
+  }
+});
+
+const DayDividerLabel = React.createClass({
+  render() {
+    return <div className="day-divider-label">
+      {this.props.date}
     </div>
   }
 });
