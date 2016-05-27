@@ -31,6 +31,7 @@ const DayContainer = React.createClass({
     return <div className="day-container">  
       <br/>
       <DayDivider date="May 23rd" />
+      <DayMessages />
     </div>
   }
 });
@@ -49,6 +50,145 @@ const DayDividerLabel = React.createClass({
   render() {
     return <div className="day-divider-label">
       {this.props.date}
+    </div>
+  }
+});
+
+const DayMessages = React.createClass({
+  render() {
+    return <div className="day-messages">
+      <MessageBlock />
+    </div>
+  }
+});
+
+const MessageBlock = React.createClass({
+  render() {
+    return <div className="message-block">
+      <LeadMessage time="12:00 PM"
+                   sender="taliesin"
+                   starred={false}
+                   content="Hey there! From lead message.." />
+      <Message time="12:01 PM"
+               sender="taliesin"
+               starred={false}
+               content="Great to see you, from message"/>
+      <Message time="12:02 PM"
+               sender="taliesin"
+               starred={false}
+               content="Great to see you, from message again"/>
+      <Message time="12:02 PM"
+               sender="taliesin"
+               starred={false}
+               content="Great to see you, from message this time a very very, very, longish and longish and maybe over a whole line message for your delight and enjoyment!"/>
+    </div>
+  }
+});
+
+const LeadMessage = React.createClass({
+  getInitialState() {
+    return {
+      starred: this.props.starred
+    };
+  },
+  
+  toggleStar() {
+    this.setState({starred: !this.state.starred});
+  },
+  
+  render() {
+    return <div className="message lead-message">
+      <LeadMessageGutter sender={this.props.sender} />
+      <LeadMessageHeader sender={this.props.sender} 
+                         time={this.props.time}
+                         starred={this.state.starred}
+                         toggleStar={this.toggleStar} />
+      <MessageContent content={this.props.content} />
+    </div>
+  }
+});
+
+const LeadMessageHeader = React.createClass({
+  render() {
+    return <div className="lead-message-header">
+      <Sender sender={this.props.sender} />
+      <Timestamp time={this.props.time}
+                 lead={true} />
+      <StarToggle starred={this.props.starred}
+                  toggleStar={this.props.toggleStar} />
+    </div>
+  }
+});
+
+const Sender = React.createClass({
+  render() {
+    return <span className="sender">
+      {this.props.sender}
+    </span>
+  }
+});
+
+const Timestamp = React.createClass({
+  truncateTime(time) {
+    return time.replace(/\sPM|\sAM/, "");
+  },
+  
+  render() {
+    let time = this.props.lead == true ? this.props.time :
+                                         this.truncateTime(this.props.time);
+    let hidden = this.props.lead == true ? "" : " hidden";
+                              
+    return <span className={"timestamp" + hidden}>
+      {time}
+    </span>
+  }
+});
+
+const MessageContent = React.createClass({
+  render() {
+    return <div className="message-content">
+      {this.props.content}
+    </div>
+  }
+});
+
+const Message = React.createClass({
+  getInitialState() {
+    return {
+      starred: this.props.starred
+    };
+  },
+  
+  toggleStar() {
+    this.setState({starred: !this.state.starred});
+  },
+  
+  render() {
+    return <div className="message">
+      <MessageGutter time={this.props.time}
+                     user={this.props.user}
+                     starred={this.state.starred}
+                     toggleStar={this.toggleStar} />
+      {this.props.content}
+    </div>
+  }
+});
+
+const LeadMessageGutter = React.createClass({
+  render() {
+    return <div className="lead-message-gutter message-gutter"
+    sender="taliesin">
+      {this.props.sender}
+    </div>
+  }
+});
+
+const MessageGutter = React.createClass({
+  render() {
+    return <div className="message-gutter">
+      <Timestamp time={this.props.time} lead={false} />
+      <StarToggle starred={this.props.starred} 
+                  toggleStar={this.props.toggleStar} />
     </div>
   }
 });
@@ -113,7 +253,7 @@ const StarToggle = React.createClass({
     if (this.props.starred == false) {
       var star = <EmptyStar size="13px" />;
     } else {
-      var star = <img src="svg/filled_star.svg" />
+      var star = <img className="filled-star" src="svg/filled_star.svg" />
     }
     
     return <div className="star-toggle" 
