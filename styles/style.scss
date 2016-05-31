@@ -7,7 +7,7 @@ $aside-info-color: #9e9ea6;
 $channel-text-color: #2c2d30;
 $icon-blue: #3aa3e3;
 $hover-blue: #439fe0;
-$message-hover-color: #f9f9f9;
+$message-hover-background: #f9f9f9;
 
 html, body, div, span, applet, object, iframe,
 h1, h2, h3, h4, h5, h6, p, blockquote, pre,
@@ -112,13 +112,12 @@ img {
   font-size: .9375rem;
   line-height: 1.2rem;
   box-shadow: none;
-  border: 2px solid #e0e0e0;
-  border-left: none;
-  border-top-right-radius: 6px;
-  border-bottom-right-radius: 6px;
   z-index: 52;
   background: #fff;
   box-sizing: border-box;
+  &:focus, &:active {
+    border-color: #BBBDBF;
+  }
   // overflow: scroll;
 }
 
@@ -138,6 +137,14 @@ img {
   flex-direction: column;
   background: transparent;
   font-family: inherit !important;
+  border: 2px solid #e0e0e0;
+  border-left: none;
+  border-top-right-radius: 6px;
+  border-bottom-right-radius: 6px;
+  
+  &:focus, &:focus ~ .primary-file-button {
+    border-color: #BBBDBF;
+  }
 }
 
 .message-input, .resize-mirror {
@@ -156,17 +163,17 @@ img {
 
 .primary-file-button {
   position: absolute;
-  top: -2px;
+  top: 0;
   left: -44px;
-  min-height: 38px;
-  max-height: 156px;
+  min-height: 42px;
+  max-height: 160px;
   height: 100%;
-  width: 40px;
+  width: 44px;
   border: 2px solid #e0e0e0;
   border-top-left-radius: 6px;
   border-bottom-left-radius: 6px;
   background: #fff;
-  box-sizing: content-box;
+  box-sizing: border-box;
   z-index: 52;
   cursor: pointer;
   
@@ -244,7 +251,7 @@ img {
   font-size: 0.935rem;
   line-height: 1.375rem;
   &:hover {
-    background: $message-hover-color;
+    background: $message-hover-background;
     
     .star-toggle {
       visibility: visible;

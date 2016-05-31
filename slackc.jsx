@@ -38,9 +38,9 @@ const MessageInputContainer = React.createClass({
   
   render() {
     return <div className="message-input-container">
-      <PrimaryFileButton />
       <pre className="resize-mirror"><span>{this.state.message}</span><br/></pre>
       <MessageInput updateMessage={this.updateMessage} />
+      <PrimaryFileButton />
     </div>
   }
 });
