@@ -28,10 +28,19 @@ const ChannelFooter = React.createClass({
 });
 
 const MessageInputContainer = React.createClass({
+  getInitialState() {
+    return { message: "" };
+  },
+  
+  updateMessage(e) {
+    this.setState({ message: e.target.value })
+  },
+  
   render() {
     return <div className="message-input-container">
       <PrimaryFileButton />
-      
+      <pre className="resize-mirror"><span>{this.state.message}</span><br/></pre>
+      <MessageInput updateMessage={this.updateMessage} />
     </div>
   }
 });
@@ -46,6 +55,14 @@ const PrimaryFileButton = React.createClass({
     return <div className="primary-file-button">
       {plus}
     </div>
+  }
+});
+
+const MessageInput = React.createClass({
+  render() {
+    return <textarea className="message-input" 
+                     rows="1"
+                     onInput={this.props.updateMessage}></textarea>
   }
 });
 
@@ -97,6 +114,10 @@ const DayDividerLabel = React.createClass({
 const DayMessages = React.createClass({
   render() {
     return <div className="day-messages">
+      <MessageBlock />
+      <MessageBlock />
+      <MessageBlock />
+      <MessageBlock />
       <MessageBlock />
     </div>
   }

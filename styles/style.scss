@@ -1,6 +1,7 @@
 $cs-text-color: #ab9ba9;
 $cs-background: #4D394B;
 $cs-hover-background: #3E313C;
+$cs-selected-color: #4c9689;
 $divider-color: #e8e8e8;
 $aside-info-color: #9e9ea6;
 $channel-text-color: #2c2d30;
@@ -121,6 +122,38 @@ img {
   // overflow: scroll;
 }
 
+.message-input {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  vertical-align: top;
+  border: none;
+  min-height: 38px;
+  max-height: 160px;
+  bottom: 0;
+  margin: 0;
+  resize: none;
+  -webkit-appearance: none;
+  box-sizing: border-box;
+  flex-direction: column;
+  background: transparent;
+  font-family: inherit !important;
+}
+
+.message-input, .resize-mirror {
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  outline: 0;
+  padding: 9px 40px 9px 8px;
+  overflow: auto;
+  font-size: .9375rem;
+  line-height: 1.2rem;
+}
+
+.resize-mirror {
+  visibility: hidden;
+}
+
 .primary-file-button {
   position: absolute;
   top: -2px;
@@ -134,12 +167,21 @@ img {
   border-bottom-left-radius: 6px;
   background: #fff;
   box-sizing: content-box;
-  z-index: 552;
+  z-index: 52;
+  cursor: pointer;
   
   svg {
     margin-top: 11px;
     margin-left: 12px;
     fill: rgba(0, 0, 0, 0.35)
+  }
+  
+  &:hover {
+    background: #56B68B;
+    border-color: #56B68B;
+    svg {
+      fill: #fff;
+    }
   }
 }
 
@@ -215,6 +257,8 @@ img {
 
 .message-content {
   line-height: 1.375rem;
+  padding-top: 1px;
+  padding-bottom: 2px;
 }
 
 .message-gutter {
@@ -229,8 +273,17 @@ img {
   }
 }
 
+.lead-message {
+  // padding-top: 0.5rem;
+}
+
 .lead-message-header {
   line-height: 1.125rem;
+  padding-top: 0.25rem;
+}
+
+.lead-message-gutter {
+  top: 0;
 }
 
 .sender {
