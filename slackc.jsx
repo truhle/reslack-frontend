@@ -480,6 +480,14 @@ const ChannelSwitcher = React.createClass({
   render() {
     return <div className="channel-switcher">
       <CSHeader />
+      <ChannelsScroller {...this.props} />
+    </div>
+  }
+});
+
+const ChannelsScroller = React.createClass({
+  render() {
+    return <div className="channels-scroller">
       <ChannelsContainer {...this.props} />
       <DMChannelsContainer {...this.props} />
     </div>

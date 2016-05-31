@@ -655,6 +655,15 @@ img {
   white-space: nowrap;
 }
 
+.channels-scroller {
+  overflow-y: auto;
+  height: 100%;
+  padding-bottom: 5rem;
+  // margin-top: 61px;
+  // margin-bottom: 64px;
+  width: 220px;
+}
+
 .channels-container {
   font-size: 0.9rem;
   overflow: hidden;
