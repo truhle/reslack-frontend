@@ -2,11 +2,25 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './styles/style.scss';
 
-const App = () => ( 
-  <div>
-    <ChannelSwitcher />
-    <ChannelView />
-  </div> );
+const App = React.createClass({
+  getInitialState() {
+    return {
+      currentChannel: "webschool",
+    };
+  },
+  
+  switchChannel(name, e) {
+    this.setState({currentChannel: name});
+  },
+  
+  render() {
+    return <div>
+      <ChannelSwitcher currentChannel={this.state.currentChannel}
+                       switchChannel={this.switchChannel} />
+      <ChannelView />
+    </div>
+  }
+}); 
   
 const ChannelView = React.createClass({
   render() {
@@ -466,8 +480,8 @@ const ChannelSwitcher = React.createClass({
   render() {
     return <div className="channel-switcher">
       <CSHeader />
-      <ChannelsContainer />
-      <DMChannelsContainer />
+      <ChannelsContainer {...this.props} />
+      <DMChannelsContainer {...this.props} />
     </div>
   }
 });
@@ -517,14 +531,15 @@ const NotificationsIcon = React.createClass({
 });
 
 const ChannelsContainer = React.createClass({
+   
   render() {
     return <div className="channels-container">
       <ChannelsHeader name="channels" count="3" />
       <div className="clear"></div>
       <ul>
-        <ChannelContainer private={false} name="general" />
-        <ChannelContainer private={false} name="random" />
-        <ChannelContainer private={true} name="webschool" />
+        <ChannelContainer private={false} name="general" {...this.props}  />
+        <ChannelContainer private={false} name="random" {...this.props} />
+        <ChannelContainer private={true} name="webschool" {...this.props} />
       </ul>
     </div>
   }
@@ -536,8 +551,8 @@ const DMChannelsContainer = React.createClass({
       <ChannelsHeader name="direct messages" count="2" />
       <div className="clear"></div>
       <ul>
-        <DMContainer present={true} username="taliesin" />
-        <DMContainer present={false} username="bob" />
+        <DMContainer present={true} username="taliesin" {...this.props} />
+        <DMContainer present={false} username="bob" {...this.props} />
       </ul>
     </div>
   }
@@ -573,9 +588,13 @@ const DMContainer = React.createClass({
   },
   
   render() {
-    return <li className="channel-container"
+    let extraClass = this.props.currentChannel == this.props.username 
+                     ? " current-channel"
+                     : "";
+    return <li className={"channel-container" + extraClass}
                onMouseOver={this.toggleXCircle}
-               onMouseOut={this.toggleXCircle}>
+               onMouseOut={this.toggleXCircle}
+               onClick={this.props.switchChannel.bind(null,  this.props.username)}>
       <PresenceIndicator present={this.props.present} />
       <CSUsername present={this.props.present}     
                   username={this.props.username} />
@@ -596,7 +615,11 @@ const XCircle = React.createClass({
 
 const ChannelContainer = React.createClass({
   render() {
-    return <li className="channel-container">
+    let extraClass = this.props.currentChannel == this.props.name 
+                     ? " current-channel"
+                     : "";
+    return <li className={"channel-container" + extraClass}
+               onClick={this.props.switchChannel.bind(null, this.props.name)} >
       <ChannelTypeIndicator private={this.props.private} 
                             size="10.5px"
                             extraClass="CS" />
@@ -607,7 +630,7 @@ const ChannelContainer = React.createClass({
 
 const ChannelTypeIndicator = React.createClass({
   render() {
-    let svg = <svg xmlns="http://www.w3.org/2000/svg"
+    let lock = <svg xmlns="http://www.w3.org/2000/svg"
                    viewBox="0 0 82.5 82.5" version="1.1"
                    width={this.props.size} 
                    height={this.props.size}>
@@ -616,7 +639,7 @@ const ChannelTypeIndicator = React.createClass({
     
     if (this.props.private) {
       return <div className={"lock " + this.props.extraClass}>
-               {svg}
+               {lock}
              </div>
     }
     else {

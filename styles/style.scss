@@ -185,7 +185,7 @@ img {
   
   &:hover {
     background: #56B68B;
-    border-color: #56B68B;
+    border-color: #56B68B !important;
     svg {
       fill: #fff;
     }
@@ -741,6 +741,37 @@ img {
   &:hover {
     background: #3E313C;
     z-index: 20;
+  }
+}
+
+.current-channel {
+  background: $cs-selected-color !important;
+  color: #fff;
+  
+  .lock {
+    fill: #b2d5c9;
+    opacity: 1;
+  }
+  
+  .hash-indicator {
+    color: #b2d5c9;
+    opacity: 1;
+  }
+  
+  .presence {
+    border-color: #625361;
+    opacity: 1;
+    box-shadow: 1px 1px rgba(0,0,0,0.1);
+  }
+  .presence-true {
+    background: #fff;
+    border-color: #fff;
+    box-shadow: none;
+  }
+  
+  .x-circle {
+    border-color: #fff;
+    color: #fff;
   }
 }
 
