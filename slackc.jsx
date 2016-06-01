@@ -5,21 +5,21 @@ import './styles/style.scss';
 const App = React.createClass({
   getInitialState() {
     return {
-      groupName: "MetaTree",
-      currentUser: {
+      group_name: "MetaTree",
+      current_user: {
         name: "taliesin",
         present: true,
-        currentChannel: "general",
+        current_channel: "general",
         channels: [
           { name: "general", private: false, starred: false },
           { name: "random", private: false, starred: true },
           { name: "webschool", private: true, starred: false }
         ],
-        DMchannels: [
+        direct_channels: [
           { users: ["bob"], starred: false },
           { users: ["haizop"], starred: false },
-          { users: ["sean"], starred: false },
-          { users: ["haizop", "sean"], starred: true }
+          { users: ["sean"], starred: false }
+          // { users: ["haizop", "sean"], starred: true }
         ],
         unreadChannels: [],
         unreadMentions: []
@@ -33,12 +33,17 @@ const App = React.createClass({
   },
   
   switchChannel(name, e) {
-    this.setState({currentUser: {currentChannel: name}});
+    this.state.current_user.current_channel = name;
+    this.setState(
+      {current_user: this.state.current_user}
+    );
   },
   
   render() {
     return <div>
-      <ChannelSwitcher currentChannel={this.state.currentUser.currentChannel}
+      <ChannelSwitcher current_user={this.state.current_user}
+                       group_name={this.state.group_name}
+                       users={this.state.users}
                        switchChannel={this.switchChannel} />
       <ChannelView />
     </div>
@@ -502,8 +507,12 @@ const ChannelSettings = React.createClass({
 const ChannelSwitcher = React.createClass({
   render() {
     return <div className="channel-switcher">
-      <CSHeader />
-      <ChannelsScroller {...this.props} />
+      <CSHeader group_name={this.props.group_name}
+                username={this.props.current_user.name}
+                present={this.props.current_user.present} />
+      <ChannelsScroller current_user={this.props.current_user}
+                        users={this.props.users}
+                        switchChannel={this.props.switchChannel} />
     </div>
   }
 });
@@ -511,8 +520,13 @@ const ChannelSwitcher = React.createClass({
 const ChannelsScroller = React.createClass({
   render() {
     return <div className="channels-scroller">
-      <ChannelsContainer {...this.props} />
-      <DMChannelsContainer {...this.props} />
+      <ChannelsContainer current_channel={this.props.current_user.current_channel}
+                         channels={this.props.current_user.channels}
+                         switchChannel={this.props.switchChannel} />
+      <DMChannelsContainer current_channel={this.props.current_user.current_channel}
+                         direct_channels={this.props.current_user.direct_channels}
+                         users={this.props.users}
+                         switchChannel={this.props.switchChannel} />
     </div>
   }
 });
@@ -520,9 +534,10 @@ const ChannelsScroller = React.createClass({
 const CSHeader = React.createClass({
   render() {
     return <div className="cs-header">
-        <CSHeaderName group_name="MetaTree" />
+        <CSHeaderName group_name={this.props.group_name} />
         <NotificationsIcon />
-        <UserIndicator present={true} username="taliesin" /> 
+        <UserIndicator present={this.props.present} 
+                       username={this.props.username} /> 
         <div className="clear"></div>
     </div>
   }
@@ -565,12 +580,17 @@ const ChannelsContainer = React.createClass({
    
   render() {
     return <div className="channels-container">
-      <ChannelsHeader name="channels" count="3" />
+      <ChannelsHeader name="channels" 
+                      count={this.props.channels.length} />
       <div className="clear"></div>
       <ul>
-        <ChannelContainer private={false} name="general" {...this.props}  />
-        <ChannelContainer private={false} name="random" {...this.props} />
-        <ChannelContainer private={true} name="webschool" {...this.props} />
+        {this.props.channels.map( channel =>
+          <ChannelContainer name={channel.name}
+                            private={channel.private}
+                            current_channel={this.props.current_channel}
+                            switchChannel={this.props.switchChannel}
+                            key={channel.name} />
+        )}
       </ul>
     </div>
   }
@@ -579,11 +599,19 @@ const ChannelsContainer = React.createClass({
 const DMChannelsContainer = React.createClass({
   render() {
     return <div className="channels-container">
-      <ChannelsHeader name="direct messages" count="2" />
+      <ChannelsHeader name="direct messages"
+                      count={this.props.direct_channels.length} />
       <div className="clear"></div>
       <ul>
-        <DMContainer present={true} username="taliesin" {...this.props} />
-        <DMContainer present={false} username="bob" {...this.props} />
+        {this.props.direct_channels.map( direct_channel =>
+          <DMContainer username={direct_channel.users[0]}
+                       present={this.props.users[direct_channel.users[0]].present}
+                       current_channel={this.props.current_channel}
+                       switchChannel={this.props.switchChannel}
+                       key={direct_channel.users} />
+        )}
+        {/*<DMContainer present={true} username="taliesin" {...this.props} />
+        <DMContainer present={false} username="bob" {...this.props} />*/}
       </ul>
     </div>
   }
@@ -619,7 +647,7 @@ const DMContainer = React.createClass({
   },
   
   render() {
-    let extraClass = this.props.currentChannel == this.props.username 
+    let extraClass = this.props.current_channel == this.props.username 
                      ? " current-channel"
                      : "";
     return <li className={"channel-container" + extraClass}
@@ -646,7 +674,7 @@ const XCircle = React.createClass({
 
 const ChannelContainer = React.createClass({
   render() {
-    let extraClass = this.props.currentChannel == this.props.name 
+    let extraClass = this.props.current_channel == this.props.name 
                      ? " current-channel"
                      : "";
     return <li className={"channel-container" + extraClass}
