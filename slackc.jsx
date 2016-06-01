@@ -5,11 +5,11 @@ import './styles/style.scss';
 const App = React.createClass({
   getInitialState() {
     return {
-      group_name: "MetaTree",
-      current_user: {
+      groupName: "MetaTree",
+      currentUser: {
         name: "taliesin",
         present: true,
-        current_channel: "general",
+        currentChannel: "general",
         channels: [
           { name: "general", private: false, starred: false },
           { name: "random", private: false, starred: true },
@@ -33,12 +33,12 @@ const App = React.createClass({
   },
   
   switchChannel(name, e) {
-    this.setState({current_user.currentChannel: name});
+    this.setState({currentUser: {currentChannel: name}});
   },
   
   render() {
     return <div>
-      <ChannelSwitcher currentChannel={this.state.currentChannel}
+      <ChannelSwitcher currentChannel={this.state.currentUser.currentChannel}
                        switchChannel={this.switchChannel} />
       <ChannelView />
     </div>
