@@ -5,12 +5,35 @@ import './styles/style.scss';
 const App = React.createClass({
   getInitialState() {
     return {
-      currentChannel: "webschool",
+      group_name: "MetaTree",
+      current_user: {
+        name: "taliesin",
+        present: true,
+        current_channel: "general",
+        channels: [
+          { name: "general", private: false, starred: false },
+          { name: "random", private: false, starred: true },
+          { name: "webschool", private: true, starred: false }
+        ],
+        DMchannels: [
+          { users: ["bob"], starred: false },
+          { users: ["haizop"], starred: false },
+          { users: ["sean"], starred: false },
+          { users: ["haizop", "sean"], starred: true }
+        ],
+        unreadChannels: [],
+        unreadMentions: []
+      },
+      users: {
+        "bob": { present: false },
+        "haizop": { present: true },
+        "sean": { present: true }
+      }
     };
   },
   
   switchChannel(name, e) {
-    this.setState({currentChannel: name});
+    this.setState({current_user.currentChannel: name});
   },
   
   render() {
