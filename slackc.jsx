@@ -545,6 +545,8 @@ const ChannelsScroller = React.createClass({
     let channels = this.props.current_user.channels;
     let direct_channels = this.props.current_user.direct_channels;
     
+    let channels_count = channels.length;
+    
     let starred_channels = this.getStarredChannels(channels, direct_channels);
     let unstarred_channels = this.getUnstarredChannels(channels);
     let unstarred_direct_channels = this.getUnstarredChannels(direct_channels);
@@ -556,6 +558,7 @@ const ChannelsScroller = React.createClass({
                                 switchChannel={this.props.switchChannel}/>
       <ChannelsContainer current_channel={current_channel}
                          channels={unstarred_channels}
+                         count={channels_count}
                          switchChannel={this.props.switchChannel} />
       <DMChannelsContainer current_channel={current_channel}
                            direct_channels={unstarred_direct_channels}
@@ -639,7 +642,7 @@ const ChannelsContainer = React.createClass({
   render() {
     return <div className="channels-container">
       <ChannelsHeader name="channels" 
-                      count={this.props.channels.length} />
+                      count={this.props.count} />
       <div className="clear"></div>
       <ul>
         {this.props.channels.map( channel =>
@@ -658,7 +661,7 @@ const DMChannelsContainer = React.createClass({
   render() {
     return <div className="channels-container">
       <ChannelsHeader name="direct messages"
-                      count={this.props.direct_channels.length} />
+                      count={Object.keys(this.props.users).length} />
       <div className="clear"></div>
       <ul>
         {this.props.direct_channels.map( direct_channel =>
