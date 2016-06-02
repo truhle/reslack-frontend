@@ -17,7 +17,7 @@ const App = React.createClass({
         ],
         direct_channels: [
           { users: ["bob"], starred: false },
-          { users: ["haizop"], starred: false },
+          { users: ["haizop"], starred: true },
           { users: ["sean"], starred: false }
           // { users: ["haizop", "sean"], starred: true }
         ],
@@ -33,9 +33,8 @@ const App = React.createClass({
   },
   
   switchChannel(name, e) {
-    this.state.current_user.current_channel = name;
-    this.setState(
-      {current_user: this.state.current_user}
+    this.setState( 
+      { current_user: {...this.state.current_user, current_channel: name} }
     );
   },
   
@@ -356,7 +355,9 @@ const StarToggle = React.createClass({
     if (this.props.starred == false) {
       var star = <EmptyStar size="13px" />;
     } else {
-      var star = <img className="filled-star" src="svg/filled_star.svg" />
+      var star = <FilledStar className="filled-star" 
+                             size="16px"
+                             color="#F8CF34" />
     }
     
     return <div className="star-toggle" 
@@ -373,6 +374,19 @@ const EmptyStar = React.createClass({
                 height={this.props.size} 
                 width={this.props.size}>
     <path d="m19.583 69.64c-1.5268-1.5268-1.5948-1.8738-1.3168-6.7188 0.19271-3.358 0.87239-6.7152 1.9833-9.7963 2.7179-7.5378 2.8283-6.8796-1.6523-9.8469-8.446-5.594-12.665-11.43-10.921-15.109 1.3962-2.945 4.791-3.987 14.011-4.3l8.3083-0.28178 0.66231-2.5748c1.848-7.183 4.501-12.924 7.087-15.335 4.985-4.6473 10.5 1.3528 14.097 15.335l0.66231 2.5748 8.3083 0.28178c9.2203 0.31271 12.615 1.3547 14.012 4.3006 1.7439 3.6788-2.4749 9.515-10.922 15.109-4.4806 2.9672-4.3702 2.3091-1.6523 9.8469 1.1109 3.0811 1.7906 6.4382 1.9833 9.7963 0.27804 4.8449 0.21004 5.1919-1.3168 6.7188-0.886 0.885-2.182 1.609-2.882 1.609-3.521 0-10.761-4.024-16.129-8.964l-2.656-2.445-2.656 2.445c-5.368 4.94-12.608 8.964-16.129 8.964-0.69944 0-1.9962-0.72449-2.8817-1.61zm10.305-7.4196c2.0767-1.5288 5.345-4.2006 7.2629-5.9375 1.918-1.736 3.763-3.157 4.099-3.157 0.33647 0 2.181 1.4211 4.0989 3.1579 8.5551 7.7475 13.465 10.279 13.879 7.1546 0.09103-0.6875-1.1179-4.9062-2.6866-9.375s-2.9992-8.5685-3.1789-9.1107c-0.23367-0.70486 1.1549-1.9512 4.8741-4.375 5.883-3.833 10.514-7.829 10.514-9.071 0-1.7045-2.5502-2.1894-11.011-2.0935-4.6648 0.05286-8.7026-0.14463-8.9727-0.43887-0.27-0.295-1.397-3.672-2.504-7.505-2.014-6.972-3.803-10.843-5.012-10.843-1.2091 0-2.9983 3.8708-5.0121 10.843-1.1071 3.8331-2.234 7.2101-2.5041 7.5043-0.27016 0.29424-4.3079 0.49174-8.9727 0.43887-8.461-0.096-11.011 0.389-11.011 2.094 0 1.2424 4.6309 5.2384 10.513 9.072 3.73 2.4308 5.107 3.6681 4.869 4.375-0.18254 0.54211-1.6547 4.8119-3.2714 9.4883-1.6168 4.6765-2.7619 8.9655-2.5449 9.5312 0.65154 1.6979 2.5881 1.1819 6.5722-1.751z"/>
+    </svg>
+  }
+});
+
+const FilledStar = React.createClass({
+  render() {
+    return <svg xmlns="http://www.w3.org/2000/svg"        
+                viewBox="0 0 100 100"
+                version="1.1" 
+                height={this.props.size} 
+                width={this.props.size} 
+                fill={this.props.color}>
+     <path d="m27.959 85.496c-4.1182-1.6654-3.3414-11.8 1.9253-25.119 0.3093-0.78219-0.56663-1.7013-3.5413-3.7157-4.8648-3.2945-10.325-8.3776-11.556-10.758-1.2946-2.5034-1.2289-5.1985 0.16473-6.7627 2.2512-2.5266 5.0953-3.2225 14.415-3.5269l8.8512-0.28911 0.42181-2.2667c1.7783-9.5562 7.4386-18.829 11.493-18.829 1.6991 0 4.8067 2.7579 6.5887 5.8471 1.4415 2.499 4.2783 10.228 4.9929 13.604l0.34684 1.6384 8.602 0.28364c11.658 0.3844 15.79 2.1902 15.79 6.9012 0 3.5248-5.1728 9.1893-13.259 14.519l-3.5714 2.3541 1.0035 2.2701c2.1162 4.7876 4.0144 12.405 4.0937 16.428 0.13536 6.8684-2.406 9.0391-8.2932 7.0837-3.7856-1.2574-10.097-5.2624-13.538-8.5904l-2.6267-2.5407-3.3108 2.8002c-5.044 4.2662-9.0063 6.7866-12.722 8.0924-3.6981 1.2998-4.3381 1.3586-6.2711 0.57694z"/>
     </svg>
   }
 });
@@ -518,15 +532,35 @@ const ChannelSwitcher = React.createClass({
 });
 
 const ChannelsScroller = React.createClass({
+  getStarredChannels(channels1, channels2) {
+    return channels1.concat(channels2).filter(channel => channel.starred);
+  },
+  
+  getUnstarredChannels(channels) {
+    return channels.filter(channel => !channel.starred);
+  },
+  
   render() {
+    let current_channel = this.props.current_user.current_channel;
+    let channels = this.props.current_user.channels;
+    let direct_channels = this.props.current_user.direct_channels;
+    
+    let starred_channels = this.getStarredChannels(channels, direct_channels);
+    let unstarred_channels = this.getUnstarredChannels(channels);
+    let unstarred_direct_channels = this.getUnstarredChannels(direct_channels);
+    
     return <div className="channels-scroller">
-      <ChannelsContainer current_channel={this.props.current_user.current_channel}
-                         channels={this.props.current_user.channels}
+      <StarredChannelsContainer current_channel={current_channel}
+                                channels={starred_channels}
+                                users={this.props.users}
+                                switchChannel={this.props.switchChannel}/>
+      <ChannelsContainer current_channel={current_channel}
+                         channels={unstarred_channels}
                          switchChannel={this.props.switchChannel} />
-      <DMChannelsContainer current_channel={this.props.current_user.current_channel}
-                         direct_channels={this.props.current_user.direct_channels}
-                         users={this.props.users}
-                         switchChannel={this.props.switchChannel} />
+      <DMChannelsContainer current_channel={current_channel}
+                           direct_channels={unstarred_direct_channels}
+                           users={this.props.users}
+                           switchChannel={this.props.switchChannel} />
     </div>
   }
 });
@@ -576,6 +610,30 @@ const NotificationsIcon = React.createClass({
   }
 });
 
+const StarredChannelsContainer = React.createClass({
+  render() {
+    return <div className="channels-container">
+      <ChannelsHeader name="starred" />
+      <div className="clear"></div>
+      <ul>
+        {this.props.channels.map ( channel =>
+          channel.name ? 
+            <ChannelContainer name={channel.name}
+              private={channel.private}
+              current_channel={this.props.current_channel}
+              switchChannel={this.props.switchChannel}
+              key={channel.name} /> : 
+            <DMContainer username={channel.users[0]}
+                         present={this.props.users[channel.users[0]].present}
+                         current_channel={this.props.current_channel}
+                         switchChannel={this.props.switchChannel}
+                         key={channel.users} />
+        )}
+      </ul>
+    </div>
+  }
+});
+
 const ChannelsContainer = React.createClass({
    
   render() {
@@ -619,12 +677,25 @@ const DMChannelsContainer = React.createClass({
 
 const ChannelsHeader = React.createClass({
   render() {
+    let extraClass = this.props.name == "starred" ? " no-hover" : "";
     return <div>
-      <div className="channels-header">
-        <span className="channels-header-name overflow-ellipses">{this.props.name}</span>
-        <ChannelsCount count={this.props.count} />
+      <div className={"channels-header" + extraClass}>
+        <span className="channels-header-name overflow-ellipses"> 
+          { this.props.name == "starred" 
+              ? <span className="cs-filled-star">
+                  <FilledStar size="18px"
+                              color="#ab9ba9" />
+                </span> 
+              : null } 
+          {this.props.name}
+        </span>
+        
+        { this.props.count ? <ChannelsCount count={this.props.count} />
+                           : null }
       </div>
-      <div className="plus-circle">+</div>
+      { this.props.name != "starred"
+          ? <div className="plus-circle">+</div>
+          : null }
     </div> 
   }
 });

@@ -580,7 +580,7 @@ img {
 .cs-header {
   width: 220px;
   height: 61px;
-  margin-bottom: 0.5rem;
+  margin-bottom: 0.25rem;
   cursor: pointer;
   transition: all 0.1s;
   &:hover {
@@ -626,6 +626,12 @@ img {
 .cs-header-presence {
   margin-left: 1.2rem;
   margin-top: 0.32rem !important;
+}
+
+.cs-filled-star {
+  float: left;
+  margin-left: -2px;
+  display: inline-block;
 }
 
 .notifications-icon {
@@ -675,10 +681,11 @@ img {
 .channels-count {
   opacity: 0.5;
   float: left;
+  margin-top: 0.25rem;
 }
 
 .channels-header {
-  margin-bottom: 0.4rem;
+  margin-bottom: 0.15rem;
   margin-left: 1rem;
   cursor: pointer;
   float: left;
@@ -687,16 +694,24 @@ img {
   transition: all 0.1s;
   
   &:hover {
-    opacity: 1;
     color: #fff;
   }
 }
+
+.no-hover {
+  cursor: default;
+  &:hover {
+    color: #ab9ba9 !important;
+  }
+}
+
 
 .channels-header-name {
   float: left;
   margin-right: 0.15rem;
   text-transform: uppercase;
   max-width: 14rem;
+  line-height: 1.25rem;
 }
 
 .plus-circle {
@@ -714,7 +729,7 @@ img {
   line-height: 0.65rem;
   cursor: pointer;
   opacity: 0.3;
-  margin-top: -0.1rem;
+  margin-top: 0.15rem;
   transition: opacity 50ms;
   
   &:hover {
