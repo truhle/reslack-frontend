@@ -16,10 +16,10 @@ const App = React.createClass({
           { name: "webschool", private: true, starred: false }
         ],
         direct_channels: [
-          { users: ["bob"], starred: false },
-          { users: ["haizop"], starred: true },
-          { users: ["sean"], starred: false }
-          // { users: ["haizop", "sean"], starred: true }
+          { names: ["bob"], starred: false },
+          { names: ["haizop"], starred: true },
+          { names: ["sean"], starred: false },
+          { names: ["haizop", "sean", "joe", "larry", "gary"], starred: true }
         ],
         unreadChannels: [],
         unreadMentions: []
@@ -619,18 +619,17 @@ const StarredChannelsContainer = React.createClass({
       <ChannelsHeader name="starred" />
       <div className="clear"></div>
       <ul>
-        {this.props.channels.map ( channel =>
-          channel.name ? 
+        {this.props.channels.map ( channel => channel.name ? 
             <ChannelContainer name={channel.name}
-              private={channel.private}
-              current_channel={this.props.current_channel}
-              switchChannel={this.props.switchChannel}
-              key={channel.name} /> : 
-            <DMContainer username={channel.users[0]}
-                         present={this.props.users[channel.users[0]].present}
+                              private={channel.private}
+                              current_channel={this.props.current_channel}
+                              switchChannel={this.props.switchChannel}
+                              key={channel.name} /> : 
+            <DMContainer names={channel.names}
+                         users={this.props.users}
                          current_channel={this.props.current_channel}
                          switchChannel={this.props.switchChannel}
-                         key={channel.users} />
+                         key={channel.names} />
         )}
       </ul>
     </div>
@@ -665,14 +664,12 @@ const DMChannelsContainer = React.createClass({
       <div className="clear"></div>
       <ul>
         {this.props.direct_channels.map( direct_channel =>
-          <DMContainer username={direct_channel.users[0]}
-                       present={this.props.users[direct_channel.users[0]].present}
+          <DMContainer names={direct_channel.names}
+                       users={this.props.users}
                        current_channel={this.props.current_channel}
                        switchChannel={this.props.switchChannel}
-                       key={direct_channel.users} />
+                       key={direct_channel.names} />
         )}
-        {/*<DMContainer present={true} username="taliesin" {...this.props} />
-        <DMContainer present={false} username="bob" {...this.props} />*/}
       </ul>
     </div>
   }
@@ -721,16 +718,22 @@ const DMContainer = React.createClass({
   },
   
   render() {
-    let extraClass = this.props.current_channel == this.props.username 
+    let name_count = this.props.names.length;
+    let present = this.props.users[this.props.names[0]].present; 
+    let icon = name_count > 1 ? <NameCountSquare name_count={name_count} />
+                              : <PresenceIndicator present={present} />
+    let channel_name = this.props.names.join(", ");
+    
+    let extraClass = this.props.current_channel == channel_name
                      ? " current-channel"
                      : "";
-    return <li className={"channel-container" + extraClass}
+    return <li className={"channel-container overflow-ellipses" + extraClass}
                onMouseOver={this.toggleXCircle}
                onMouseOut={this.toggleXCircle}
                onClick={this.props.switchChannel.bind(null,  this.props.username)}>
-      <PresenceIndicator present={this.props.present} />
+      {icon}
       <CSUsername present={this.props.present}     
-                  username={this.props.username} />
+                  username={channel_name} />
       <XCircle hidden={this.state.hidden} />
     </li>
   }  
@@ -751,7 +754,7 @@ const ChannelContainer = React.createClass({
     let extraClass = this.props.current_channel == this.props.name 
                      ? " current-channel"
                      : "";
-    return <li className={"channel-container" + extraClass}
+    return <li className={"channel-container overflow-ellipses" + extraClass}
                onClick={this.props.switchChannel.bind(null, this.props.name)} >
       <ChannelTypeIndicator private={this.props.private} 
                             size="10.5px"
@@ -783,15 +786,22 @@ const ChannelTypeIndicator = React.createClass({
 
 const CSUsername = React.createClass({
   render() {
-    let extraClass = "";
+    let headerClass = this.props.header ? " cs-username-header" : "";
+    let italicClass = this.props.present === false ? "italic-true" : "";
     
-    if (this.props.header) {
-      extraClass = " cs-username-header";
-    }
-    
-    return <span className={"cs-username overflow-ellipses no-italic-" + this.props.present + extraClass}>
+    return <span className={"cs-username overflow-ellipses" + headerClass + italicClass}>
       {this.props.username}
     </span>
+  }
+});
+
+const NameCountSquare = React.createClass({
+  render() {
+    return <span className="name-count-square">
+              <span className="name-count-number">
+                {this.props.name_count}
+              </span>
+           </span>
   }
 });
 

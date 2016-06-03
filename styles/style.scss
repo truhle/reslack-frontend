@@ -738,8 +738,9 @@ img {
 }
 
 .x-circle {
-  float: right;
-  margin-right: 0.25rem;
+  position: absolute;
+  right: 0.25rem;
+  top: 0;
   font-size: 0.7rem;
   color: #ab9ba9;
   border-radius: 50%;
@@ -754,11 +755,13 @@ img {
 }
 
 .channel-container {
+  position: relative;
   font-family: 'Lato', Helvetica, sans-serif; 
   font-size: 1rem;
   font-weight: 300;
   line-height: 1.5rem;
   padding-left: 1.2rem;
+  padding-right: 1.5rem;
   margin-right: 1rem;
   border-radius: 0 0.25rem 0.25rem 0;
   cursor: pointer;
@@ -788,6 +791,7 @@ img {
     opacity: 1;
     box-shadow: 1px 1px rgba(0,0,0,0.1);
   }
+  
   .presence-true {
     background: #fff;
     border-color: #fff;
@@ -806,7 +810,6 @@ img {
 
 .cs-username {
   margin-left: 0.3rem;
-  font-style: italic;
 }
 
 .cs-username-header {
@@ -844,12 +847,36 @@ img {
   margin-right: -2px;
 }
 
+.name-count-square {
+  position: relative;
+  display: inline-block;
+  background: $cs-text-color;
+  background-opacity: 0.5;
+  color: $cs-background;
+  border-radius: 0.125rem;
+  width: 0.6rem;
+  height: 0.65rem;
+  margin-bottom: 0.05rem;
+  margin-right: -0.05rem;
+  margin-left: -0.025rem;
+  line-height: 0.5rem;
+}
+
+.name-count-number {
+  position: absolute;
+  top: 0.07rem;
+  left: 0.13rem;
+  vertical-align: middle;
+  font-weight: 400;
+  font-size: 0.6rem;
+}
+
 .hidden {
   display: none;
 }
 
-.no-italic-true {
-  font-style: normal;
+.italic-true {
+  font-style: italic;
 }
 
 .svg {
