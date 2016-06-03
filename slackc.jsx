@@ -582,8 +582,8 @@ const CSHeader = React.createClass({
 
 const CSHeaderName = React.createClass({
   render() {
-    return <div className="cs-header-name">
-      <span className="overflow-ellipses">{this.props.group_name}</span> <span className="cs-header-or">&or;</span>
+    return <div className="cs-header-name overflow-ellipses">
+      <span>{this.props.group_name}</span> <span className="cs-header-or">&or;</span>
     </div>
   }
 });
@@ -759,7 +759,7 @@ const ChannelContainer = React.createClass({
       <ChannelTypeIndicator private={this.props.private} 
                             size="10.5px"
                             extraClass="CS" />
-      <span className="channel-name overflow-ellipses">{this.props.name}</span>
+      <span className="channel-name">{this.props.name}</span>
     </li>
   }
 });
@@ -789,7 +789,7 @@ const CSUsername = React.createClass({
     let headerClass = this.props.header ? " cs-username-header" : "";
     let italicClass = this.props.present === false ? "italic-true" : "";
     
-    return <span className={"cs-username overflow-ellipses" + headerClass + italicClass}>
+    return <span className={"cs-username" + headerClass + italicClass}>
       {this.props.username}
     </span>
   }
