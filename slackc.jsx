@@ -583,7 +583,8 @@ const CSHeader = React.createClass({
 const CSHeaderName = React.createClass({
   render() {
     return <div className="cs-header-name overflow-ellipses">
-      <span>{this.props.group_name}</span> <span className="cs-header-or">&or;</span>
+      {this.props.group_name} 
+      <span className="cs-header-or">&or;</span>
     </div>
   }
 });
@@ -680,7 +681,7 @@ const ChannelsHeader = React.createClass({
     let extraClass = this.props.name == "starred" ? " no-hover" : "";
     return <div>
       <div className={"channels-header" + extraClass}>
-        <span className="channels-header-name overflow-ellipses"> 
+        <span className="channels-header-name"> 
           { this.props.name == "starred" 
               ? <span className="cs-filled-star">
                   <FilledStar size="18px"
@@ -730,7 +731,7 @@ const DMContainer = React.createClass({
     return <li className={"channel-container overflow-ellipses" + extraClass}
                onMouseOver={this.toggleXCircle}
                onMouseOut={this.toggleXCircle}
-               onClick={this.props.switchChannel.bind(null,  this.props.username)}>
+               onClick={this.props.switchChannel.bind(null,  channel_name)}>
       {icon}
       <CSUsername present={this.props.present}     
                   username={channel_name} />
