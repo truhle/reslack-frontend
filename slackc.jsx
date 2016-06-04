@@ -16,19 +16,19 @@ const App = React.createClass({
           { name: "webschool", private: true, starred: false }
         ],
         direct_channels: [
-          { names: ["bob"], starred: false },
-          { names: ["haizop"], starred: true },
-          { names: ["sean"], starred: false },
-          { names: ["haizop", "sean", "joe", "larry", "gary"], starred: true }
+          { names: ["bob", "taliesin"], starred: false },
+          { names: ["haizop", "taliesin"], starred: true },
+          { names: ["sean", "taliesin"], starred: false },
+          { names: ["haizop", "sean", "joe", "larry", "gary", "taliesin"], starred: true }
         ],
         unreadChannels: [],
         unreadMentions: []
       },
-      users: {
-        "bob": { present: false },
-        "haizop": { present: true },
-        "sean": { present: true }
-      }
+      users: [
+        {username: "bob", present: false, channels: ["general", "random"] },
+        {username: "haizop", present: true, channels: ["general", "random", "webschool"] },
+        {username: "sean", present: true, channels: ["general", "random", "webschool"] }
+      ]
     };
   },
   
@@ -38,13 +38,51 @@ const App = React.createClass({
     );
   },
   
+  toggleChannelStarred(identifier, e) {
+    if (typeof identifier == 'string') {
+      let channels = this.state.current_user.channels;
+      let updateCH = function(ch, identifier) {
+        return ch.name == identifier ? {...ch, starred: !ch.starred} : ch;
+      }; 
+      let updatedChannels = channels.map(ch => updateCH(ch, identifier));
+      
+      this.setState( { current_user: {...this.state.current_user, 
+                       channels: updatedChannels }});
+    } else {
+      let direct_channels = this.state.current_user.direct_channels;
+      let updateDC = function(dc, identifier) {
+        return dc.names.join() == identifier.join() ? {...dc, starred: !dc.starred} : dc;
+      };
+      let updatedChannels = direct_channels.map(dc => updateDC(dc, identifier));
+      
+      this.setState( { current_user: {...this.state.current_user,
+                       direct_channels: updatedChannels }});
+    }
+  },
+  
   render() {
+    let current_channel = this.state.current_user.current_channel;
+    let viewChannel = typeof current_channel == "string" 
+                      ? this.state.current_user.channels.find(
+                        ch => ch.name == current_channel
+                      )
+                      : this.state.current_user.direct_channels.find(
+                        dc => dc.names.join() == current_channel.join()
+                      );
+    
+    let channelUsers = this.state.users.filter(
+      user => user.channels.indexOf(current_channel)
+    );
+    
     return <div>
       <ChannelSwitcher current_user={this.state.current_user}
                        group_name={this.state.group_name}
                        users={this.state.users}
                        switchChannel={this.switchChannel} />
-      <ChannelView />
+      <ChannelView viewChannel={viewChannel}
+                   current_user={this.state.current_user}
+                   users={this.props.users}
+                   toggleChannelStarred={this.toggleChannelStarred} />
     </div>
   }
 }); 
@@ -52,7 +90,10 @@ const App = React.createClass({
 const ChannelView = React.createClass({
   render() {
     return <div>
-      <ChannelHeader />
+      <ChannelHeader viewChannel={this.props.viewChannel}
+                     current_user={this.props.current_user}
+                     users={this.props.users}
+                     toggleChannelStarred={this.props.toggleChannelStarred} />
       <MessagesContainer />
       <ChannelFooter />
     </div>
@@ -194,7 +235,7 @@ const LeadMessage = React.createClass({
     };
   },
   
-  toggleStar() {
+  toggleStarred() {
     this.setState({starred: !this.state.starred});
   },
   
@@ -204,7 +245,7 @@ const LeadMessage = React.createClass({
       <LeadMessageHeader sender={this.props.sender} 
                          time={this.props.time}
                          starred={this.state.starred}
-                         toggleStar={this.toggleStar} />
+                         toggleStarred={this.toggleStarred} />
       <MessageContent content={this.props.content} />
     </div>
   }
@@ -217,7 +258,7 @@ const LeadMessageHeader = React.createClass({
       <Timestamp time={this.props.time}
                  lead={true} />
       <StarToggle starred={this.props.starred}
-                  toggleStar={this.props.toggleStar} />
+                  toggleStarred={this.props.toggleStarred} />
     </div>
   }
 });
@@ -261,7 +302,7 @@ const Message = React.createClass({
     };
   },
   
-  toggleStar() {
+  toggleStarred() {
     this.setState({starred: !this.state.starred});
   },
   
@@ -270,7 +311,7 @@ const Message = React.createClass({
       <MessageGutter time={this.props.time}
                      user={this.props.user}
                      starred={this.state.starred}
-                     toggleStar={this.toggleStar} />
+                     toggleStarred={this.toggleStarred} />
       {this.props.content}
     </div>
   }
@@ -290,30 +331,33 @@ const MessageGutter = React.createClass({
     return <div className="message-gutter">
       <Timestamp time={this.props.time} lead={false} />
       <StarToggle starred={this.props.starred} 
-                  toggleStar={this.props.toggleStar} />
+                  toggleStarred={this.props.toggleStarred} />
     </div>
   }
 });
 
 const ChannelHeader = React.createClass({
-  getInitialState() {
-    return {
-      starred: false
-    };
-  },
-  
-  toggleStar() {
-    this.setState({starred: !this.state.starred});
-  },
+  // getInitialState() {
+  //   return {
+  //     starred: false
+  //   };
+  // },
+  // 
+  // toggleStar() {
+  //   this.setState({starred: !this.state.starred});
+  // },
   
   render() {
     return <div className="channel-header">
-      <ChannelTitle name="webschool" 
+      <ChannelTitle viewChannel={this.props.viewChannel}
+                    current_user={this.props.current_user}
+                    users={this.props.users}
+                    toggleChannelStarred={this.props.toggleChannelStarred} />
+                    {/*name="webschool" 
                     private={true}
                     members={5}
                     topic="Add a topic"
-                    starred={this.state.starred}
-                    toggleStar={this.toggleStar} />
+                    starred={this.state.starred}*/}
       <MoreItems />
       <ShowStarredItems />
       <ShowMentions />
@@ -333,14 +377,25 @@ const ChannelTitle = React.createClass({
   },
   
   render() {
+    let display_name, channel_name;
+    if (this.props.viewChannel.name) {
+      display_name = channel_name = this.props.viewChannel.name;
+    } 
+    else {
+      display_name = this.props.viewChannel.names.filter(
+         n => n != this.props.current_user.name
+       ).join(", ");
+      channel_name = this.props.viewChannel.names;
+    }
+    
     return <div className="channel-title overflow-ellipses">
-      <ChannelTypeIndicator private={this.props.private}
+      <ChannelTypeIndicator private={this.props.viewChannel.private}
                             size="13.2px"
                             extraClass="CH" />
-      <span className="channel-header-name">{this.props.name}</span>
-      <StarToggle ref={this.props.starred ? null : "myStarToggle"}
-                  starred={this.props.starred}
-                  toggleStar={this.props.toggleStar} /> 
+      <span className="channel-header-name">{display_name}</span>
+      <StarToggle ref={this.props.viewChannel.starred ? null : "myStarToggle"}
+                  starred={this.props.viewChannel.starred}
+                  toggleStarred={this.props.toggleChannelStarred.bind(null, channel_name)} /> 
       <br />
       <MemberCount members={this.props.members} />
       <span className="topic-divider">|</span>
@@ -352,16 +407,17 @@ const ChannelTitle = React.createClass({
 
 const StarToggle = React.createClass({
   render() {
+    let visibilityClass = this.props.starred ? " visible" : "";
     if (this.props.starred == false) {
       var star = <EmptyStar size="13px" />;
     } else {
-      var star = <FilledStar className="filled-star" 
+      var star = <FilledStar className={"filled-star"} 
                              size="16px"
                              color="#F8CF34" />
     }
     
-    return <div className="star-toggle" 
-                onClick={this.props.toggleStar}>
+    return <div className={"star-toggle" + visibilityClass} 
+                onClick={this.props.toggleStarred}>
       {star}
     </div>
   }
@@ -553,6 +609,7 @@ const ChannelsScroller = React.createClass({
     
     return <div className="channels-scroller">
       <StarredChannelsContainer current_channel={current_channel}
+                                username={this.props.current_user.name}
                                 channels={starred_channels}
                                 users={this.props.users}
                                 switchChannel={this.props.switchChannel}/>
@@ -561,6 +618,7 @@ const ChannelsScroller = React.createClass({
                          count={channels_count}
                          switchChannel={this.props.switchChannel} />
       <DMChannelsContainer current_channel={current_channel}
+                           username={this.props.current_user.name}
                            direct_channels={unstarred_direct_channels}
                            users={this.props.users}
                            switchChannel={this.props.switchChannel} />
@@ -629,6 +687,7 @@ const StarredChannelsContainer = React.createClass({
             <DMContainer names={channel.names}
                          users={this.props.users}
                          current_channel={this.props.current_channel}
+                         username={this.props.username}
                          switchChannel={this.props.switchChannel}
                          key={channel.names} />
         )}
@@ -668,6 +727,7 @@ const DMChannelsContainer = React.createClass({
           <DMContainer names={direct_channel.names}
                        users={this.props.users}
                        current_channel={this.props.current_channel}
+                       username={this.props.username}
                        switchChannel={this.props.switchChannel}
                        key={direct_channel.names} />
         )}
@@ -719,19 +779,23 @@ const DMContainer = React.createClass({
   },
   
   render() {
-    let name_count = this.props.names.length;
-    let present = this.props.users[this.props.names[0]].present; 
+    let name_count = this.props.names.length - 1;
+    let present = this.props.users.find(
+      u => u.username == this.props.names[0]
+    ).present; 
     let icon = name_count > 1 ? <NameCountSquare name_count={name_count} />
                               : <PresenceIndicator present={present} />
-    let channel_name = this.props.names.join(", ");
+    let channel_name = this.props.names.filter(n => n != this.props.username ).join(", ");
     
-    let extraClass = this.props.current_channel == channel_name
+    let extraClass = !Array.isArray(this.props.current_channel) 
+                     ? ""
+                     : this.props.names.join() == this.props.current_channel.join()
                      ? " current-channel"
                      : "";
     return <li className={"channel-container overflow-ellipses" + extraClass}
                onMouseOver={this.toggleXCircle}
                onMouseOut={this.toggleXCircle}
-               onClick={this.props.switchChannel.bind(null,  channel_name)}>
+               onClick={this.props.switchChannel.bind(null,  this.props.names)}>
       {icon}
       <CSUsername present={this.props.present}     
                   username={channel_name} />

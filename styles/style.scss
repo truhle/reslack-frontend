@@ -883,6 +883,10 @@ img {
   font-style: italic;
 }
 
+.visible {
+    visibility: visible !important;
+}
+
 .svg {
   float: right;
   fill: green;
