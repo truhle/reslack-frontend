@@ -276,9 +276,15 @@ img {
   padding-right: 0.625rem;
   text-align: right;
   
-  .filled-star {
-    margin-right: -2px;
+  .star-toggle {
+    margin-left: 1px;
+    
+    .filled-star {
+        top: -3px;
+        left: 2px;
+    }
   }
+  
 }
 
 .lead-message {
@@ -358,11 +364,21 @@ img {
 }
 
 .star-toggle {
+  position: relative;
   display: inline-block;
   margin-left: 5px;
   vertical-align: -2%;
+  min-height: 13px;
+  min-width: 16px;
   visibility: hidden;
   fill: #9e9ea6;
+  cursor: pointer;
+  
+  .filled-star {
+    position: absolute;
+    top: -2px;
+    left: -1.5px;
+  }
   
   &:hover {
     fill: #F8CF34;

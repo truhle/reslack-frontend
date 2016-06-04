@@ -411,9 +411,10 @@ const StarToggle = React.createClass({
     if (this.props.starred == false) {
       var star = <EmptyStar size="13px" />;
     } else {
-      var star = <FilledStar className={"filled-star"} 
-                             size="16px"
-                             color="#F8CF34" />
+      var star = <span className="filled-star">
+                   <FilledStar size="16px"
+                               color="#F8CF34" />
+                 </span>
     }
     
     return <div className={"star-toggle" + visibilityClass} 
