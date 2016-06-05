@@ -11,15 +11,18 @@ const App = React.createClass({
         present: true,
         current_channel: "general",
         channels: [
-          { name: "general", private: false, starred: false },
-          { name: "random", private: false, starred: true },
-          { name: "webschool", private: true, starred: false }
+          { name: "general", private: false, 
+            starred: false, type: "group", topic: "Add a topic" },
+          { name: "random", private: false, 
+            starred: true, type: "group", topic: "Random stuff" },
+          { name: "webschool", private: true, 
+            starred: false, type: "group", topic: "Web, web, web" }
         ],
         direct_channels: [
-          { names: ["bob", "taliesin"], starred: false },
-          { names: ["haizop", "taliesin"], starred: true },
-          { names: ["sean", "taliesin"], starred: false },
-          { names: ["haizop", "sean", "joe", "larry", "gary", "taliesin"], starred: true }
+          { names: ["bob", "taliesin"], starred: false, type: "direct" },
+          { names: ["haizop", "taliesin"], starred: true, type: "direct" },
+          { names: ["sean", "taliesin"], starred: false, type: "direct" },
+          { names: ["haizop", "sean", "joe", "larry", "gary", "taliesin"], starred: true, type: "direct" }
         ],
         unreadChannels: [],
         unreadMentions: []
@@ -70,10 +73,6 @@ const App = React.createClass({
                         dc => dc.names.join() == current_channel.join()
                       );
     
-    let channelUsers = this.state.users.filter(
-      user => user.channels.indexOf(current_channel)
-    );
-    
     return <div>
       <ChannelSwitcher current_user={this.state.current_user}
                        group_name={this.state.group_name}
@@ -81,7 +80,7 @@ const App = React.createClass({
                        switchChannel={this.switchChannel} />
       <ChannelView viewChannel={viewChannel}
                    current_user={this.state.current_user}
-                   users={this.props.users}
+                   users={this.state.users}
                    toggleChannelStarred={this.toggleChannelStarred} />
     </div>
   }
@@ -337,15 +336,6 @@ const MessageGutter = React.createClass({
 });
 
 const ChannelHeader = React.createClass({
-  // getInitialState() {
-  //   return {
-  //     starred: false
-  //   };
-  // },
-  // 
-  // toggleStar() {
-  //   this.setState({starred: !this.state.starred});
-  // },
   
   render() {
     return <div className="channel-header">
@@ -388,6 +378,13 @@ const ChannelTitle = React.createClass({
       channel_name = this.props.viewChannel.names;
     }
     
+    let memberCount = this.props.viewChannel.type == "group"
+                    ? this.props.users.reduce( (count, user) =>
+                        user.channels.indexOf(this.props.viewChannel.name) == -1 
+                        ? count 
+                        : count + 1, 0)
+                    : this.props.viewChannel.names.length;
+    
     return <div className="channel-title overflow-ellipses">
       <ChannelTypeIndicator private={this.props.viewChannel.private}
                             size="13.2px"
@@ -397,7 +394,7 @@ const ChannelTitle = React.createClass({
                   starred={this.props.viewChannel.starred}
                   toggleStarred={this.props.toggleChannelStarred.bind(null, channel_name)} /> 
       <br />
-      <MemberCount members={this.props.members} />
+      <MemberCount memberCount={memberCount} />
       <span className="topic-divider">|</span>
       <Topic topic={this.props.topic}
              toggleStarToggle={this.toggleStarToggle} />
@@ -450,10 +447,10 @@ const FilledStar = React.createClass({
 
 const MemberCount = React.createClass({
   render() {
-    let pluralized = this.props.members == 1 ? "member" : "members";
+    let pluralized = this.props.memberCount == 1 ? "member" : "members";
     
     return <div className="member-count">
-      {this.props.members} {pluralized}
+      {this.props.memberCount} {pluralized}
     </div>
   }
 });
