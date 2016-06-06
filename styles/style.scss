@@ -325,7 +325,7 @@ img {
   padding-left: 1.3rem;
   background: #fff;
   white-space: nowrap;
-  min-width: 600px;
+  min-width: 623px;
   z-index:20;
   &:hover {
     .star-toggle {
@@ -334,10 +334,33 @@ img {
   }
 }
 
-.channel-title {
+.channel-title-container {
+  display: inline-block;
+  width: auto;
+  height: auto;
   float: left;
+  max-width: 300px;
+  text-overflow: ellipses;
+  
+  > .star-toggle {
+    vertical-align: 5%;
+    margin-left: 6px;
+    fill: #fc0;
+  }
+}
+
+.channel-title {
+  display: inline-block;
+  height: 1.15rem;
   max-width: 200px;
   text-overflow: ellipses;
+}
+
+.channel-title-indicators {
+  display: inline-block;
+  clear: left;
+  height: auto;
+  margin-top: -2px;
 }
 
 .lock {
@@ -381,7 +404,7 @@ img {
   }
   
   &:hover {
-    fill: #F8CF34;
+    fill: #fc0;
   }
   
   img {
@@ -395,7 +418,7 @@ img {
   color: #9e9ea6;
   font-size: 0.8rem;
   font-weight: 300;
-  margin-top: 2px;
+  // margin-top: 2px;
   line-height: 1.13rem;
   cursor: pointer;
   &:hover {
@@ -473,7 +496,7 @@ img {
   
   &:hover {
     svg {
-      fill: #F8CF34;
+      fill: #fc0;
     }
   }
 }
@@ -791,6 +814,7 @@ img {
   background: $cs-selected-color !important;
   color: #fff;
   
+  
   .lock {
     fill: #b2d5c9;
     opacity: 1;
@@ -855,11 +879,24 @@ img {
   border: 1.5px solid #38978D;
 }
 
+.away {
+  font-style: italic;
+  color: #9e9ea6 !important;
+}
+
 .hash-indicator {
   opacity: 0.5;
 }
 
 .hash-indicator.CH {
+  opacity: 1;
+  font-weight: 900;
+  color: #2c2d30;
+  font-size: 1.125rem;
+  margin-right: -2px;
+}
+
+.at-sign-indicator {
   opacity: 1;
   font-weight: 900;
   color: #2c2d30;
