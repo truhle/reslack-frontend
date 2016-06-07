@@ -356,11 +356,25 @@ img {
   text-overflow: ellipses;
 }
 
-.channel-title-indicators {
+.channel-info {
   display: inline-block;
   clear: left;
   height: auto;
   margin-top: -2px;
+}
+
+.subtitle {
+  display: inline-block;
+  color: #9e9ea6;
+  font-size: 0.8rem;
+  font-weight: 300;
+  line-height: 1.13rem;
+  margin-left: 0.25rem;
+  margin-top: 0.1rem;
+}
+
+.subtitle-full-name {
+  margin-left: 0.25rem;
 }
 
 .lock {
@@ -426,7 +440,7 @@ img {
   }
 }
 
-.topic-divider {
+.subtitle-divider {
   color: $divider-color;
   padding: 0rem 0.2rem 0.4rem 0.4rem;
   font-weight: 300;
@@ -867,16 +881,32 @@ img {
   width: 0.4rem;
   height: 0.4rem;
   margin-top: 0.6rem;
+  
+  &.dm-subtitle {
+    margin-top: 0.5rem;
+    width: 0.425rem;
+    height: 0.425rem;
+  }
 }
 
 .presence-false {
   border: 1.5px solid #ab9ba9;
   opacity: 0.7;
+  &.dm-subtitle {
+    width: 0.4rem;
+    height: 0.4rem;
+    border: 1.5px solid #555459;
+    opacity: 0.7;
+  }
 }
 
 .presence-true {
   background: #38978D;
   border: 1.5px solid #38978D;
+  &.dm-subtitle {
+    background: #93cc93;
+    border-color: #93cc93;
+  }
 }
 
 .away {

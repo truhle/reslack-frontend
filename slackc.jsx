@@ -28,9 +28,9 @@ const App = React.createClass({
         unreadMentions: []
       },
       users: [
-        {username: "bob", present: false, channels: ["general", "random"] },
-        {username: "haizop", present: true, channels: ["general", "random", "webschool"] },
-        {username: "sean", present: true, channels: ["general", "random", "webschool"] }
+        {username: "bob", full_name: "Bob L.", present: false, channels: ["general", "random"] },
+        {username: "haizop", full_name: "Haiz O.", present: true, channels: ["general", "random", "webschool"] },
+        {username: "sean", full_name: "Sean O.", present: true, channels: ["general", "random", "webschool"] }
       ]
     };
   },
@@ -365,24 +365,29 @@ const ChannelTitle = React.createClass({
     return this.props.users.find(user => user.username == name).present;
   },
   
+  getFullName(name) {
+    return this.props.users.find(user => user.username == name).full_name;
+  },
+  
   render() {
-    let display_name, channel_name, awayClass;
+    let displayName, channelName, awayClass, names;
+    let isPresent = this.isPresent;
+    
     if (this.props.viewChannel.name) {
-      channel_name = this.props.viewChannel.name;
-      display_name = <span className="channel-header-name">
-                       {channel_name}
+      channelName = this.props.viewChannel.name;
+      displayName = <span className="channel-header-name">
+                       {channelName}
                      </span>;
       awayClass = "";
     } 
     else {
       let users = this.props.users;
-      let names = this.props.viewChannel.names.filter(
+      names = this.props.viewChannel.names.filter(
          n => n != this.props.current_user.name
       );
       let lastIndex = names.length - 1;
-      let isPresent = this.isPresent;
       
-      display_name = names.map(function(n, i) {
+      displayName = names.map(function(n, i) {
          let away = isPresent(n) ? "" : " away";
          let comma = i == lastIndex ? "" : ", ";
          
@@ -391,7 +396,7 @@ const ChannelTitle = React.createClass({
                   {n + comma}
                 </span>;
        });
-      channel_name = this.props.viewChannel.names;
+      channelName = this.props.viewChannel.names;
       awayClass = names.length > 1 ? "" : isPresent(names[0]) ? "" : " away";
     };
     
@@ -401,37 +406,58 @@ const ChannelTitle = React.createClass({
                         ? count 
                         : count + 1, 0)
                     : this.props.viewChannel.names.length;
+                    
+    let channelSubtitle = this.props.viewChannel.type == "direct" 
+                          && memberCount == 2 
+                          ? <DMSubtitle present={isPresent(names[0])}
+                                        fullName={this.getFullName(names[0])}/>
+                          : <ChannelInfo memberCount={memberCount}
+                                       topic={this.props.viewChannel.topic}
+                                       toggleStarToggle={this.toggleStarToggle} />;
     
     return <div className="channel-title-container">
       <div className="channel-title overflow-ellipses">
-        <span className={awayClass}>
-          <ChannelTypeIndicator channel={this.props.viewChannel}
-                                size="13.2px"
-                                extraClass={"CH" + awayClass} />
-        </span>
+        <ChannelTypeIndicator channel={this.props.viewChannel}
+                              size="13.2px"
+                              extraClass={"CH" + awayClass} />
         
-        {display_name}
+        {displayName}
       </div>
+      
       <StarToggle ref={this.props.viewChannel.starred ? null : "myStarToggle"}
                   starred={this.props.viewChannel.starred}
-                  toggleStarred={this.props.toggleChannelStarred.bind(null, channel_name)} /> 
+                  toggleStarred={this.props.toggleChannelStarred.bind(null, channelName)} /> 
       <br />
-      <ChannelTitleIndicators memberCount={memberCount}
-                              topic={this.props.viewChannel.topic}
-                              toggleStarToggle={this.toggleStarToggle} />
+      
+      {channelSubtitle}
     </div>
   }
 });
 
-const ChannelTitleIndicators = React.createClass({
+const DMSubtitle = React.createClass({
+  render() {
+    let status = this.props.present ? "active" : "away";
+    
+    return <div className="channel-info">
+      <PresenceIndicator present={this.props.present}
+                         extraClass=" dm-subtitle" />
+      <span className="subtitle subtitle-status">{status}</span>
+      <span className="subtitle-divider">|</span>
+      <span className="subtitle subtitle-full-name">{this.props.fullName}</span>  
+    </div>
+  }
+});
+
+const ChannelInfo = React.createClass({
   render() {
     let divider = null, topic = null;
     if (this.props.topic) {
-      divider = <span className="topic-divider">|</span>;
+      divider = <span className="subtitle-divider">|</span>;
       topic = <Topic topic={this.props.topic}
-      toggleStarToggle={this.toggleStarToggle} />
-    }
-    return <div className="channel-title-indicators">
+                     toggleStarToggle={this.toggleStarToggle} />
+    } 
+    
+    return <div className="channel-info">
       <MemberCount memberCount={this.props.memberCount} />
       {divider}
       {topic}
@@ -685,7 +711,8 @@ const CSHeaderName = React.createClass({
 const UserIndicator = React.createClass({
   render() {
     return <div>
-      <PresenceIndicator present={this.props.present} header={true} />
+      <PresenceIndicator present={this.props.present} 
+                         extraClass=" cs-header-presence" />
       <CSUsername present={this.props.present} 
                   username={this.props.username}
                   header={true} />
@@ -818,7 +845,7 @@ const DMContainer = React.createClass({
     ).present; 
     let icon = name_count > 1 ? <NameCountSquare name_count={name_count} />
                               : <PresenceIndicator present={present} />
-    let channel_name = this.props.names.filter(n => n != this.props.username ).join(", ");
+    let channelName = this.props.names.filter(n => n != this.props.username ).join(", ");
     
     let extraClass = !Array.isArray(this.props.current_channel) 
                      ? ""
@@ -831,7 +858,7 @@ const DMContainer = React.createClass({
                onClick={this.props.switchChannel.bind(null,  this.props.names)}>
       {icon}
       <CSUsername present={this.props.present}     
-                  username={channel_name} />
+                  username={channelName} />
       <XCircle hidden={this.state.hidden} />
     </li>
   }  
@@ -913,8 +940,8 @@ const PresenceIndicator = React.createClass({
   render() {
     let extraClass = "";
     
-    if (this.props.header) {
-      extraClass = " cs-header-presence";
+    if (this.props.extraClass) {
+      extraClass = this.props.extraClass;
     }
     
     return <div className={"presence presence-" + this.props.present + extraClass}>
