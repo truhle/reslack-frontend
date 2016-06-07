@@ -12,17 +12,53 @@ const App = React.createClass({
         current_channel: "general",
         channels: [
           { name: "general", private: false, 
-            starred: false, type: "group", topic: "Add a topic" },
+            starred: false, type: "group", topic: "Add a topic",
+            messages: [
+              { timestamp: 1465322840932,
+                sender: "taliesin",
+                starred: false,
+                content: "Hey there! From lead message.." },
+              { timestamp: 1465322968820,
+                sender: "taliesin",
+                starred: false,
+                content: "Great to see you, from message" },
+              { timestamp: 1465322998195,
+                sender: "taliesin",
+                starred: false,
+                content: "Great to see you, from message again" },
+              { timestamp: 1465323037518,
+                sender: "taliesin",
+                starred: false,
+                content: "Great to see you, from message this time a very very, very, longish and longish and maybe over a whole line message for your delight and enjoyment!" }
+            ]},
           { name: "random", private: false, 
-            starred: true, type: "group", topic: "Random stuff" },
+            starred: true, type: "group", topic: "Random stuff",
+            messages: [
+              
+            ]},
           { name: "webschool", private: true, 
-            starred: false, type: "group", topic: "Web, web, web" }
+            starred: false, type: "group", topic: "Web, web, web",
+            messages: [
+              
+            ]}
         ],
         direct_channels: [
-          { names: ["bob", "taliesin"], starred: false, type: "direct" },
-          { names: ["haizop", "taliesin"], starred: true, type: "direct" },
-          { names: ["sean", "taliesin"], starred: false, type: "direct" },
-          { names: ["haizop", "sean", "bob", "taliesin"], starred: true, type: "direct" }
+          { names: ["bob", "taliesin"], starred: false, type: "direct",
+            messages: [
+            
+            ]},
+          { names: ["haizop", "taliesin"], starred: true, type: "direct",
+            messages: [
+            
+            ]},
+          { names: ["sean", "taliesin"], starred: false, type: "direct",
+            messages: [
+            
+            ]},
+          { names: ["haizop", "sean", "bob", "taliesin"], starred: true, type: "direct",
+            messages: [
+            
+            ]}
         ],
         unreadChannels: [],
         unreadMentions: []
@@ -93,7 +129,8 @@ const ChannelView = React.createClass({
                      current_user={this.props.current_user}
                      users={this.props.users}
                      toggleChannelStarred={this.props.toggleChannelStarred} />
-      <MessagesContainer />
+      <MessagesContainer messages={this.props.viewChannel.messages}
+                         users={this.props.users} />
       <ChannelFooter />
     </div>
   }
@@ -156,20 +193,95 @@ const NotificationBar = React.createClass({
 });
 
 const MessagesContainer = React.createClass({
+  parseTimestamp(ts) {
+    let d = new Date(ts);
+    let day = d.getDate();
+    let month = d.getMonth();
+    let monthAndDay = this.monthToWord(month) + " " +
+                      this.getOrdinal(day); 
+    let timeString = this.timeNoSeconds(d.toLocaleTimeString());
+    let year = d.getFullYear(ts);
+    
+    return {
+      day: day,
+      month: month,
+      year: year, 
+      monthAndDay: monthAndDay,
+      timeString: timeString
+    };
+  },
+  
+  getOrdinal(n) {
+    let s = ["th", "st", "nd", "rd"], v = n % 10; 
+    return n + (s[v] || s[0]);
+  },
+  
+  monthToWord(monthNumber) {
+    let monthWords = ["January", "February", "March", "April", "May", "June",
+  "July", "August", "September", "October", "November", "December"];
+    return monthWords[monthNumber];
+  },
+  
+  timeNoSeconds(timeString) {
+    return timeString.replace(/:\d+(\s\w\w)$/, '$1');
+  },
+  
+  addTimeObject(message) {
+    let timeObject = this.parseTimestamp(message.timestamp);
+    return {...message, time: timeObject};
+    // var newMessage = {};
+    // Object.assign(newMessage, message);
+    // newMessage.time = this.parseTimestamp(message.timestamp);
+    // return newMessage;
+  },
+  
+  addTimeObjects(messages) {
+    return messages.map(m => this.addTimeObject(m));
+  },
+  
+  splitByDay(messages) {
+    var messagesWithTime = this.addTimeObjects(messages);
+    var firstMessage = messagesWithTime[0];
+    var rest = messagesWithTime.slice(1, messagesWithTime.length);
+    
+    return rest.reduce(function(acc, m) {
+      let currentDay = acc[acc.length - 1];
+      let lastMessage = currentDay[currentDay.length - 1];
+      if (lastMessage.time.day == m.time.day
+          && lastMessage.time.month == m.time.month
+          && lastMessage.time.year == m.time.year) {
+        return acc.slice(0, acc.length - 1).concat([currentDay.concat([m])]);
+      }
+      else {
+        return acc.concat([[m]]);
+      }
+    }, [[firstMessage]]);
+  },
+  
+  makeDayContainers(messages) {
+    return this.splitByDay(messages).map(
+      (ary,i) => <DayContainer key={i}
+                               messages={ary} /> 
+    );
+  },
+  
   render() {
+    let dayContainers = this.makeDayContainers(this.props.messages);
+    
     return <div className="messages-container">
-      <DayContainer />
-      
+      {dayContainers}
     </div>
   }
 });
 
 const DayContainer = React.createClass({
   render() {
+    let date = this.props.messages[0].time.monthAndDay;
+    
     return <div className="day-container">  
       <br/>
-      <DayDivider date="May 23rd" />
-      <DayMessages />
+      <DayDivider date={date} />
+      <DayMessages messages={this.props.messages} />
     </div>
   }
 });
