@@ -11,51 +11,91 @@ const App = React.createClass({
         present: true,
         current_channel: "general",
         channels: [
-          { name: "general", private: false, 
+          { name: "general", id: 1, private: false, 
             starred: false, type: "group", topic: "Add a topic",
             messages: [
               { timestamp: 1465322840932,
+                id: 1,
+                channel_id: 1,
+                type: "group",
                 sender: "taliesin",
                 starred: false,
                 content: "Hey there! From lead message.." },
               { timestamp: 1465322968820,
+                id: 2,
+                channel_id: 1,
+                type: "group",
                 sender: "taliesin",
                 starred: false,
                 content: "Great to see you, from message" },
               { timestamp: 1465322998195,
+                id: 3,
+                channel_id: 1,
+                type: "group",
                 sender: "taliesin",
                 starred: false,
                 content: "Great to see you, from message again" },
               { timestamp: 1465323037518,
+                id: 4,
+                channel_id: 1,
+                type: "group",
                 sender: "taliesin",
                 starred: false,
-                content: "Great to see you, from message this time a very very, very, longish and longish and maybe over a whole line message for your delight and enjoyment!" }
+                content: "Great to see you, from message this time a very very, very, longish and longish and maybe over a whole line message for your delight and enjoyment!" },
+              { timestamp: 1465341773043,
+                id: 5,
+                channel_id: 1,
+                type: "group",
+                sender: "taliesin",
+                starred: false,
+                content: "Writing again, just a little later now..." },
+              { timestamp: 1465341850077,
+                id: 6,
+                channel_id: 1,
+                type: "group",
+                sender: "bob",
+                starred: false,
+                content: "Yeah, great to see you here!" },
+              { timestamp: 1465341900077,
+                id: 7,
+                channel_id: 1,
+                type: "group",
+                sender: "bob",
+                starred: false,
+                content: "I finally got around to getting on here." },
+              { timestamp: 1465342000077,
+                id: 8,
+                channel_id: 1,
+                type: "group",
+                sender: "haizop",
+                starred: true,
+                content: "Life is beautiful." }
             ]},
-          { name: "random", private: false, 
+          { name: "random", id: 2, private: false, 
             starred: true, type: "group", topic: "Random stuff",
             messages: [
               
             ]},
-          { name: "webschool", private: true, 
+          { name: "webschool", id: 3, private: true, 
             starred: false, type: "group", topic: "Web, web, web",
             messages: [
               
             ]}
         ],
         direct_channels: [
-          { names: ["bob", "taliesin"], starred: false, type: "direct",
+          { names: ["bob", "taliesin"], id: 4, starred: false, type: "direct",
             messages: [
             
             ]},
-          { names: ["haizop", "taliesin"], starred: true, type: "direct",
+          { names: ["haizop", "taliesin"], id: 5, starred: true, type: "direct",
             messages: [
             
             ]},
-          { names: ["sean", "taliesin"], starred: false, type: "direct",
+          { names: ["sean", "taliesin"], id: 6, starred: false, type: "direct",
             messages: [
             
             ]},
-          { names: ["haizop", "sean", "bob", "taliesin"], starred: true, type: "direct",
+          { names: ["haizop", "sean", "bob", "taliesin"], id: 7, starred: true, type: "direct",
             messages: [
             
             ]}
@@ -86,7 +126,7 @@ const App = React.createClass({
       let updatedChannels = channels.map(ch => updateCH(ch, identifier));
       
       this.setState( { current_user: {...this.state.current_user, 
-                       channels: updatedChannels }});
+                                      channels: updatedChannels }});
     } else {
       let direct_channels = this.state.current_user.direct_channels;
       let updateDC = function(dc, identifier) {
@@ -95,7 +135,27 @@ const App = React.createClass({
       let updatedChannels = direct_channels.map(dc => updateDC(dc, identifier));
       
       this.setState( { current_user: {...this.state.current_user,
-                       direct_channels: updatedChannels }});
+                                      direct_channels: updatedChannels }});
+    }
+  },
+  
+  toggleMsgStarred(msg, e) {
+    let method = msg.type == "group" ? "channels" : "direct_channels";
+    let channels = this.state.current_user[method];
+    let channelToUpdate = channels.find(ch => ch.id == msg.channel_id);
+    let updatedMessages = channelToUpdate.messages.map( 
+      m => m.id == msg.id ? {...m, starred: !m.starred } : m
+    ); 
+    let updatedChannels = channels.map(
+      ch => ch.id == msg.channel_id ? {...ch, messages: updatedMessages} : ch
+    ); 
+    if (method == "channels") {
+      this.setState( { current_user: {...this.state.current_user, 
+                                      channels: updatedChannels }});
+    } 
+    else if (method == "direct_channels") {
+      this.setState( { current_user: {...this.state.current_user, 
+                                      direct_channels: updatedChannels}});
     }
   },
   
@@ -117,7 +177,8 @@ const App = React.createClass({
       <ChannelView viewChannel={viewChannel}
                    current_user={this.state.current_user}
                    users={this.state.users}
-                   toggleChannelStarred={this.toggleChannelStarred} />
+                   toggleChannelStarred={this.toggleChannelStarred}
+                   toggleMsgStarred={this.toggleMsgStarred} />
     </div>
   }
 }); 
@@ -130,7 +191,8 @@ const ChannelView = React.createClass({
                      users={this.props.users}
                      toggleChannelStarred={this.props.toggleChannelStarred} />
       <MessagesContainer messages={this.props.viewChannel.messages}
-                         users={this.props.users} />
+                         users={this.props.users}
+                         toggleMsgStarred={this.props.toggleMsgStarred} />
       <ChannelFooter />
     </div>
   }
@@ -229,10 +291,6 @@ const MessagesContainer = React.createClass({
   addTimeObject(message) {
     let timeObject = this.parseTimestamp(message.timestamp);
     return {...message, time: timeObject};
-    // var newMessage = {};
-    // Object.assign(newMessage, message);
-    // newMessage.time = this.parseTimestamp(message.timestamp);
-    // return newMessage;
   },
   
   addTimeObjects(messages) {
@@ -240,9 +298,9 @@ const MessagesContainer = React.createClass({
   },
   
   splitByDay(messages) {
-    var messagesWithTime = this.addTimeObjects(messages);
-    var firstMessage = messagesWithTime[0];
-    var rest = messagesWithTime.slice(1, messagesWithTime.length);
+    let messagesWithTime = this.addTimeObjects(messages);
+    let firstMessage = messagesWithTime[0];
+    let rest = messagesWithTime.slice(1, messagesWithTime.length);
     
     return rest.reduce(function(acc, m) {
       let currentDay = acc[acc.length - 1];
@@ -261,7 +319,8 @@ const MessagesContainer = React.createClass({
   makeDayContainers(messages) {
     return this.splitByDay(messages).map(
       (ary,i) => <DayContainer key={i}
-                               messages={ary} /> 
+                               messages={ary}
+                               toggleMsgStarred={this.props.toggleMsgStarred} /> 
     );
   },
   
@@ -281,7 +340,8 @@ const DayContainer = React.createClass({
     return <div className="day-container">  
       <br/>
       <DayDivider date={date} />
-      <DayMessages messages={this.props.messages} />
+      <DayMessages messages={this.props.messages}
+                   toggleMsgStarred={this.props.toggleMsgStarred} />
     </div>
   }
 });
@@ -305,58 +365,86 @@ const DayDividerLabel = React.createClass({
 });
 
 const DayMessages = React.createClass({
+  splitIntoBlocks(messages) {
+    let firstMessage = messages[0];
+    let rest = messages.slice(1, messages.length);
+    
+    return rest.reduce(function(acc, m) {
+      let currentBlock = acc[acc.length - 1];
+      let lastMessage = currentBlock[currentBlock.length - 1];
+      if (lastMessage.sender == m.sender
+          && m.timestamp - lastMessage.timestamp < 300000) {
+        return acc.slice(0, acc.length - 1).concat([currentBlock.concat([m])]);
+      }
+      else {
+        return acc.concat([[m]]);
+      }
+    }, [[firstMessage]]);
+  },
+  
+  makeMessageBlocks(messages) {
+    return this.splitIntoBlocks(messages).map(
+      (ary, i) => <MessageBlock key={i}
+                                messages={ary}
+                                toggleMsgStarred={this.props.toggleMsgStarred} />
+    );
+  },
+  
   render() {
+    let messageBlocks = this.makeMessageBlocks(this.props.messages);
+    
     return <div className="day-messages">
-      <MessageBlock />
-      <MessageBlock />
-      <MessageBlock />
-      <MessageBlock />
-      <MessageBlock />
+      {messageBlocks}
     </div>
   }
 });
 
 const MessageBlock = React.createClass({
+  makeMessages(msgs) {
+    return msgs.map(
+      (m, i) => i == 0 
+                ? <LeadMessage key={m.id}
+                               time={m.time.timeString} 
+                               sender={m.sender}
+                               starred={m.starred}
+                               content={m.content}
+                               toggleMsgStarred={this.props.toggleMsgStarred.bind(null, m)} />
+                : <Message key={m.id}
+                           time={m.time.timeString} 
+                           sender={m.sender}
+                           starred={m.starred}
+                           content={m.content}
+                           toggleMsgStarred={this.props.toggleMsgStarred.bind(null, m)} />
+    );
+  },
+  
   render() {
+    let messages = this.makeMessages(this.props.messages);
+    
     return <div className="message-block">
-      <LeadMessage time="12:00 PM"
-                   sender="taliesin"
-                   starred={false}
-                   content="Hey there! From lead message.." />
-      <Message time="12:01 PM"
-               sender="taliesin"
-               starred={false}
-               content="Great to see you, from message"/>
-      <Message time="12:02 PM"
-               sender="taliesin"
-               starred={false}
-               content="Great to see you, from message again"/>
-      <Message time="12:02 PM"
-               sender="taliesin"
-               starred={false}
-               content="Great to see you, from message this time a very very, very, longish and longish and maybe over a whole line message for your delight and enjoyment!"/>
+      {messages}
     </div>
   }
 });
 
 const LeadMessage = React.createClass({
-  getInitialState() {
-    return {
-      starred: this.props.starred
-    };
-  },
-  
-  toggleStarred() {
-    this.setState({starred: !this.state.starred});
-  },
+  // getInitialState() {
+  //   return {
+  //     starred: this.props.starred
+  //   };
+  // },
+  // 
+  // toggleStarred() {
+  //   this.setState({starred: !this.state.starred});
+  // },
   
   render() {
     return <div className="message lead-message">
       <LeadMessageGutter sender={this.props.sender} />
       <LeadMessageHeader sender={this.props.sender} 
                          time={this.props.time}
-                         starred={this.state.starred}
-                         toggleStarred={this.toggleStarred} />
+                         starred={this.props.starred}
+                         toggleMsgStarred={this.props.toggleMsgStarred} />
       <MessageContent content={this.props.content} />
     </div>
   }
@@ -369,7 +457,7 @@ const LeadMessageHeader = React.createClass({
       <Timestamp time={this.props.time}
                  lead={true} />
       <StarToggle starred={this.props.starred}
-                  toggleStarred={this.props.toggleStarred} />
+                  toggleStarred={this.props.toggleMsgStarred} />
     </div>
   }
 });
@@ -407,22 +495,22 @@ const MessageContent = React.createClass({
 });
 
 const Message = React.createClass({
-  getInitialState() {
-    return {
-      starred: this.props.starred
-    };
-  },
-  
-  toggleStarred() {
-    this.setState({starred: !this.state.starred});
-  },
+  // getInitialState() {
+  //   return {
+  //     starred: this.props.starred
+  //   };
+  // },
+  // 
+  // toggleStarred() {
+  //   this.setState({starred: !this.state.starred});
+  // },
   
   render() {
     return <div className="message">
       <MessageGutter time={this.props.time}
                      user={this.props.user}
-                     starred={this.state.starred}
-                     toggleStarred={this.toggleStarred} />
+                     starred={this.props.starred}
+                     toggleMsgStarred={this.props.toggleMsgStarred} />
       {this.props.content}
     </div>
   }
@@ -442,7 +530,7 @@ const MessageGutter = React.createClass({
     return <div className="message-gutter">
       <Timestamp time={this.props.time} lead={false} />
       <StarToggle starred={this.props.starred} 
-                  toggleStarred={this.props.toggleStarred} />
+                  toggleStarred={this.props.toggleMsgStarred} />
     </div>
   }
 });
@@ -524,8 +612,8 @@ const ChannelTitle = React.createClass({
                           ? <DMSubtitle present={isPresent(names[0])}
                                         fullName={this.getFullName(names[0])}/>
                           : <ChannelInfo memberCount={memberCount}
-                                       topic={this.props.viewChannel.topic}
-                                       toggleStarToggle={this.toggleStarToggle} />;
+                                         topic={this.props.viewChannel.topic}
+                                         toggleStarToggle={this.toggleStarToggle} />;
     
     return <div className="channel-title-container">
       <div className="channel-title overflow-ellipses">
