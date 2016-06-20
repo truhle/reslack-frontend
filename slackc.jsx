@@ -216,6 +216,7 @@ const MessagesContainer = React.createClass({
                       this.getOrdinal(day); 
     let timeString = this.timeNoSeconds(d.toLocaleTimeString());
     let year = d.getFullYear(ts);
+
     
     return {
       day: day,
@@ -976,17 +977,12 @@ const DMContainer = React.createClass({
   render() {
     let usernames = this.props.usernames.filter(n => n != this.props.username );
     let nameCount = usernames.length;
-    let icon = null;
+    let present = this.props.users.find(
+      u => u.username == usernames[0]
+    ).present;
     
-    if (nameCount > 1) {
-      icon = <NameCountSquare nameCount={nameCount} />
-    }
-    else {
-      let present = this.props.users.find(
-        u => u.username == usernames[0]
-      ).present;
-      icon = <PresenceIndicator present={present} />
-    }
+    let icon = nameCount > 1 ? <NameCountSquare nameCount={nameCount} />
+                             : <PresenceIndicator present={present} />;
     
     let channelName = usernames.join(", ");
     
@@ -999,7 +995,7 @@ const DMContainer = React.createClass({
                onMouseOut={this.toggleXCircle}
                onClick={this.props.switchChannel.bind(null,  this.props.channel_id)}>
       {icon}
-      <CSUsername present={this.props.present}     
+      <CSUsername present={present}     
                   username={channelName} />
       <XCircle hidden={this.state.hidden} />
     </li>
@@ -1060,7 +1056,7 @@ const ChannelTypeIndicator = React.createClass({
 const CSUsername = React.createClass({
   render() {
     let headerClass = this.props.header ? " cs-username-header" : "";
-    let italicClass = this.props.present === false ? "italic-true" : "";
+    let italicClass = this.props.present === false ? " italic-true" : "";
     
     return <span className={"cs-username" + headerClass + italicClass}>
       {this.props.username}
