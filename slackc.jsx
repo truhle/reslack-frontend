@@ -238,7 +238,7 @@ const MessagesContainer = React.createClass({
   },
   
   timeNoSeconds(timeString) {
-    return timeString.replace(/:\d+(\s\w\w)$/, '$1');
+    return timeString.replace(/:\d+(\s\w\w)(\s\w+)?$/, '$1');
   },
   
   addTimeObject(message) {
