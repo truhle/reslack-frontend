@@ -587,7 +587,7 @@ const ChannelInfo = React.createClass({
     if (this.props.topic) {
       divider = <span className="subtitle-divider">|</span>;
       topic = <Topic topic={this.props.topic}
-                     toggleStarToggle={this.toggleStarToggle} />
+                     toggleStarToggle={this.props.toggleStarToggle} />
     } 
     
     return <div className="channel-info">
