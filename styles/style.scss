@@ -201,9 +201,31 @@ img {
   // width: 100%;
 }
 
+
+.messages-beginning {
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+  padding: 1rem;
+  font-size: 1.1rem;
+  color: #555459;
+}
+
+.mb-title {
+  font-size: 1.875rem;
+  font-weight: 900;
+  margin-bottom: 0.75rem;
+}
+
+.mb-title-private {
+  color: $cs-selected-color !important;
+}
+
+.mb-title-hash {
+  font-weight: 400 !important;
+}
+
 .messages-container {
   position: absolute;
-  // margin-left: 220px;
   top: 3.775rem;
   left: 220px;
   right: 0px;

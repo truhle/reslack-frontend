@@ -15,70 +15,84 @@ const App = React.createClass({
       },
       all_channels: [
         { name: "general", id: 1, private: false, 
-          starred: false, type: "group", topic: "Add a topic"},
+          starred: false, type: "group", topic: "Add a topic",
+          created_by: "taliesin"
+        },
         { name: "random", id: 2, private: false, 
-          starred: true, type: "group", topic: "Random stuff"},
+          starred: true, type: "group", topic: "Random stuff", 
+          created_by: "taliesin"
+        },
         { name: "webschool", id: 3, private: true, 
-          starred: false, type: "group", topic: "Web, web, web"},
-        { usernames: ["bob", "taliesin"], id: 4, starred: false, type: "direct"},
-        { usernames: ["haizop", "taliesin"], id: 5, starred: true, type: "direct"},
-        { usernames: ["sean", "taliesin"], id: 6, starred: false, type: "direct"},
-        { usernames: ["haizop", "sean", "bob", "taliesin"], id: 7, starred: true, type: "direct"}
+          starred: false, type: "group", topic: "Web, web, web",
+          created_by: "sean"
+        },
+        { usernames: ["bob", "taliesin"], id: 4, starred: false, type: "direct" },
+        { usernames: ["haizop", "taliesin"], id: 5, starred: true, type: "direct" },
+        { usernames: ["sean", "taliesin"], id: 6, starred: false, type: "direct" },
+        { usernames: ["haizop", "sean", "bob", "taliesin"], id: 7, starred: true, type: "direct" }
       ],
       messages: [
-        { timestamp: 1465322840932,
+        { timestamp: 1465322440932,
           id: 1,
           channel_id: 1,
-          type: "group",
+          beginning: true,
+          sender: null,
+          starred: false,
+          content: "",
+        },
+        { timestamp: 1465322840932,
+          id: 2,
+          channel_id: 1,
+          beginning: false,
           sender: "taliesin",
           starred: false,
           content: "Hey there! From lead message.." },
         { timestamp: 1465322968820,
-          id: 2,
+          id: 3,
           channel_id: 1,
-          type: "group",
+          beginning: false,
           sender: "taliesin",
           starred: false,
           content: "Great to see you, from message" },
         { timestamp: 1465322998195,
-          id: 3,
+          id: 4,
           channel_id: 1,
-          type: "group",
+          beginning: false,
           sender: "taliesin",
           starred: false,
           content: "Great to see you, from message again" },
         { timestamp: 1465323037518,
-          id: 4,
+          id: 5,
           channel_id: 1,
-          type: "group",
+          beginning: false,
           sender: "taliesin",
           starred: false,
           content: "Great to see you, from message this time a very very, very, longish and longish and maybe over a whole line message for your delight and enjoyment!" },
         { timestamp: 1465341773043,
-          id: 5,
+          id: 6,
           channel_id: 1,
-          type: "group",
+          beginning: false,
           sender: "taliesin",
           starred: false,
           content: "Writing again, just a little later now..." },
         { timestamp: 1465341850077,
-          id: 6,
+          id: 7,
           channel_id: 1,
-          type: "group",
+          beginning: false,
           sender: "bob",
           starred: false,
           content: "Yeah, great to see you here!" },
         { timestamp: 1465341900077,
-          id: 7,
+          id: 8,
           channel_id: 1,
-          type: "group",
+          beginning: false,
           sender: "bob",
           starred: false,
           content: "I finally got around to getting on here." },
         { timestamp: 1465342000077,
-          id: 8,
+          id: 9,
           channel_id: 1,
-          type: "group",
+          beginning: false,
           sender: "haizop",
           starred: true,
           content: "Life is beautiful." }
@@ -144,6 +158,8 @@ const ChannelView = React.createClass({
                      users={this.props.users}
                      toggleChannelStarred={this.props.toggleChannelStarred} />
       <MessagesContainer messages={this.props.messages}
+                         viewChannel={this.props.viewChannel}
+                         current_user={this.props.current_user}
                          users={this.props.users}
                          toggleMsgStarred={this.props.toggleMsgStarred} />
       <ChannelFooter />
@@ -203,6 +219,53 @@ const NotificationBar = React.createClass({
   render() {
     return <div className="notification-bar">
       notification bar
+    </div>
+  }
+});
+
+const MessagesBeginning = React.createClass({
+  render() {
+    let beginning;
+    let monthAndDay = this.props.timeObj.monthAndDay;
+    
+    if (this.props.viewChannel.type == "group") {
+      let priv = this.props.viewChannel.private;
+      let channelType = priv
+                      ? "private channel"
+                      : "channel";
+      let name = this.props.viewChannel.name;
+      let hash = priv ? "" : "#";
+      let created_by = this.props.viewChannel.created_by;
+      let creator = created_by == this.props.current_user.username
+                  ? "you"
+                  : created_by;
+                  
+      beginning = <div>
+        <MBTitle name={name}
+                 hash={hash} 
+                 private={priv} />
+        This is the very beginning of the {hash + name} {channelType}, which {creator} created on {monthAndDay}.   
+      </div>;
+    }
+    else {
+      beginning = <div>
+        direct
+      </div>;
+    };
+    
+    return <div className="messages-beginning">
+      {beginning}
+    </div>
+  }
+});
+
+const MBTitle = React.createClass({
+  render() {
+    let extraClass = this.props.private 
+                   ? " mb-title-private"
+                   : "";
+    return <div className={"mb-title" + extraClass}>
+      <span className="mb-title-hash">{this.props.hash}</span>{this.props.name}
     </div>
   }
 });
@@ -279,9 +342,20 @@ const MessagesContainer = React.createClass({
   },
   
   render() {
-    let dayContainers = this.makeDayContainers(this.props.messages);
+    let firstMsg = this.props.messages[0];
+    let beginningTimeObj = this.parseTimestamp(firstMsg.timestamp);
+    let beginning = firstMsg.beginning == true 
+                  ? <MessagesBeginning viewChannel={this.props.viewChannel}
+                                       timeObj={beginningTimeObj} 
+                                       current_user={this.props.current_user} />
+                  : null;
+    let messages = firstMsg.beginning == true 
+                 ? this.props.messages.slice(1) 
+                 : this.props.messages;
+    let dayContainers = this.makeDayContainers(messages);
     
     return <div className="messages-container">
+      {beginning}
       {dayContainers}
     </div>
   }
@@ -489,7 +563,7 @@ const ChannelHeader = React.createClass({
 });
 
 const ChannelTitle = React.createClass({
-  toggleStarToggle() {
+  toggleStarToggleVisibility() {
     if (this.refs.myStarToggle != null) {
       ReactDOM.findDOMNode(this.refs.myStarToggle).classList.toggle("hidden");
     }
@@ -546,7 +620,7 @@ const ChannelTitle = React.createClass({
                                         fullName={this.getFullName(usernames[0])}/>
                           : <ChannelInfo memberCount={memberCount}
                                          topic={this.props.viewChannel.topic}
-                                         toggleStarToggle={this.toggleStarToggle} />;
+                                         toggleStarToggleVisibility={this.toggleStarToggleVisibility} />;
     
     return <div className="channel-title-container">
       <div className="channel-title overflow-ellipses">
@@ -587,7 +661,7 @@ const ChannelInfo = React.createClass({
     if (this.props.topic) {
       divider = <span className="subtitle-divider">|</span>;
       topic = <Topic topic={this.props.topic}
-                     toggleStarToggle={this.props.toggleStarToggle} />
+                     toggleStarToggleVisibility={this.props.toggleStarToggleVisibility} />
     } 
     
     return <div className="channel-info">
@@ -654,8 +728,8 @@ const MemberCount = React.createClass({
 const Topic = React.createClass({
   render() {
     return <div className="topic" 
-                onMouseOver={this.props.toggleStarToggle}
-                onMouseOut={this.props.toggleStarToggle}>
+                onMouseOver={this.props.toggleStarToggleVisibility}
+                onMouseOut={this.props.toggleStarToggleVisibility}>
       {this.props.topic}
     </div>
   }
