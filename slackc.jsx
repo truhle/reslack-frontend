@@ -16,15 +16,15 @@ const App = React.createClass({
       all_channels: [
         { name: "general", id: 1, private: false, 
           starred: false, type: "group", topic: "Add a topic",
-          created_by: "taliesin"
+          created_by: "taliesin", purpose: "This channel is for team wide comminication and announcements.  All team members are in this channel."
         },
         { name: "random", id: 2, private: false, 
           starred: true, type: "group", topic: "Random stuff", 
-          created_by: "taliesin"
+          created_by: "taliesin", purpose: "A place for non-work related hodge-podge, fliff-flaff, tweedle-dee, tweedle-dum, bike shed convo and shares."
         },
         { name: "webschool", id: 3, private: true, 
           starred: false, type: "group", topic: "Web, web, web",
-          created_by: "sean"
+          created_by: "sean", purpose: null
         },
         { usernames: ["bob", "taliesin"], id: 4, starred: false, type: "direct" },
         { usernames: ["haizop", "taliesin"], id: 5, starred: true, type: "direct" },
@@ -38,64 +38,77 @@ const App = React.createClass({
           beginning: true,
           sender: null,
           starred: false,
-          content: "",
-        },
-        { timestamp: 1465322840932,
+          content: "" },
+        { timestamp: 1465322440932,
           id: 2,
+          channel_id: 2,
+          beginning: true,
+          sender: null,
+          starred: false,
+          content: "" },
+        { timestamp: 1465322840932,
+          id: 3,
           channel_id: 1,
           beginning: false,
           sender: "taliesin",
           starred: false,
           content: "Hey there! From lead message.." },
         { timestamp: 1465322968820,
-          id: 3,
+          id: 4,
           channel_id: 1,
           beginning: false,
           sender: "taliesin",
           starred: false,
           content: "Great to see you, from message" },
         { timestamp: 1465322998195,
-          id: 4,
+          id: 5,
           channel_id: 1,
           beginning: false,
           sender: "taliesin",
           starred: false,
           content: "Great to see you, from message again" },
         { timestamp: 1465323037518,
-          id: 5,
+          id: 6,
           channel_id: 1,
           beginning: false,
           sender: "taliesin",
           starred: false,
           content: "Great to see you, from message this time a very very, very, longish and longish and maybe over a whole line message for your delight and enjoyment!" },
         { timestamp: 1465341773043,
-          id: 6,
+          id: 7,
           channel_id: 1,
           beginning: false,
           sender: "taliesin",
           starred: false,
           content: "Writing again, just a little later now..." },
         { timestamp: 1465341850077,
-          id: 7,
+          id: 8,
           channel_id: 1,
           beginning: false,
           sender: "bob",
           starred: false,
           content: "Yeah, great to see you here!" },
         { timestamp: 1465341900077,
-          id: 8,
+          id: 9,
           channel_id: 1,
           beginning: false,
           sender: "bob",
           starred: false,
           content: "I finally got around to getting on here." },
         { timestamp: 1465342000077,
-          id: 9,
+          id: 10,
           channel_id: 1,
           beginning: false,
           sender: "haizop",
           starred: true,
-          content: "Life is beautiful." }
+          content: "Life is beautiful." },
+        { timestamp: 1466542489988,
+          id: 11,
+          channel_id: 3,
+          beginning: true,
+          sender: null,
+          starred: false,
+          content: "" }
       ],
       users: [
         {username: "bob", full_name: "Bob L.", present: false, channels: ["general", "random"] },
@@ -239,12 +252,15 @@ const MessagesBeginning = React.createClass({
       let creator = created_by == this.props.current_user.username
                   ? "you"
                   : created_by;
+      let purpose = this.props.viewChannel.purpose 
                   
       beginning = <div>
         <MBTitle name={name}
                  hash={hash} 
                  private={priv} />
-        This is the very beginning of the {hash + name} {channelType}, which {creator} created on {monthAndDay}.   
+        This is the very beginning of the {hash + name} {channelType}, which {creator} created on {monthAndDay}. 
+        {purpose ? " Purpose: " : null }
+        <span className="italic-true">{purpose}</span>    
       </div>;
     }
     else {
@@ -352,7 +368,9 @@ const MessagesContainer = React.createClass({
     let messages = firstMsg.beginning == true 
                  ? this.props.messages.slice(1) 
                  : this.props.messages;
-    let dayContainers = this.makeDayContainers(messages);
+    let dayContainers = messages.length > 0 
+                      ? this.makeDayContainers(messages)
+                      : null;
     
     return <div className="messages-container">
       {beginning}

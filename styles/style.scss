@@ -119,7 +119,6 @@ img {
   &:focus, &:active {
     border-color: #BBBDBF;
   }
-  // overflow: scroll;
 }
 
 .message-input {
@@ -207,6 +206,7 @@ img {
   margin-bottom: 1rem;
   padding: 1rem;
   font-size: 1.1rem;
+  line-height: 1.5rem;
   color: #555459;
 }
 
