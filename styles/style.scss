@@ -91,6 +91,10 @@ img {
   margin-bottom: -1px;
 }
 
+strong {
+  font-weight: 700;
+}
+
 .channel-footer {
   position: fixed;
   bottom: 0;
@@ -204,10 +208,31 @@ img {
 .messages-beginning {
   margin-top: 1rem;
   margin-bottom: 1rem;
-  padding: 1rem;
+  padding: 1rem 2.1rem 1rem 1rem;
   font-size: 1.1rem;
   line-height: 1.5rem;
   color: #555459;
+  max-width: 46.785rem;
+}
+
+.mb-icons-display {
+  display: flex;
+  margin-bottom: 1.5rem;
+  height: 4.5rem;
+  align-items: center;
+  font-size: 1rem;
+  font-weight: 700;
+}
+
+.mb-icon {
+  display: inline-block;
+  border-radius: 0.2rem;
+  height: 4.5rem;
+  width: 4.5rem;
+  margin-right: .75rem;
+}
+
+.name-presence-username {
 }
 
 .mb-title {
@@ -908,15 +933,23 @@ img {
     width: 0.425rem;
     height: 0.425rem;
   }
+  
+  &.mb-meta {
+    float: none;
+    display: inline-block;
+    margin-left: 0.5rem;
+    margin-right: 0.5rem;
+    width: 0.425rem;
+    height: 0.425rem;
+    margin-top: 0;
+  }
 }
 
 .presence-false {
   border: 1.5px solid #ab9ba9;
   opacity: 0.7;
-  &.dm-subtitle {
-    width: 0.4rem;
-    height: 0.4rem;
-    border: 1.5px solid #555459;
+  &.dm-subtitle, &.mb-meta {
+    border-color: #555459;
     opacity: 0.7;
   }
 }
@@ -924,7 +957,7 @@ img {
 .presence-true {
   background: #38978D;
   border: 1.5px solid #38978D;
-  &.dm-subtitle {
+  &.dm-subtitle, &.mb-meta {
     background: #93cc93;
     border-color: #93cc93;
   }
