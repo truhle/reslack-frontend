@@ -158,6 +158,24 @@ const App = React.createClass({
     };
   },
   
+  addMessage(text, e) {
+    let messages = this.state.messages;
+    let lastId = messages[messages.length - 1].id;
+    let current_user = this.state.current_user;
+    
+    let message = {
+      timestamp: Date.now(),
+      id: lastId + 1,
+      channel_id: current_user.current_channel_id,
+      beginning: false,
+      sender: current_user.username,
+      starred: false,
+      content: text
+    };
+    
+    this.setState({ messages: [...messages, message] });
+  },
+  
   switchChannel(id, e) {
     this.setState( 
       { current_user: {...this.state.current_user, current_channel_id: id} }
@@ -197,6 +215,7 @@ const App = React.createClass({
                    current_user={this.state.current_user}
                    users={this.state.users}
                    messages={viewChannelMsgs}
+                   addMessage={this.addMessage}
                    toggleChannelStarred={this.toggleChannelStarred}
                    toggleMsgStarred={this.toggleMsgStarred} />
     </div>
@@ -215,7 +234,7 @@ const ChannelView = React.createClass({
                          current_user={this.props.current_user}
                          users={this.props.users}
                          toggleMsgStarred={this.props.toggleMsgStarred} />
-      <ChannelFooter />
+      <ChannelFooter addMessage={this.props.addMessage} />
     </div>
   }
 });
@@ -223,7 +242,7 @@ const ChannelView = React.createClass({
 const ChannelFooter = React.createClass({
   render() {
     return <div className="channel-footer">
-      <MessageInputContainer />
+      <MessageInputContainer addMessage={this.props.addMessage} />
       <NotificationBar />
     </div>
   }
@@ -231,17 +250,24 @@ const ChannelFooter = React.createClass({
 
 const MessageInputContainer = React.createClass({
   getInitialState() {
-    return { message: "" };
+    return { msgContent: "" };
   },
   
   updateMessage(e) {
-    this.setState({ message: e.target.value })
+    this.setState({ msgContent: e.target.value })
+  },
+  
+  resetMessage() {
+    this.setState({ msgContent: ""});
   },
   
   render() {
     return <div className="message-input-container">
       <pre className="resize-mirror"><span>{this.state.message}</span><br/></pre>
-      <MessageInput updateMessage={this.updateMessage} />
+      <MessageInput msgContent={this.state.msgContent}
+                    addMessage={this.props.addMessage}
+                    resetMessage={this.resetMessage}
+                    updateMessage={this.updateMessage} />
       <PrimaryFileButton />
     </div>
   }
@@ -261,9 +287,18 @@ const PrimaryFileButton = React.createClass({
 });
 
 const MessageInput = React.createClass({
+  handleEnter(e) {
+    if (e.keyCode == 13) {
+      e.preventDefault();
+      this.props.addMessage(this.props.msgContent);
+      this.props.resetMessage();
+    }
+  },
   render() {
     return <textarea className="message-input" 
                      rows="1"
+                     value={this.props.msgContent}
+                     onKeyDown={this.handleEnter}
                      onInput={this.props.updateMessage}></textarea>
   }
 });
