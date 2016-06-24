@@ -320,7 +320,7 @@ strong {
   position: absolute;
   left: 0;
   width: 3.875rem;
-  padding-right: 0.625rem;
+  margin-right: 0.625rem;
   text-align: right;
   
   .star-toggle {
@@ -344,7 +344,13 @@ strong {
 }
 
 .lead-message-gutter {
+  margin-top: 0.25rem;
   top: 0;
+  // right: 0 !important;
+  left: 1.6rem;
+  height: 2.25rem;
+  width: 2.25rem;
+  border-radius: 0.2rem;
 }
 
 .sender {

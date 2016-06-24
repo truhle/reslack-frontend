@@ -136,9 +136,18 @@ const App = React.createClass({
           beginning: true,
           sender: null,
           starred: false,
-          content: "" }
+          content: "" },
+        { timestamp: 1466784530560,
+          id: 16,
+          channel_id: 1,
+          beginning: false,
+          sender: "sean",
+          starred: false,
+          content: "Loving the summer.." }
       ],
       users: [
+        { username: "taliesin", full_name: "Todd Ruhlen", present: true, 
+          channels: ["general", "random", "webschool"], icon: "lightcoral" },
         { username: "bob", full_name: "Bob L.", present: false, 
           channels: ["general", "random"], icon: "cornflowerblue" },
         { username: "haizop", full_name: "Haiz O.", present: true, 
@@ -446,6 +455,7 @@ const MessagesContainer = React.createClass({
     return this.splitByDay(messages).map(
       (ary,i) => <DayContainer key={i}
                                messages={ary}
+                               users={this.props.users}
                                toggleMsgStarred={this.props.toggleMsgStarred} /> 
     );
   },
@@ -481,6 +491,7 @@ const DayContainer = React.createClass({
       <br/>
       <DayDivider date={date} />
       <DayMessages messages={this.props.messages}
+                   users={this.props.users}
                    toggleMsgStarred={this.props.toggleMsgStarred} />
     </div>
   }
@@ -526,6 +537,7 @@ const DayMessages = React.createClass({
     return this.splitIntoBlocks(messages).map(
       (ary, i) => <MessageBlock key={i}
                                 messages={ary}
+                                users={this.props.users}
                                 toggleMsgStarred={this.props.toggleMsgStarred} />
     );
   },
@@ -546,6 +558,7 @@ const MessageBlock = React.createClass({
                 ? <LeadMessage key={m.id}
                                time={m.time.timeString} 
                                sender={m.sender}
+                               users={this.props.users}
                                starred={m.starred}
                                content={m.content}
                                toggleMsgStarred={this.props.toggleMsgStarred.bind(null, m.id)} />
@@ -570,7 +583,8 @@ const MessageBlock = React.createClass({
 const LeadMessage = React.createClass({
   render() {
     return <div className="message lead-message">
-      <LeadMessageGutter sender={this.props.sender} />
+      <LeadMessageGutter sender={this.props.sender}
+                         users={this.props.users} />
       <LeadMessageHeader sender={this.props.sender} 
                          time={this.props.time}
                          starred={this.props.starred}
@@ -638,9 +652,10 @@ const Message = React.createClass({
 
 const LeadMessageGutter = React.createClass({
   render() {
+    let icon = this.props.users.find(u => u.username == this.props.sender).icon;
+    
     return <div className="lead-message-gutter message-gutter"
-    sender="taliesin">
-      {this.props.sender}
+                style={{background: icon}}>
     </div>
   }
 });
