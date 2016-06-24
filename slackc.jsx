@@ -288,7 +288,8 @@ const PrimaryFileButton = React.createClass({
 
 const MessageInput = React.createClass({
   handleEnter(e) {
-    if (e.keyCode == 13) {
+    let messageNotEmpty = this.props.msgContent.trim() != "";
+    if (e.keyCode == 13 && messageNotEmpty) {
       e.preventDefault();
       this.props.addMessage(this.props.msgContent);
       this.props.resetMessage();
@@ -424,6 +425,18 @@ const NamePresenceUsername = React.createClass({
 });
 
 const MessagesContainer = React.createClass({
+  componentDidMount() {
+    var el = this.refs.messagesContainer;
+    setTimeout(() => {
+      el.scrollTop = el.scrollHeight;
+    }, 0);
+  },
+  
+  componentDidUpdate() {
+    let el = this.refs.messagesContainer;
+    el.scrollTop = el.scrollHeight;
+  },
+  
   parseTimestamp(ts) {
     let d = new Date(ts);
     let day = d.getDate();
@@ -511,7 +524,8 @@ const MessagesContainer = React.createClass({
                       ? this.makeDayContainers(messages)
                       : null;
     
-    return <div className="messages-container">
+    return <div className="messages-container"
+                ref="messagesContainer">
       {beginning}
       {dayContainers}
     </div>
