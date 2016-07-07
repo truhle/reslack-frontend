@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom';
 import './styles/style.scss';
 import ChannelView from './components/ChannelView';
 import ChannelSwitcher from './components/ChannelSwitcher';
+import $ from 'jquery'
 
 const App = React.createClass({
   getInitialState() {
@@ -10,6 +11,7 @@ const App = React.createClass({
       group_name: "MetaTree",
       current_user: {
         username: "taliesin",
+        id: 1,
         present: true,
         current_channel_id: 1,
         unreadChannels: [],
@@ -167,15 +169,28 @@ const App = React.createClass({
     
     let message = {
       timestamp: Date.now(),
-      id: lastId + 1,
       channel_id: current_user.current_channel_id,
+      user_id: current_user.id,
       beginning: false,
       sender: current_user.username,
-      starred: false,
       content: text
     };
     
-    this.setState({ messages: [...messages, message] });
+    $.ajax({
+      url: 'http://localhost:3000/messages',
+      type: 'POST',
+      data: {message: message},
+      success: (response) => {
+        console.log('it worked', response);
+        response.starred = false;
+        this.setState({ messages: [...messages, response] });
+      }
+    });
+    
+    // message.id = message.timestamp;
+    // message.starred = false;
+    // 
+    // this.setState({ messages: [...messages, message] });
   },
   
   switchChannel(id, e) {
