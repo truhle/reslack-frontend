@@ -3,7 +3,11 @@ import ReactDOM from 'react-dom';
 import './styles/style.scss';
 import ChannelView from './components/ChannelView';
 import ChannelSwitcher from './components/ChannelSwitcher';
-import $ from 'jquery'
+import $ from 'jquery';
+import ActionCable from 'actioncable';
+
+let AC = {};
+AC.cable = ActionCable.createConsumer("ws:localhost:3000/cable");
 
 const App = React.createClass({
   getInitialState() {
@@ -162,6 +166,10 @@ const App = React.createClass({
     };
   },
   
+  componentDidMount() {
+    this.setUpSubscription();
+  },
+  
   addMessage(text, e) {
     let messages = this.state.messages;
     let lastId = messages[messages.length - 1].id;
@@ -182,8 +190,8 @@ const App = React.createClass({
       data: {message: message},
       success: (response) => {
         console.log('it worked', response);
-        response.starred = false;
-        this.setState({ messages: [...messages, response] });
+        // response.starred = false;
+        // this.setState({ messages: [...messages, response] });
       }
     });
     
@@ -191,6 +199,21 @@ const App = React.createClass({
     // message.starred = false;
     // 
     // this.setState({ messages: [...messages, message] });
+  },
+  
+  receiveMessage(message) {
+    message = JSON.parse(message)
+    message.starred = false;
+    this.setState({ messages: [...this.state.messages, message] });
+  },
+  
+  setUpSubscription() {
+    AC.cable.subscriptions.create('MessagesChannel', {
+      received(message) {
+        return this.receiveMessage(message);
+      },
+      receiveMessage: this.receiveMessage.bind(this)
+    });
   },
   
   switchChannel(id, e) {
