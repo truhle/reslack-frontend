@@ -50,14 +50,14 @@ const ChannelTitle = React.createClass({
       awayClass = usernames.length > 1 ? "" : isPresent(usernames[0]) ? "" : " away";
     };
     
-    let memberCount = this.props.viewChannel.type == "group"
+    let memberCount = this.props.viewChannel.channel_type == "group"
                     ? this.props.users.reduce( (count, user) =>
                         user.channels.indexOf(this.props.viewChannel.name) == -1 
                         ? count 
                         : count + 1, 0)
                     : this.props.viewChannel.usernames.length;
                     
-    let channelSubtitle = this.props.viewChannel.type == "direct" 
+    let channelSubtitle = this.props.viewChannel.channel_type == "direct" 
                           && memberCount == 2 
                           ? <DMSubtitle present={isPresent(usernames[0])}
                                         fullName={this.getFullName(usernames[0])}/>

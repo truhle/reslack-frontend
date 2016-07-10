@@ -14,7 +14,7 @@ const ChannelTypeIndicator = React.createClass({
                {lock}
              </div>
     }
-    else if (this.props.channel.type == "group") {
+    else if (this.props.channel.channel_type == "group") {
       return <span className={"hash-indicator " + this.props.extraClass}>#</span>;
     } 
     else if (this.props.channel.usernames.length == 2) {

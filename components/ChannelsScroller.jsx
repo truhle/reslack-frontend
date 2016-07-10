@@ -14,8 +14,8 @@ const ChannelsScroller = React.createClass({
   
   render() {
     let current_channel_id = this.props.current_user.current_channel_id;
-    let channels = this.props.all_channels.filter(ch => ch.type == "group");
-    let direct_channels = this.props.all_channels.filter(ch => ch.type == "direct");
+    let channels = this.props.all_channels.filter(ch => ch.channel_type == "group");
+    let direct_channels = this.props.all_channels.filter(ch => ch.channel_type == "direct");
     
     let channels_count = channels.length;
     

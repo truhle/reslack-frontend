@@ -11,33 +11,35 @@ AC.cable = ActionCable.createConsumer("ws:localhost:3000/cable");
 
 const App = React.createClass({
   getInitialState() {
+
     return {
+      group_id: 1,
       group_name: "MetaTree",
       current_user: {
         username: "taliesin",
         id: 1,
         present: true,
         current_channel_id: 1,
-        unreadChannels: [],
-        unreadMentions: []
+        // unreadChannels: [],
+        // unreadMentions: []
       },
       all_channels: [
         { name: "general", id: 1, private: false, 
-          starred: false, type: "group", topic: "Add a topic",
+          starred: false, channel_type: "group", topic: "Add a topic",
           created_by: "taliesin", purpose: "This channel is for team wide comminication and announcements.  All team members are in this channel."
         },
         { name: "random", id: 2, private: false, 
-          starred: true, type: "group", topic: "Random stuff", 
+          starred: true, channel_type: "group", topic: "Random stuff", 
           created_by: "taliesin", purpose: null
         },
         { name: "webschool", id: 3, private: true, 
-          starred: false, type: "group", topic: "Web, web, web",
+          starred: false, channel_type: "group", topic: "Web, web, web",
           created_by: "sean", purpose: null
         },
-        { usernames: ["bob", "taliesin"], id: 4, starred: false, type: "direct" },
-        { usernames: ["haizop", "taliesin"], id: 5, starred: true, type: "direct" },
-        { usernames: ["sean", "taliesin"], id: 6, starred: false, type: "direct" },
-        { usernames: ["haizop", "sean", "bob", "taliesin"], id: 7, starred: true, type: "direct" }
+        { usernames: ["bob", "taliesin"], id: 4, starred: false, channel_type: "direct" },
+        { usernames: ["haizop", "taliesin"], id: 5, starred: true, channel_type: "direct" },
+        { usernames: ["sean", "taliesin"], id: 6, starred: false, channel_type: "direct" },
+        { usernames: ["haizop", "sean", "bob", "taliesin"], id: 7, starred: true, channel_type: "direct" }
       ],
       messages: [
         { timestamp: 1465322440932,
@@ -167,6 +169,7 @@ const App = React.createClass({
   },
   
   componentDidMount() {
+    this.getGroupData(1, 1);
     this.setUpSubscription();
   },
   
@@ -177,6 +180,7 @@ const App = React.createClass({
     
     let message = {
       timestamp: Date.now(),
+      group_id: this.state.group_id,
       channel_id: current_user.current_channel_id,
       user_id: current_user.id,
       beginning: false,
@@ -201,6 +205,15 @@ const App = React.createClass({
     // this.setState({ messages: [...messages, message] });
   },
   
+  getGroupData(groupId, userId) {
+    let url = "http://localhost:3000/groups/" + groupId;
+    let self = this;
+    $.getJSON(url, {user_id: userId}, function(response) {
+      console.log(response);
+      self.setState(response);
+    });
+  },
+  
   receiveMessage(message) {
     message = JSON.parse(message)
     message.starred = false;
@@ -212,7 +225,7 @@ const App = React.createClass({
       received(message) {
         return this.receiveMessage(message);
       },
-      receiveMessage: this.receiveMessage.bind(this)
+      receiveMessage: this.receiveMessage
     });
   },
   

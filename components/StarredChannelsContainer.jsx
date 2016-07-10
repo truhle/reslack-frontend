@@ -9,7 +9,7 @@ const StarredChannelsContainer = React.createClass({
       <ChannelsHeader name="starred" />
       <div className="clear"></div>
       <ul>
-        {this.props.channels.map ( channel => channel.type == "group" 
+        {this.props.channels.map ( channel => channel.channel_type == "group" 
           ? <ChannelContainer channel={channel}
                               current_channel_id={this.props.current_channel_id}
                               switchChannel={this.props.switchChannel}

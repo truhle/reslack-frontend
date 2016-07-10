@@ -17,7 +17,7 @@ const MessagesBeginning = React.createClass({
     let monthAndDay = this.props.timeObj.monthAndDay;
     let currentUsername = this.props.current_user.username;
     
-    if (this.props.viewChannel.type == "group") {
+    if (this.props.viewChannel.channel_type == "group") {
       let priv = this.props.viewChannel.private;
       let channelType = priv
                       ? "private channel"
