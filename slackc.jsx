@@ -169,7 +169,7 @@ const App = React.createClass({
   },
   
   componentDidMount() {
-    this.getGroupData(1, 1);
+    this.getGroupData(1, 2);
     this.setUpSubscription();
   },
   
@@ -216,7 +216,7 @@ const App = React.createClass({
   
   receiveMessage(message) {
     message = JSON.parse(message)
-    message.starred = false;
+    // message.starred = false;
     this.setState({ messages: [...this.state.messages, message] });
   },
   
@@ -236,6 +236,19 @@ const App = React.createClass({
   },
   
   toggleChannelStarred(id, e) {
+    console.log("toggling channel star");
+    $.ajax({
+      url: 'http://localhost:3000/user_channel_stars',
+      type: 'POST',
+      data: {channel_id: id,
+             user_id: this.state.current_user.id},
+      success: (response) => {
+        console.log('channel star toggled', response)
+      },
+      error: (response) => {
+        console.log('error', response)
+      }
+    });
     let updatedChannels = this.state.all_channels.map(
       ch => ch.id == id ? {...ch, starred: !ch.starred} : ch
     );
@@ -243,6 +256,19 @@ const App = React.createClass({
   },
   
   toggleMsgStarred(id, e) {
+    console.log("toggling message star");
+    $.ajax({
+      url: 'http://localhost:3000/user_message_stars',
+      type: 'POST',
+      data: {message_id: id,
+             user_id: this.state.current_user.id},
+      success: (response) => {
+        console.log('message star toggled', response)
+      },
+      error: (response) => {
+        console.log('error', response)
+      }
+    });
     let updatedMsgs = this.state.messages.map(
       msg => msg.id == id ? {...msg, starred: !msg.starred} : msg
     );
