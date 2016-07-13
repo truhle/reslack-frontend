@@ -230,6 +230,17 @@ const App = React.createClass({
   },
   
   switchChannel(id, e) {
+    $.ajax({
+      url: 'http://localhost:3000/users/' + this.state.current_user.id,
+      type: 'PATCH',
+      data: {current_channel_id: id},
+      success: (response) => {
+        console.log('current channel changed', response)
+      },
+      error: (response) => {
+        console.log('error', response)
+      }
+    });
     this.setState( 
       { current_user: {...this.state.current_user, current_channel_id: id} }
     );
