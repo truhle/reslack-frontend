@@ -336,7 +336,7 @@ const SignUpForm = React.createClass({
           <p>
             <input type="email" placeholder="you@domain.com" size="40"></input>
           </p>
-          <p>
+          <p className="small-margin-bottom">
             <input type="password" placeholder="password" size="40"></input>
           </p>
           <p>
