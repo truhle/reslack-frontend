@@ -1154,3 +1154,8 @@ input[type="email"], input[type="password"] {
   width: 66.13%;
   margin: 0 auto;
 }
+
+.error input, .error select, .error textarea {
+    border: 1px solid #cb5234;
+    background: #FFF6F6;
+}
