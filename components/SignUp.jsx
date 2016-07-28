@@ -26,9 +26,7 @@ const SignUpForm = React.createClass({
           <p className="small-margin-bottom">
             <input type="password" placeholder="password" size="40"></input>
           </p>
-          <p>
-            <div className="btn">Sign in</div>
-          </p>
+          <div className="btn">Sign in</div>
         </div>
 
         
@@ -37,4 +35,4 @@ const SignUpForm = React.createClass({
   }
 });
 
-export default SignUp
+export default SignUp;

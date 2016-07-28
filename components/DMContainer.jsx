@@ -24,7 +24,7 @@ const DMContainer = React.createClass({
     let channelName = usernames.join(", ");
     
     let extraClass = this.props.channel_id == this.props.current_channel_id
-                     ? " current_channel"
+                     ? " current-channel"
                      : "";
 
     return <li className={"channel-container overflow-ellipses" + extraClass}
