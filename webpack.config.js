@@ -4,7 +4,7 @@ module.exports = {
   entry: "./slackc.jsx",
   
   output: {
-    path: "./",
+    path: "public",
     filename: "bundle.js"
   },
   

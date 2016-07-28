@@ -512,7 +512,7 @@ strong {
   padding-left: 3px;
   &:hover {
     padding-right: 20px;
-    background: url("../svg/inline-edit.svg") 96% 48% no-repeat;
+    background: url("./svg/inline-edit.svg") 96% 48% no-repeat;
     z-index: 40;
     border: 1px solid $divider-color;
     border-radius: 4px;
@@ -639,7 +639,7 @@ strong {
   margin-right: 8px;
   padding-left: 1.9rem;
   padding-right: 1.9rem;
-  background: url("../svg/search.svg") 3% 50% no-repeat;
+  background: url("./svg/search.svg") 3% 50% no-repeat;
   font-size: 0.9375rem;
   font-family: inherit;
   color: #555459;
