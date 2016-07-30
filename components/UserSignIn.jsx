@@ -1,12 +1,24 @@
 import React from 'react';
+import $ from 'jquery';
 
 const UserSignIn = React.createClass({
+  contextTypes: {
+    router: React.PropTypes.object
+  },
+  
+  handleSubmit(e) {
+    e.preventDefault();
+    let email = e.target.elements[0].value;
+    let password = e.target.elements[1].value;
+    console.log(email, password);
+  },
+  
   render() {
     return <div className="sign-up-form-card">
       <h1 className="margin-bottom">
         Sign in to reslack.net/{this.props.params.groupPrefix}
       </h1>
-      <div className="sign-up-form">
+      <form className="sign-up-form" onSubmit={this.handleSubmit}>
         <p className="margin-bottom">
           Enter your <strong>email address</strong> and <strong>password</strong>
           .
@@ -17,8 +29,8 @@ const UserSignIn = React.createClass({
         <p className="small-margin-bottom">
           <input type="password" placeholder="password" size="40"></input>
         </p>
-        <div className="btn">Sign in</div>
-      </div>
+        <button type="submit" className="btn">Sign in</button>
+      </form>
     </div>
   }
 });
