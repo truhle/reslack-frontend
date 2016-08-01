@@ -1,8 +1,10 @@
 import React from 'react';
 import ChannelView from './ChannelView';
 import ChannelSwitcher from './ChannelSwitcher';
+import DocumentTitle from 'react-document-title';
 import $ from 'jquery';
 import ActionCable from 'actioncable';
+
 
 let AC = {};
 AC.cable = ActionCable.createConsumer("ws:localhost:3000/cable");
@@ -292,21 +294,26 @@ const GroupView = React.createClass({
     let viewChannelMsgs = this.state.messages.filter(
       m => m.channel_id == current_channel_id
     );
+    let channelName = this.props.params.channelName;
+    let groupPrefix = this.props.params.groupPrefix;
     
-    return <div>
-      <ChannelSwitcher current_user={this.state.current_user}
-                       all_channels={this.state.all_channels}
-                       group_name={this.state.group_name}
-                       users={this.state.users}
-                       switchChannel={this.switchChannel} />
-      <ChannelView viewChannel={viewChannel}
-                   current_user={this.state.current_user}
-                   users={this.state.users}
-                   messages={viewChannelMsgs}
-                   addMessage={this.addMessage}
-                   toggleChannelStarred={this.toggleChannelStarred}
-                   toggleMsgStarred={this.toggleMsgStarred} />
-    </div>
+    return <DocumentTitle title={channelName ? `${channelName} | ${groupPrefix} Reslack`
+                                             : `${groupPrefix} | Reslack`}>
+      <div>
+        <ChannelSwitcher current_user={this.state.current_user}
+                         all_channels={this.state.all_channels}
+                         group_name={this.state.group_name}
+                         users={this.state.users}
+                         switchChannel={this.switchChannel} />
+        <ChannelView viewChannel={viewChannel}
+                     current_user={this.state.current_user}
+                     users={this.state.users}
+                     messages={viewChannelMsgs}
+                     addMessage={this.addMessage}
+                     toggleChannelStarred={this.toggleChannelStarred}
+                     toggleMsgStarred={this.toggleMsgStarred} />
+      </div>
+    </DocumentTitle>
   }
 }); 
 
