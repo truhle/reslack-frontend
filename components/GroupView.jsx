@@ -174,6 +174,10 @@ const GroupView = React.createClass({
     this.setUpSubscription();
   },
   
+  componentWillMount() {
+    this.props.ensureGroupId(this.props.params.groupPrefix);
+  },
+  
   addMessage(text, e) {
     let messages = this.state.messages;
     let lastId = messages[messages.length - 1].id;

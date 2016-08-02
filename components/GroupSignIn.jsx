@@ -2,6 +2,7 @@ import React from "react";
 import ReactDOM from "react-dom";
 import { Link } from "react-router";
 import DocumentTitle from "react-document-title";
+import $ from 'jquery';
 
 const GroupSignIn = React.createClass({
   contextTypes: {
@@ -15,8 +16,13 @@ const GroupSignIn = React.createClass({
   handleSubmit(e) {
     e.preventDefault();
     let groupPrefix = e.target.elements[0].value;
-    let path = `/${groupPrefix}/signin`;
-    this.context.router.push(path);
+    let url = "http://localhost:3000/group_ids/" + groupPrefix;
+    let self = this;
+    $.getJSON(url, response => {
+      self.props.updateGroupInfo(response.group_id, groupPrefix);
+      let path = `/${groupPrefix}/signin`;
+      self.context.router.push(path);
+    })
   },
   
   render() {

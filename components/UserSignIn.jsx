@@ -6,6 +6,10 @@ const UserSignIn = React.createClass({
     router: React.PropTypes.object
   },
   
+  componentWillMount() {
+    this.props.ensureGroupId(this.props.params.groupPrefix);
+  },
+  
   handleSubmit(e) {
     e.preventDefault();
     let email = e.target.elements[0].value;
