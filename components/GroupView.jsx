@@ -175,7 +175,7 @@ const GroupView = React.createClass({
   },
   
   componentDidUpdate() {
-    // let current_user = this.state.current_user;
+    // let current_user = this.props.current_user;
   },
   
   componentWillMount() {
@@ -185,7 +185,7 @@ const GroupView = React.createClass({
   addMessage(text, e) {
     let messages = this.state.messages;
     let lastId = messages[messages.length - 1].id;
-    let current_user = this.state.current_user;
+    let current_user = this.props.current_user;
     
     let message = {
       timestamp: Date.now(),
@@ -215,11 +215,12 @@ const GroupView = React.createClass({
   getGroupData(groupPrefix, userId) {
     let url = "http://localhost:3000/groups/" + groupPrefix;
     let self = this;
-    let current_user = this.state.current_user;
+    let current_user = this.props.current_user;
     $.getJSON(url, {user_id: userId}, function(response) {
-      let current_channel_id = response.current_user.current_channel_id;
+      let current_channel_id = self.props.current_user.current_channel_id;
       if (!response.all_channels.some( ch => ch.id == current_channel_id )) {
-        response.current_user.current_channel_id = response.all_channels[0].id;
+        // response.current_user.current_channel_id = response.all_channels[0].id;
+        self.props.switchChannel(response.all_channels[0].id)
       }
       self.setState(response);
     });
@@ -239,22 +240,22 @@ const GroupView = React.createClass({
     });
   },
   
-  switchChannel(id, e) {
-    this.setState( 
-      { current_user: {...this.state.current_user, current_channel_id: id} }
-    );
-    $.ajax({
-      url: 'http://localhost:3000/users/' + this.state.current_user.id,
-      type: 'PATCH',
-      data: {current_channel_id: id},
-      success: (response) => {
-        console.log('current channel changed', response)
-      },
-      error: (response) => {
-        console.log('error', response)
-      }
-    });
-  },
+  // switchChannel(id, e) {
+  //   $.ajax({
+  //     url: 'http://localhost:3000/users/' + this.state.current_user.id,
+  //     type: 'PATCH',
+  //     data: {current_channel_id: id},
+  //     success: (response) => {
+  //       console.log('current channel changed', response)
+  //     },
+  //     error: (response) => {
+  //       console.log('error', response)
+  //     }
+  //   });
+  //   this.setState( 
+  //     { current_user: {...this.state.current_user, current_channel_id: id} }
+  //   );
+  // },
   
   toggleChannelStarred(id, e) {
     console.log("toggling channel star");
@@ -262,7 +263,7 @@ const GroupView = React.createClass({
       url: 'http://localhost:3000/user_channel_stars',
       type: 'POST',
       data: {channel_id: id,
-             user_id: this.state.current_user.id},
+             user_id: this.props.current_user.id},
       success: (response) => {
         console.log('channel star toggled', response)
       },
@@ -282,7 +283,7 @@ const GroupView = React.createClass({
       url: 'http://localhost:3000/user_message_stars',
       type: 'POST',
       data: {message_id: id,
-             user_id: this.state.current_user.id},
+             user_id: this.props.current_user.id},
       success: (response) => {
         console.log('message star toggled', response)
       },
@@ -297,7 +298,7 @@ const GroupView = React.createClass({
   },
   
   render() {
-    let current_channel_id = this.state.current_user.current_channel_id;
+    let current_channel_id = this.props.current_user.current_channel_id;
     let switcher, view;
     let firstChannel = this.state.all_channels[0];
     if (firstChannel == undefined) {
@@ -316,13 +317,13 @@ const GroupView = React.createClass({
         m => m.channel_id == current_channel_id
       );
 
-      switcher = <ChannelSwitcher current_user={this.state.current_user}
+      switcher = <ChannelSwitcher current_user={this.props.current_user}
                                   all_channels={this.state.all_channels}
                                   group_name={this.state.group_name}
                                   users={this.state.users}
-                                  switchChannel={this.switchChannel} />;
+                                  switchChannel={this.props.switchChannel} />;
       view = <ChannelView viewChannel={viewChannel}
-                          current_user={this.state.current_user}
+                          current_user={this.props.current_user}
                           users={this.state.users}
                           messages={viewChannelMsgs}
                           addMessage={this.addMessage}

@@ -4,10 +4,12 @@ import $ from 'jquery';
 
 const App = React.createClass({
   getInitialState() {
+    let defaultUser = {id: 1, username: "taliesin", full_name: "Todd R.", present: false, icon: "cornflowerblue", current_channel_id: 1, password_digest: "$2a$10$AynHww91Tu6RJjvqSQ24t.oW7psxPoVpF4VnvFgq3OK...", email: "taliesin@example.com"};
+    
     return {
       group_id: Number(localStorage.group_id) || null,
       group_prefix: localStorage.group_prefix || "",
-      current_user: localStorage.current_user || {}
+      current_user: localStorage.current_user || defaultUser
     }
   },
   
@@ -22,6 +24,23 @@ const App = React.createClass({
         self.updateGroupInfo(response.group_id, groupPrefix);
       });
     }
+  },
+  
+  switchChannel(id, e) {
+    $.ajax({
+      url: 'http://localhost:3000/users/' + this.state.current_user.id,
+      type: 'PATCH',
+      data: {current_channel_id: id},
+      success: (response) => {
+        console.log('current channel changed', response)
+      },
+      error: (response) => {
+        console.log('error', response)
+      }
+    });
+    this.setState( 
+      { current_user: {...this.state.current_user, current_channel_id: id} }
+    );
   },
   
   updateGroupInfo(id, prefix) {
@@ -45,6 +64,7 @@ const App = React.createClass({
             current_user: this.state.current_user,
             updateGroupInfo: this.updateGroupInfo,
             setUser: this.setUser,
+            switchChannel: this.switchChannel,
             ensureGroupId: this.ensureGroupId
           }
         )}
