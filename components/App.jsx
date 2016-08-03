@@ -43,7 +43,7 @@ const App = React.createClass({
           {
             group_id: this.state.group_id,
             current_user: this.state.current_user,
-            updateGroupId: this.updateGroupId,
+            updateGroupInfo: this.updateGroupInfo,
             setUser: this.setUser,
             ensureGroupId: this.ensureGroupId
           }

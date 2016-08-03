@@ -170,8 +170,12 @@ const GroupView = React.createClass({
   },
   
   componentDidMount() {
-    this.getGroupData(1, 2);
+    this.getGroupData(this.props.params.groupPrefix, 2);
     this.setUpSubscription();
+  },
+  
+  componentDidUpdate() {
+    // let current_user = this.state.current_user;
   },
   
   componentWillMount() {
@@ -208,18 +212,21 @@ const GroupView = React.createClass({
     // this.setState({ messages: [...messages, message] });
   },
   
-  getGroupData(groupId, userId) {
-    let url = "http://localhost:3000/groups/" + groupId;
+  getGroupData(groupPrefix, userId) {
+    let url = "http://localhost:3000/groups/" + groupPrefix;
     let self = this;
+    let current_user = this.state.current_user;
     $.getJSON(url, {user_id: userId}, function(response) {
-      console.log(response);
+      let current_channel_id = response.current_user.current_channel_id;
+      if (!response.all_channels.some( ch => ch.id == current_channel_id )) {
+        response.current_user.current_channel_id = response.all_channels[0].id;
+      }
       self.setState(response);
     });
   },
   
   receiveMessage(message) {
     message = JSON.parse(message)
-    // message.starred = false;
     this.setState({ messages: [...this.state.messages, message] });
   },
   
@@ -233,6 +240,9 @@ const GroupView = React.createClass({
   },
   
   switchChannel(id, e) {
+    this.setState( 
+      { current_user: {...this.state.current_user, current_channel_id: id} }
+    );
     $.ajax({
       url: 'http://localhost:3000/users/' + this.state.current_user.id,
       type: 'PATCH',
@@ -244,9 +254,6 @@ const GroupView = React.createClass({
         console.log('error', response)
       }
     });
-    this.setState( 
-      { current_user: {...this.state.current_user, current_channel_id: id} }
-    );
   },
   
   toggleChannelStarred(id, e) {
@@ -292,10 +299,15 @@ const GroupView = React.createClass({
   render() {
     let current_channel_id = this.state.current_user.current_channel_id;
     let switcher, view;
-    if (this.state.all_channels[0] == undefined) {
+    let firstChannel = this.state.all_channels[0];
+    if (firstChannel == undefined) {
       switcher = "Hi";
       view = "Testing no group data";
     } 
+    else if (this.state.group_prefix != this.props.params.groupPrefix) {
+      switcher = "Hey";
+      view = "Testing wrong group data";
+    }
     else {
       let viewChannel = this.state.all_channels.find(
         ch => ch.id == current_channel_id
@@ -303,6 +315,7 @@ const GroupView = React.createClass({
       let viewChannelMsgs = this.state.messages.filter(
         m => m.channel_id == current_channel_id
       );
+
       switcher = <ChannelSwitcher current_user={this.state.current_user}
                                   all_channels={this.state.all_channels}
                                   group_name={this.state.group_name}
