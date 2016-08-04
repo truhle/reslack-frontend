@@ -1,9 +1,14 @@
 import React from 'react';
+import ReactDOM from 'react-dom';
 import $ from 'jquery';
 
 const UserSignIn = React.createClass({
   contextTypes: {
     router: React.PropTypes.object
+  },
+  
+  componentDidMount() {
+    ReactDOM.findDOMNode(this.refs.emailInput).focus();
   },
   
   componentWillMount() {
@@ -40,7 +45,7 @@ const UserSignIn = React.createClass({
           .
         </p>
         <p>
-          <input type="email" placeholder="you@domain.com" size="40" defaultValue="sean@example.com"></input>
+          <input type="email" ref="emailInput" placeholder="you@domain.com" size="40" defaultValue="sean@example.com"></input>
         </p>
         <p className="small-margin-bottom">
           <input type="password" placeholder="password" size="40" defaultValue="secret"></input>
