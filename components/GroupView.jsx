@@ -320,7 +320,8 @@ const GroupView = React.createClass({
                                   all_channels={this.state.all_channels}
                                   group_name={this.state.group_name}
                                   users={this.state.users}
-                                  switchChannel={this.props.switchChannel} />;
+                                  switchChannel={this.props.switchChannel}
+                                  groupPrefix={this.props.params.groupPrefix} />;
       view = <ChannelView viewChannel={viewChannel}
                           current_user={this.props.current_user}
                           users={this.state.users}

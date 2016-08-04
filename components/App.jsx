@@ -4,8 +4,8 @@ import $ from 'jquery';
 
 const App = React.createClass({
   getInitialState() {
-    let defaultUser = {id: 1, username: "taliesin", full_name: "Todd R.", present: false, icon: "cornflowerblue", current_channel_id: 1, password_digest: "$2a$10$AynHww91Tu6RJjvqSQ24t.oW7psxPoVpF4VnvFgq3OK...", email: "taliesin@example.com"};
-    let current_user = localStorage.current_user ? JSON.parse(localStorage.current_user) : defaultUser;
+    // let defaultUser = {id: 1, username: "taliesin", full_name: "Todd R.", present: false, icon: "cornflowerblue", current_channel_id: 1, password_digest: "$2a$10$AynHww91Tu6RJjvqSQ24t.oW7psxPoVpF4VnvFgq3OK...", email: "taliesin@example.com"};
+    let current_user = localStorage.current_user ? JSON.parse(localStorage.current_user) : null;
     
     return {
       group_id: Number(localStorage.group_id) || null,
@@ -50,11 +50,7 @@ const App = React.createClass({
   },
   
   setUser(userObject) {
-    console.log("User Object", userObject);
-    console.log("Strungified", JSON.stringify(userObject));
     localStorage.current_user = JSON.stringify(userObject);
-    console.log("Local storage:", localStorage.current_user);
-    console.log("Parsed local storage: ", JSON.parse(localStorage.current_user));
     this.setState({current_user: userObject});
   },
   

@@ -18,9 +18,9 @@ const GroupSignIn = React.createClass({
     let groupPrefix = e.target.elements[0].value;
     let url = "http://localhost:3000/group_ids/" + groupPrefix;
     $.getJSON(url, function(response) {
-      self.props.updateGroupInfo(response.group_id, groupPrefix);
+      this.props.updateGroupInfo(response.group_id, groupPrefix);
       let path = `/${groupPrefix}/signin`;
-      self.context.router.push(path);
+      this.context.router.push(path);
     }.bind(this))
   },
   

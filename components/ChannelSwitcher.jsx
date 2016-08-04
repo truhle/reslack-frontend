@@ -6,6 +6,7 @@ const ChannelSwitcher = React.createClass({
   render() {
     return <div className="channel-switcher">
       <CSHeader group_name={this.props.group_name}
+                groupPrefix={this.props.groupPrefix}
                 username={this.props.current_user.username}
                 present={this.props.current_user.present} />
       <ChannelsScroller current_user={this.props.current_user}
