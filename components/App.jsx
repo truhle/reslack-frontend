@@ -5,11 +5,12 @@ import $ from 'jquery';
 const App = React.createClass({
   getInitialState() {
     let defaultUser = {id: 1, username: "taliesin", full_name: "Todd R.", present: false, icon: "cornflowerblue", current_channel_id: 1, password_digest: "$2a$10$AynHww91Tu6RJjvqSQ24t.oW7psxPoVpF4VnvFgq3OK...", email: "taliesin@example.com"};
+    let current_user = localStorage.current_user ? JSON.parse(localStorage.current_user) : defaultUser;
     
     return {
       group_id: Number(localStorage.group_id) || null,
       group_prefix: localStorage.group_prefix || "",
-      current_user: JSON.parse(localStorage.current_user) || defaultUser
+      current_user: current_user
     }
   },
   
