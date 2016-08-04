@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import $ from 'jquery';
+import auth from '../modules/auth.js';
 
 const UserSignIn = React.createClass({
   contextTypes: {
@@ -19,16 +20,13 @@ const UserSignIn = React.createClass({
     e.preventDefault();
     let email = e.target.elements[0].value;
     let password = e.target.elements[1].value;
-    $.ajax({
-      url: "http://localhost:3000/sessions/create",
-      data: {email: email, password: password},
-      success: function(response) {
-        console.log("Success", response);
+    auth.login(email, password, (result, response) => {
+      if (result) {
         this.props.setUser(response);
         let path = `/${this.props.params.groupPrefix}/`;
         this.context.router.push(path);
-      }.bind(this),
-      error: (response) => {
+      }
+      else {
         console.log("Error", response);
       }
     });

@@ -11,7 +11,7 @@ const CSHeader = React.createClass({
   
   handleClick(e) {
     e.preventDefault();
-    auth.logOut(() => {
+    auth.logout(() => {
       let path = `/${this.props.groupPrefix}/signin`;
       this.context.router.push(path);
     });
