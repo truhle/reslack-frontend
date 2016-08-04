@@ -14,7 +14,19 @@ const UserSignIn = React.createClass({
     e.preventDefault();
     let email = e.target.elements[0].value;
     let password = e.target.elements[1].value;
-    console.log(email, password);
+    $.ajax({
+      url: "http://localhost:3000/sessions/create",
+      data: {email: email, password: password},
+      success: function(response) {
+        console.log("Success", response);
+        this.props.setUser(response);
+        let path = `/${this.props.params.groupPrefix}/`;
+        this.context.router.push(path);
+      }.bind(this),
+      error: (response) => {
+        console.log("Error", response);
+      }
+    });
   },
   
   render() {
@@ -28,10 +40,10 @@ const UserSignIn = React.createClass({
           .
         </p>
         <p>
-          <input type="email" placeholder="you@domain.com" size="40"></input>
+          <input type="email" placeholder="you@domain.com" size="40" defaultValue="sean@example.com"></input>
         </p>
         <p className="small-margin-bottom">
-          <input type="password" placeholder="password" size="40"></input>
+          <input type="password" placeholder="password" size="40" defaultValue="secret"></input>
         </p>
         <button type="submit" className="btn">Sign in</button>
       </form>

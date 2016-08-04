@@ -170,7 +170,8 @@ const GroupView = React.createClass({
   },
   
   componentDidMount() {
-    this.getGroupData(this.props.params.groupPrefix, 2);
+    this.props.ensureGroupId(this.props.params.groupPrefix);
+    this.getGroupData(this.props.params.groupPrefix);
     this.setUpSubscription();
   },
   
@@ -179,7 +180,6 @@ const GroupView = React.createClass({
   },
   
   componentWillMount() {
-    this.props.ensureGroupId(this.props.params.groupPrefix);
   },
   
   addMessage(text, e) {
@@ -212,18 +212,17 @@ const GroupView = React.createClass({
     // this.setState({ messages: [...messages, message] });
   },
   
-  getGroupData(groupPrefix, userId) {
+  getGroupData(groupPrefix) {
     let url = "http://localhost:3000/groups/" + groupPrefix;
-    let self = this;
     let current_user = this.props.current_user;
-    $.getJSON(url, {user_id: userId}, function(response) {
-      let current_channel_id = self.props.current_user.current_channel_id;
+    $.getJSON(url, {user_id: current_user.id}, function(response) {
+      let current_channel_id = this.props.current_user.current_channel_id;
       if (!response.all_channels.some( ch => ch.id == current_channel_id )) {
         // response.current_user.current_channel_id = response.all_channels[0].id;
-        self.props.switchChannel(response.all_channels[0].id)
+        this.props.switchChannel(response.all_channels[0].id)
       }
-      self.setState(response);
-    });
+      this.setState(response);
+    }.bind(this));
   },
   
   receiveMessage(message) {

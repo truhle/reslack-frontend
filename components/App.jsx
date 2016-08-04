@@ -9,7 +9,7 @@ const App = React.createClass({
     return {
       group_id: Number(localStorage.group_id) || null,
       group_prefix: localStorage.group_prefix || "",
-      current_user: localStorage.current_user || defaultUser
+      current_user: JSON.parse(localStorage.current_user) || defaultUser
     }
   },
   
@@ -19,10 +19,9 @@ const App = React.createClass({
     }
     else {
       let url = "http://localhost:3000/group_ids/" + groupPrefix;
-      let self = this;
-      $.getJSON(url, response => {
-        self.updateGroupInfo(response.group_id, groupPrefix);
-      });
+      $.getJSON(url, function(response) {
+        this.updateGroupInfo(response.group_id, groupPrefix);
+      }.bind(this));
     }
   },
   
@@ -50,7 +49,11 @@ const App = React.createClass({
   },
   
   setUser(userObject) {
-    localStorage.current_user = userObject;
+    console.log("User Object", userObject);
+    console.log("Strungified", JSON.stringify(userObject));
+    localStorage.current_user = JSON.stringify(userObject);
+    console.log("Local storage:", localStorage.current_user);
+    console.log("Parsed local storage: ", JSON.parse(localStorage.current_user));
     this.setState({current_user: userObject});
   },
   
