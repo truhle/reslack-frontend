@@ -22,7 +22,10 @@ const UserSignIn = React.createClass({
     let password = e.target.elements[1].value;
     auth.login(email, password, (result, response) => {
       if (result) {
-        this.props.setUser(response);
+        console.log("Response:", response);
+        console.log("Response.user:", response.user);
+        console.log("Response.session:", response.session);
+        this.props.setUser(response.user);
         let path = `/${this.props.params.groupPrefix}/`;
         this.context.router.push(path);
       }
