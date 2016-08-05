@@ -14,17 +14,17 @@ const App = React.createClass({
     }
   },
   
-  ensureGroupId(groupPrefix) {
-    if (groupPrefix == this.state.group_prefix && this.state.group_id) {
-      return this.state.group_id;
-    }
-    else {
-      let url = "http://localhost:3000/group_ids/" + groupPrefix;
-      $.getJSON(url, function(response) {
-        this.updateGroupInfo(response.group_id, groupPrefix);
-      }.bind(this));
-    }
-  },
+  // ensureGroupId(groupPrefix) {
+  //   if (groupPrefix == this.state.group_prefix && this.state.group_id) {
+  //     return this.state.group_id;
+  //   }
+  //   else {
+  //     let url = "http://localhost:3000/group_ids/" + groupPrefix;
+  //     $.getJSON(url, function(response) {
+  //       this.updateGroupInfo(response.group_id, groupPrefix);
+  //     }.bind(this));
+  //   }
+  // },
   
   switchChannel(id, e) {
     $.ajax({
@@ -65,7 +65,7 @@ const App = React.createClass({
             updateGroupInfo: this.updateGroupInfo,
             setUser: this.setUser,
             switchChannel: this.switchChannel,
-            ensureGroupId: this.ensureGroupId
+            // ensureGroupId: this.ensureGroupId
           }
         )}
       </div>

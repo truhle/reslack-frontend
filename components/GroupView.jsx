@@ -17,10 +17,10 @@ const GroupView = React.createClass({
       group_name: "",
       // group_name: "MetaTree",
       current_user: {
-        username: "taliesin",
-        id: 1,
-        present: true,
-        current_channel_id: 1,
+        // username: "taliesin",
+        // id: 1,
+        // present: true,
+        // current_channel_id: 1,
         // unreadChannels: [],
         // unreadMentions: []
       },
@@ -170,7 +170,7 @@ const GroupView = React.createClass({
   },
   
   componentDidMount() {
-    this.props.ensureGroupId(this.props.params.groupPrefix);
+    // this.props.ensureGroupId(this.props.params.groupPrefix);
     this.getGroupData(this.props.params.groupPrefix);
     this.setUpSubscription();
   },

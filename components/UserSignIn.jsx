@@ -12,9 +12,9 @@ const UserSignIn = React.createClass({
     ReactDOM.findDOMNode(this.refs.emailInput).focus();
   },
   
-  componentWillMount() {
-    this.props.ensureGroupId(this.props.params.groupPrefix);
-  },
+  // componentWillMount() {
+  //   this.props.ensureGroupId(this.props.params.groupPrefix);
+  // },
   
   handleSubmit(e) {
     e.preventDefault();
@@ -22,10 +22,10 @@ const UserSignIn = React.createClass({
     let password = e.target.elements[1].value;
     auth.login(email, password, (result, response) => {
       if (result) {
-        console.log("Response:", response);
-        console.log("Response.user:", response.user);
-        console.log("Response.session:", response.session);
-        this.props.setUser(response.user);
+        // console.log("Response:", response);
+        // console.log("Response.user:", response.user);
+        // console.log("Response.session:", response.session);
+        this.props.setUser(response);
         let path = `/${this.props.params.groupPrefix}/`;
         this.context.router.push(path);
       }
