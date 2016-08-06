@@ -9,6 +9,7 @@ const UserSignIn = React.createClass({
   },
   
   componentDidMount() {
+    this.props.updateAlert("");
     ReactDOM.findDOMNode(this.refs.emailInput).focus();
   },
   
