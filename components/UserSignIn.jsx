@@ -23,9 +23,9 @@ const UserSignIn = React.createClass({
     let password = e.target.elements[1].value;
     auth.login(email, password, (result, response) => {
       if (result) {
-        console.log("Response:", response);
-        console.log("Response.user:", response.user);
-        console.log("Response.session:", response.session);
+        // console.log("Response:", response);
+        // console.log("Response.user:", response.user);
+        // console.log("Response.session:", response.session);
         this.props.setUser(response.user);
         this.props.updateAlert(alert);
         let path = `/${this.props.params.groupPrefix}/`;

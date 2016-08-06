@@ -26,9 +26,12 @@ const App = React.createClass({
         console.log('error', response)
       }
     });
+    let updatedUser = { ...this.state.current_user, current_channel_id: id };
+    localStorage.current_user = JSON.stringify(updatedUser);
     this.setState( 
-      { current_user: {...this.state.current_user, current_channel_id: id} }
+      { current_user: updatedUser }
     );
+    
   },
   
   updateGroupPrefix(prefix) {
