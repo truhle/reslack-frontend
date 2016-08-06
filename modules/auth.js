@@ -20,7 +20,7 @@ module.exports = {
   
   logout(cb) {
     delete localStorage.current_user;
-    delete localStorage.group_id;
+    delete localStorage.token;
     if (cb) cb();
   }
 }

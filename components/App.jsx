@@ -1,37 +1,55 @@
 import React from 'react';
 import DocumentTitle from 'react-document-title';
 import $ from 'jquery';
+import auth from '../modules/auth.js';
 
 const App = React.createClass({
+  contextTypes: {
+    router: React.PropTypes.object
+  },
+  
   getInitialState() {
-    // let defaultUser = {id: 1, username: "taliesin", full_name: "Todd R.", present: false, icon: "cornflowerblue", current_channel_id: 1, password_digest: "$2a$10$AynHww91Tu6RJjvqSQ24t.oW7psxPoVpF4VnvFgq3OK...", email: "taliesin@example.com"};
     let current_user = localStorage.current_user ? JSON.parse(localStorage.current_user) : null;
     
     return {
+      current_user: current_user,
       group_prefix: localStorage.group_prefix || "",
-      current_user: current_user
+      token: localStorage.token || "",
+      error: ""
     }
   },
-  
   
   switchChannel(id, e) {
     $.ajax({
       url: 'http://localhost:3000/users/' + this.state.current_user.id,
       type: 'PATCH',
-      data: {current_channel_id: id},
+      data: {current_channel_id: id, token: this.state.token},
       success: (response) => {
-        console.log('current channel changed', response)
+        console.log('Channel changed on server', response)
       },
-      error: (response) => {
-        console.log('error', response)
-      }
+      error: function (response) {
+        if (response.status == 401) {
+          auth.logout(() => {
+            let path = `/${this.state.group_prefix}/signin`;
+            this.context.router.push(path);
+            this.updateAlert("You were logged out. Please sign in again.");
+          })
+        }
+        else {
+          console.log('Server error on saving channel change', response)
+        }
+      }.bind(this)
     });
+    
     let updatedUser = { ...this.state.current_user, current_channel_id: id };
     localStorage.current_user = JSON.stringify(updatedUser);
     this.setState( 
       { current_user: updatedUser }
     );
-    
+  },
+  
+  updateAlert(message) {
+    this.setState({alertMessage: message})
   },
   
   updateGroupPrefix(prefix) {
@@ -39,9 +57,10 @@ const App = React.createClass({
     this.setState({group_prefix: prefix});
   },
   
-  setUser(userObject) {
-    localStorage.current_user = JSON.stringify(userObject);
-    this.setState({current_user: userObject});
+  setSession(session) {
+    localStorage.current_user = JSON.stringify(session.user);
+    localStorage.token = session.token;
+    this.setState({current_user: session.user, token: session.token});
   },
   
   render() {
@@ -51,8 +70,10 @@ const App = React.createClass({
           this.props.children,
           {
             current_user: this.state.current_user,
+            alertMessage: this.state.alertMessage,
+            updateAlert: this.updateAlert,
             updateGroupPrefix: this.updateGroupPrefix,
-            setUser: this.setUser,
+            setSession: this.setSession,
             switchChannel: this.switchChannel
           }
         )}

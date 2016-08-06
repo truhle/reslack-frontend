@@ -170,16 +170,8 @@ const GroupView = React.createClass({
   },
   
   componentDidMount() {
-    // this.props.ensureGroupId(this.props.params.groupPrefix);
     this.getGroupData(this.props.params.groupPrefix);
     this.setUpSubscription();
-  },
-  
-  componentDidUpdate() {
-    // let current_user = this.props.current_user;
-  },
-  
-  componentWillMount() {
   },
   
   addMessage(text, e) {

@@ -26,7 +26,7 @@ const UserSignIn = React.createClass({
         // console.log("Response:", response);
         // console.log("Response.user:", response.user);
         // console.log("Response.session:", response.session);
-        this.props.setUser(response.user);
+        this.props.setSession(response);
         this.props.updateAlert(alert);
         let path = `/${this.props.params.groupPrefix}/`;
         this.context.router.push(path);
