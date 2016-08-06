@@ -11,16 +11,28 @@ const GroupSignIn = React.createClass({
   
   componentDidMount() {
     ReactDOM.findDOMNode(this.refs.prefixInput).focus();
+    this.props.updateAlert('');
   },
   
   handleSubmit(e) {
     e.preventDefault();
     let groupPrefix = e.target.elements[0].value;
-    let url = "http://localhost:3000/group_ids/" + groupPrefix;
+    let url = "http://localhost:3000/group_prefixes/" + groupPrefix;
     $.getJSON(url, function(response) {
-      this.props.updateGroupInfo(response.group_id, groupPrefix);
-      let path = `/${groupPrefix}/signin`;
-      this.context.router.push(path);
+      if (response.exists) {
+        this.props.updateGroupPrefix(groupPrefix);
+        this.props.updateAlert("");
+        let path = `/${groupPrefix}/signin`;
+        this.context.router.push(path);
+      } 
+      else {
+        let alert = (
+          <span>
+            <strong>We couldn't find your team.</strong>
+          </span>
+        );
+        this.props.updateAlert(alert);
+      }
     }.bind(this))
   },
   

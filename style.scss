@@ -1,3 +1,4 @@
+$alert-red: #cb5234;
 $cs-text-color: #ab9ba9;
 $cs-background: #4D394B;
 $cs-hover-background: #3E313C;
@@ -70,6 +71,34 @@ button:hover
 }
 
 // Sign-up Page
+
+.alert {
+  box-sizing: border-box;
+  width: 66.13%;
+  padding: .75rem 1rem .75rem 3rem;
+  line-height: 1.5rem;
+  border: 1px solid $divider-color;
+  background: #fff;
+  color: #555459;
+  border-left-width: 5px;
+  border-left-color: $alert-red; 
+  margin: 0 auto 1rem;
+  border-radius: .25rem;
+  overflow: auto;
+  
+  .alert-icon-container {
+    display: inline-block;
+    height: 1.5rem;
+    width: 1.5rem;
+    margin-left: -2.2rem;
+    margin-right: 0.5rem;
+    float: left;
+  }
+  
+  svg {
+
+  }
+}
 
 .btn {
   box-sizing: border-box;

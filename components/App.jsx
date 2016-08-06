@@ -8,23 +8,11 @@ const App = React.createClass({
     let current_user = localStorage.current_user ? JSON.parse(localStorage.current_user) : null;
     
     return {
-      group_id: Number(localStorage.group_id) || null,
       group_prefix: localStorage.group_prefix || "",
       current_user: current_user
     }
   },
   
-  // ensureGroupId(groupPrefix) {
-  //   if (groupPrefix == this.state.group_prefix && this.state.group_id) {
-  //     return this.state.group_id;
-  //   }
-  //   else {
-  //     let url = "http://localhost:3000/group_ids/" + groupPrefix;
-  //     $.getJSON(url, function(response) {
-  //       this.updateGroupInfo(response.group_id, groupPrefix);
-  //     }.bind(this));
-  //   }
-  // },
   
   switchChannel(id, e) {
     $.ajax({
@@ -43,10 +31,9 @@ const App = React.createClass({
     );
   },
   
-  updateGroupInfo(id, prefix) {
-    localStorage.group_id = id;
+  updateGroupPrefix(prefix) {
     localStorage.group_prefix = prefix;
-    this.setState({group_id: id, group_prefix: prefix});
+    this.setState({group_prefix: prefix});
   },
   
   setUser(userObject) {
@@ -60,12 +47,10 @@ const App = React.createClass({
         {React.cloneElement(
           this.props.children,
           {
-            group_id: this.state.group_id,
             current_user: this.state.current_user,
-            updateGroupInfo: this.updateGroupInfo,
+            updateGroupPrefix: this.updateGroupPrefix,
             setUser: this.setUser,
-            switchChannel: this.switchChannel,
-            // ensureGroupId: this.ensureGroupId
+            switchChannel: this.switchChannel
           }
         )}
       </div>

@@ -22,15 +22,17 @@ const UserSignIn = React.createClass({
     let password = e.target.elements[1].value;
     auth.login(email, password, (result, response) => {
       if (result) {
-        // console.log("Response:", response);
-        // console.log("Response.user:", response.user);
-        // console.log("Response.session:", response.session);
-        this.props.setUser(response);
+        console.log("Response:", response);
+        console.log("Response.user:", response.user);
+        console.log("Response.session:", response.session);
+        this.props.setUser(response.user);
+        this.props.updateAlert(alert);
         let path = `/${this.props.params.groupPrefix}/`;
         this.context.router.push(path);
       }
       else {
-        console.log("Error", response);
+        let alert = "Sorry, you entered an incorrect email or password."
+        this.props.updateAlert(alert);
       }
     });
   },
