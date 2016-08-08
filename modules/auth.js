@@ -7,7 +7,7 @@ module.exports = {
   
   login(email, password, cb) {
     $.ajax({
-      url: "http://localhost:3000/sessions/create",
+      url: "http://localhost:3000/sessions",
       data: {email: email, password: password},
       success: (response) => {
         cb(true, response);
@@ -19,6 +19,19 @@ module.exports = {
   },
   
   logout(cb) {
+    let url = "http://localhost:3000/sessions" + "?" 
+              + $.param({"token": localStorage.token, 
+                         "user_id": JSON.parse(localStorage.current_user).id});
+    $.ajax({
+      url: url,
+      type: 'DELETE',
+      success: (response) => {
+        console.log(response);
+      },
+      error: (response) => {
+        console.log(response);
+      }
+    });
     delete localStorage.current_user;
     delete localStorage.token;
     if (cb) cb();
