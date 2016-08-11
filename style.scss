@@ -70,6 +70,104 @@ button:hover
   -webkit-appearance:none;
 }
 
+// Menus
+
+h1, h2, h3, h4 {
+  font-weight: 900;
+  color: #555459;
+}
+
+.popover-mask {
+  background: none;
+  opacity: 0;
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  z-index: 1042;
+}
+
+.menu {
+  box-sizing: border-box;
+  color: $channel-text-color;
+  opacity: 1;
+  position: absolute;
+  top: 3.4375rem;
+  left: 0.625rem;
+  min-height: 4rem;
+  max-height: 80%;
+  overflow: auto;
+  width: 17.125rem;
+  background: #fff;
+  box-shadow: 0 5px 10px rgba(0,0,0,.12);
+  border-radius: 6px;
+  border: 1px solid rgba(0,0,0,.15);
+  vertical-align: top;
+  z-index: 1043;
+  padding: 1rem 1rem 1rem 0rem;
+  
+  h2 {
+    margin-top: .375rem;
+    margin-right: 1.375rem;
+    margin-bottom: .375rem;
+    margin-left: 1.375rem;
+    height: 2.5rem;
+    
+    .user-icon {
+      height: 2.25rem;
+      width: 2.25rem;
+      border-radius: 0.2rem;
+      float: left;
+      margin-right: 0.625rem;
+    }
+    
+    .menu-header-primary {
+      font-size: 1.125rem;
+      line-height: 1.5rem;
+      -webkit-transform: translateY(-.1875rem);
+      -moz-transform: translateY(-.1875rem);
+      -ms-transform: translateY(-.1875rem);
+      transform: translateY(-.1875rem);
+    }
+    
+    .menu-header-secondary {
+      font-size: .9375rem;
+      line-height: 1.125rem;
+      color: #A0A0A2;
+      font-weight: 300;
+      margin-top: -0.3125rem;
+    }
+  }
+  li {
+    line-height: 1.5rem;
+    
+    a {
+      display: block;
+      text-decoration: none;
+      padding: 0 1rem 0 .5rem;
+      margin: 0 .9375rem;
+      border-radius: .25rem;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      outline: 0;
+      font-size: .9375rem;
+      font-weight: 300;
+      line-height: 1.5625rem;
+      
+      &:hover {
+        background: $icon-blue;
+        color: white !important;
+      }
+      
+      &:visited {
+        color: $channel-text-color;
+      }
+    }
+  }
+}
+
 // Sign-up Page
 
 .alert {
@@ -93,10 +191,6 @@ button:hover
     margin-left: -2.2rem;
     margin-right: 0.5rem;
     float: left;
-  }
-  
-  svg {
-
   }
 }
 

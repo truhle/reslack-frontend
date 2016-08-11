@@ -2,6 +2,7 @@ import React from 'react';
 import ChannelView from './ChannelView';
 import ChannelSwitcher from './ChannelSwitcher';
 import DocumentTitle from 'react-document-title';
+import TeamMenu from './TeamMenu';
 import $ from 'jquery';
 import ActionCable from 'actioncable';
 
@@ -165,7 +166,8 @@ const GroupView = React.createClass({
         //   channels: ["general", "random", "webschool"], icon: "goldenrod" },
         // { username: "sean", full_name: "Sean O.", present: true, 
         //   channels: ["general", "random", "webschool"], icon: "plum" }
-      ]
+      ],
+      teamMenuOpen: false
     };
   },
   
@@ -197,18 +199,17 @@ const GroupView = React.createClass({
         console.log('it worked', response);
       }
     });
-    
-    // message.id = message.timestamp;
-    // message.starred = false;
-    // 
-    // this.setState({ messages: [...messages, message] });
+  },
+  
+  toggleTeamMenu() {
+    this.setState({teamMenuOpen: !this.state.teamMenuOpen})
   },
   
   getGroupData(groupPrefix) {
     let url = "http://localhost:3000/groups/" + groupPrefix;
     let current_user = this.props.current_user;
     $.getJSON(url, {user_id: current_user.id}, function(response) {
-      let current_channel_id = this.props.current_user.current_channel_id;
+      let current_channel_id = current_user.current_channel_id;
       if (!response.all_channels.some( ch => ch.id == current_channel_id )) {
         // response.current_user.current_channel_id = response.all_channels[0].id;
         this.props.switchChannel(response.all_channels[0].id)
@@ -230,24 +231,7 @@ const GroupView = React.createClass({
       receiveMessage: this.receiveMessage
     });
   },
-  
-  // switchChannel(id, e) {
-  //   $.ajax({
-  //     url: 'http://localhost:3000/users/' + this.state.current_user.id,
-  //     type: 'PATCH',
-  //     data: {current_channel_id: id},
-  //     success: (response) => {
-  //       console.log('current channel changed', response)
-  //     },
-  //     error: (response) => {
-  //       console.log('error', response)
-  //     }
-  //   });
-  //   this.setState( 
-  //     { current_user: {...this.state.current_user, current_channel_id: id} }
-  //   );
-  // },
-  
+    
   toggleChannelStarred(id, e) {
     console.log("toggling channel star");
     $.ajax({
@@ -313,7 +297,7 @@ const GroupView = React.createClass({
                                   group_name={this.state.group_name}
                                   users={this.state.users}
                                   switchChannel={this.props.switchChannel}
-                                  groupPrefix={this.props.params.groupPrefix} />;
+                                  toggleTeamMenu={this.toggleTeamMenu} />;
       view = <ChannelView viewChannel={viewChannel}
                           current_user={this.props.current_user}
                           users={this.state.users}
@@ -331,6 +315,10 @@ const GroupView = React.createClass({
       <div>
         {switcher}
         {view}
+        <TeamMenu current_user={this.props.current_user}
+                  open={this.state.teamMenuOpen}
+                  groupPrefix={groupPrefix}
+                  toggleTeamMenu={this.toggleTeamMenu} />
       </div>
     </DocumentTitle>
   }
