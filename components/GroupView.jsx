@@ -174,7 +174,7 @@ const GroupView = React.createClass({
   
   componentDidMount() {
     this.getGroupData(this.props.params.groupPrefix);
-    this.setUpSubscription();
+    // this.setUpSubscriptions();
   },
   
   addMessage(text, e) {
@@ -212,10 +212,10 @@ const GroupView = React.createClass({
     $.getJSON(url, {user_id: current_user.id}, function(response) {
       let current_channel_id = current_user.current_channel_id;
       if (!response.all_channels.some( ch => ch.id == current_channel_id )) {
-        // response.current_user.current_channel_id = response.all_channels[0].id;
         this.props.switchChannel(response.all_channels[0].id)
       }
       this.setState(response);
+      this.setUpSubscriptions(response.all_channels);
     }.bind(this));
   },
   
@@ -224,12 +224,15 @@ const GroupView = React.createClass({
     this.setState({ messages: [...this.state.messages, message] });
   },
   
-  setUpSubscription() {
-    AC.cable.subscriptions.create('MessagesChannel', {
-      received(message) {
-        return this.receiveMessage(message);
-      },
-      receiveMessage: this.receiveMessage
+  setUpSubscriptions(channels) {
+    let self = this;
+    channels.forEach((channel) => {
+      AC.cable.subscriptions.create({channel: 'MessagesChannel', reslack_channel_id: channel.id}, {
+        received(message) {
+          self.receiveMessage(message);
+        }
+        // receiveMessage: this.receiveMessage
+      });
     });
   },
     
