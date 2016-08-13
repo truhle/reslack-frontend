@@ -195,7 +195,7 @@ const GroupView = React.createClass({
     $.ajax({
       url: 'http://localhost:3000/messages',
       type: 'POST',
-      data: {message: message},
+      data: {message: message, token: auth.getToken(), user_id: current_user.id},
       success: (response) => {
         console.log('it worked', response);
       }
@@ -209,7 +209,7 @@ const GroupView = React.createClass({
   getGroupData(groupPrefix) {
     let url = "http://localhost:3000/groups/" + groupPrefix;
     let current_user = this.props.current_user;
-    $.getJSON(url, {user_id: current_user.id}, function(response) {
+    $.getJSON(url, {user_id: current_user.id, token: auth.getToken()}, function(response) {
       let current_channel_id = current_user.current_channel_id;
       if (!response.all_channels.some( ch => ch.id == current_channel_id )) {
         this.props.switchChannel(response.all_channels[0].id)
@@ -231,7 +231,6 @@ const GroupView = React.createClass({
         received(message) {
           self.receiveMessage(message);
         }
-        // receiveMessage: this.receiveMessage
       });
     });
   },
@@ -242,7 +241,8 @@ const GroupView = React.createClass({
       url: 'http://localhost:3000/user_channel_stars',
       type: 'POST',
       data: {channel_id: id,
-             user_id: this.props.current_user.id},
+             user_id: this.props.current_user.id,
+             token: auth.getToken()},
       success: (response) => {
         console.log('channel star toggled', response)
       },
@@ -262,7 +262,8 @@ const GroupView = React.createClass({
       url: 'http://localhost:3000/user_message_stars',
       type: 'POST',
       data: {message_id: id,
-             user_id: this.props.current_user.id},
+             user_id: this.props.current_user.id,
+             token: auth.getToken()},
       success: (response) => {
         console.log('message star toggled', response)
       },
