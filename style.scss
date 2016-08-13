@@ -1282,7 +1282,7 @@ strong {
 }
 
 .hidden {
-  display: none;
+  visibility: hidden;
 }
 
 .italic-true {
@@ -1290,7 +1290,7 @@ strong {
 }
 
 .visible {
-    visibility: visible !important;
+  visibility: visible !important;
 }
 
 .svg {

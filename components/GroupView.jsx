@@ -5,10 +5,11 @@ import DocumentTitle from 'react-document-title';
 import TeamMenu from './TeamMenu';
 import $ from 'jquery';
 import ActionCable from 'actioncable';
+import auth from '../modules/auth.js';
 
 
 let AC = {};
-AC.cable = ActionCable.createConsumer("ws:localhost:3000/cable");
+AC.cable = ActionCable.createConsumer("ws:localhost:3000/cable?token=" + auth.getToken());
 
 const GroupView = React.createClass({
   getInitialState() {

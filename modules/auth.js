@@ -1,6 +1,10 @@
 import $ from 'jquery';
 
 module.exports = {
+  getToken() {
+    return localStorage.token;
+  },
+  
   loggedIn() {
     return !!localStorage.current_user;
   },
@@ -20,7 +24,7 @@ module.exports = {
   
   logout(cb) {
     let url = "http://localhost:3000/sessions" + "?" 
-              + $.param({"token": localStorage.token, 
+              + $.param({"token": this.getToken(), 
                          "user_id": JSON.parse(localStorage.current_user).id});
     $.ajax({
       url: url,
