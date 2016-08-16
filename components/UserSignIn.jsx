@@ -13,10 +13,6 @@ const UserSignIn = React.createClass({
     ReactDOM.findDOMNode(this.refs.emailInput).focus();
   },
   
-  // componentWillMount() {
-  //   this.props.ensureGroupId(this.props.params.groupPrefix);
-  // },
-  
   handleSubmit(e) {
     e.preventDefault();
     let email = e.target.elements[0].value;
@@ -25,17 +21,20 @@ const UserSignIn = React.createClass({
       if (result) {
         // console.log("Response:", response);
         // console.log("Response.user:", response.user);
-        // console.log("Response.session:", response.session);
         this.props.setSession(response);
-        this.props.updateAlert(alert);
-        let path = `/${this.props.params.groupPrefix}/`;
-        this.context.router.push(path);
+        this.props.updateAlert("");
+        this.navigateToGroupView();
       }
       else {
         let alert = "Sorry, you entered an incorrect email or password."
         this.props.updateAlert(alert);
       }
     });
+  },
+  
+  navigateToGroupView() {
+    let path = `/${this.props.params.groupPrefix}/`;
+    this.context.router.push(path);
   },
   
   render() {

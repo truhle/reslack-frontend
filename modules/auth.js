@@ -6,7 +6,7 @@ module.exports = {
   },
   
   loggedIn() {
-    return !!localStorage.current_user;
+    return !!localStorage.token;
   },
   
   login(email, password, cb) {

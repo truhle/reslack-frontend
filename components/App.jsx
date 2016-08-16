@@ -15,7 +15,7 @@ const App = React.createClass({
       current_user: current_user,
       group_prefix: localStorage.group_prefix || "",
       token: localStorage.token || "",
-      error: ""
+      alertMessage: ""
     }
   },
   
@@ -57,6 +57,15 @@ const App = React.createClass({
     this.setState({group_prefix: prefix});
   },
   
+  updatePresence(status) {
+    let updatedUser = {...this.state.current_user, present: status };
+    console.log("Updating current_user presence", updatedUser);
+    localStorage.current_user = JSON.stringify(updatedUser);
+    this.setState( 
+      { current_user: updatedUser }
+    );
+  },
+  
   setSession(session) {
     localStorage.current_user = JSON.stringify(session.user);
     localStorage.token = session.token;
@@ -73,6 +82,7 @@ const App = React.createClass({
             alertMessage: this.state.alertMessage,
             updateAlert: this.updateAlert,
             updateGroupPrefix: this.updateGroupPrefix,
+            updatePresence: this.updatePresence,
             setSession: this.setSession,
             switchChannel: this.switchChannel
           }

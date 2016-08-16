@@ -7,174 +7,31 @@ import $ from 'jquery';
 import ActionCable from 'actioncable';
 import auth from '../modules/auth.js';
 
-
 let AC = {};
-AC.cable = ActionCable.createConsumer("ws:localhost:3000/cable?token=" + auth.getToken());
 
 const GroupView = React.createClass({
   getInitialState() {
 
     return {
-      // group_id: 1,
       group_name: "",
-      // group_name: "MetaTree",
-      current_user: {
-        // username: "taliesin",
-        // id: 1,
-        // present: true,
-        // current_channel_id: 1,
-        // unreadChannels: [],
-        // unreadMentions: []
-      },
-      all_channels: [
-        // { name: "general", id: 1, private: false, 
-        //   starred: false, channel_type: "group", topic: "Add a topic",
-        //   created_by: "taliesin", purpose: "This channel is for team wide comminication and announcements.  All team members are in this channel."
-        // },
-        // { name: "random", id: 2, private: false, 
-        //   starred: true, channel_type: "group", topic: "Random stuff", 
-        //   created_by: "taliesin", purpose: null
-        // },
-        // { name: "webschool", id: 3, private: true, 
-        //   starred: false, channel_type: "group", topic: "Web, web, web",
-        //   created_by: "sean", purpose: null
-        // },
-        // { usernames: ["bob", "taliesin"], id: 4, starred: false, channel_type: "direct" },
-        // { usernames: ["haizop", "taliesin"], id: 5, starred: true, channel_type: "direct" },
-        // { usernames: ["sean", "taliesin"], id: 6, starred: false, channel_type: "direct" },
-        // { usernames: ["haizop", "sean", "bob", "taliesin"], id: 7, starred: true, channel_type: "direct" }
-      ],
-      messages: [
-        // { timestamp: 1465322440932,
-        //   id: 1,
-        //   channel_id: 1,
-        //   beginning: true,
-        //   sender: null,
-        //   starred: false,
-        //   content: "" },
-        // { timestamp: 1465322440932,
-        //   id: 2,
-        //   channel_id: 2,
-        //   beginning: true,
-        //   sender: null,
-        //   starred: false,
-        //   content: "" },
-        // { timestamp: 1465341900077,
-        //   id: 3,
-        //   channel_id: 4,
-        //   beginning: true,
-        //   sender: null,
-        //   starred: false,
-        //   content: "" },
-        // { timestamp: 1465341900077,
-        //   id: 4,
-        //   channel_id: 5,
-        //   beginning: true,
-        //   sender: null,
-        //   starred: false,
-        //   content: "" },
-        // { timestamp: 1465341900077,
-        //   id: 5,
-        //   channel_id: 6,
-        //   beginning: true,
-        //   sender: null,
-        //   starred: false,
-        //   content: "" },
-        // { timestamp: 1465322840932,
-        //   id: 6,
-        //   channel_id: 1,
-        //   beginning: false,
-        //   sender: "taliesin",
-        //   starred: false,
-        //   content: "Hey there! From lead message.." },
-        // { timestamp: 1465322968820,
-        //   id: 7,
-        //   channel_id: 1,
-        //   beginning: false,
-        //   sender: "taliesin",
-        //   starred: false,
-        //   content: "Great to see you, from message" },
-        // { timestamp: 1465322998195,
-        //   id: 8,
-        //   channel_id: 1,
-        //   beginning: false,
-        //   sender: "taliesin",
-        //   starred: false,
-        //   content: "Great to see you, from message again" },
-        // { timestamp: 1465323037518,
-        //   id: 9,
-        //   channel_id: 1,
-        //   beginning: false,
-        //   sender: "taliesin",
-        //   starred: false,
-        //   content: "Great to see you, from message this time a very very, very, longish and longish and maybe over a whole line message for your delight and enjoyment!" },
-        // { timestamp: 1465341773043,
-        //   id: 10,
-        //   channel_id: 1,
-        //   beginning: false,
-        //   sender: "taliesin",
-        //   starred: false,
-        //   content: "Writing again, just a little later now..." },
-        // { timestamp: 1465341850077,
-        //   id: 11,
-        //   channel_id: 1,
-        //   beginning: false,
-        //   sender: "bob",
-        //   starred: false,
-        //   content: "Yeah, great to see you here!" },
-        // { timestamp: 1465341900077,
-        //   id: 12,
-        //   channel_id: 1,
-        //   beginning: false,
-        //   sender: "bob",
-        //   starred: false,
-        //   content: "I finally got around to getting on here." },
-        // { timestamp: 1465342000077,
-        //   id: 13,
-        //   channel_id: 1,
-        //   beginning: false,
-        //   sender: "haizop",
-        //   starred: true,
-        //   content: "Life is beautiful." },
-        // { timestamp: 1466542489988,
-        //   id: 14,
-        //   channel_id: 3,
-        //   beginning: true,
-        //   sender: null,
-        //   starred: false,
-        //   content: "" },
-        // { timestamp: 1466695362113,
-        //   id: 15,
-        //   channel_id: 7,
-        //   beginning: true,
-        //   sender: null,
-        //   starred: false,
-        //   content: "" },
-        // { timestamp: 1466784530560,
-        //   id: 16,
-        //   channel_id: 1,
-        //   beginning: false,
-        //   sender: "sean",
-        //   starred: false,
-        //   content: "Loving the summer.." }
-      ],
-      users: [
-        // { username: "taliesin", full_name: "Todd Ruhlen", present: true, 
-        //   channels: ["general", "random", "webschool"], icon: "lightcoral" },
-        // { username: "bob", full_name: "Bob L.", present: false, 
-        //   channels: ["general", "random"], icon: "cornflowerblue" },
-        // { username: "haizop", full_name: "Haiz O.", present: true, 
-        //   channels: ["general", "random", "webschool"], icon: "goldenrod" },
-        // { username: "sean", full_name: "Sean O.", present: true, 
-        //   channels: ["general", "random", "webschool"], icon: "plum" }
-      ],
+      current_user: {},
+      all_channels: [],
+      messages: [],
+      users: [],
       teamMenuOpen: false
     };
   },
   
   componentDidMount() {
     this.getGroupData(this.props.params.groupPrefix);
-    // this.setUpSubscriptions();
+  },
+  
+  componentWillMount() {
+    AC.cable = ActionCable.createConsumer("ws:localhost:3000/cable?token=" + auth.getToken());
+  },
+  
+  componentWillUnmount() {
+    AC.appearance.disappear();
   },
   
   addMessage(text, e) {
@@ -224,6 +81,24 @@ const GroupView = React.createClass({
     this.setState({ messages: [...this.state.messages, message] });
   },
   
+  appearanceSubscription() {
+    let self = this;
+    AC.appearance = AC.cable.subscriptions.create({channel: "AppearanceChannel", group_id: this.state.group_id}, {
+      received(update) {
+        console.log("receiving update: ", update);
+        let updatedUsers = self.state.users.map(user => {
+          return user.id != update.user_id ? user : {...user, present: update.present} 
+        });
+        self.setState({users: updatedUsers})
+        if (self.props.current_user.id == update.user_id)
+          self.props.updatePresence(update.present);
+      },
+      disappear() {
+        this.perform('disappear')
+      }
+    })
+  },
+  
   setUpSubscriptions(channels) {
     let self = this;
     channels.forEach((channel) => {
@@ -233,6 +108,7 @@ const GroupView = React.createClass({
         }
       });
     });
+    this.appearanceSubscription();
   },
     
   toggleChannelStarred(id, e) {
