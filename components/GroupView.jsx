@@ -31,7 +31,7 @@ const GroupView = React.createClass({
   },
   
   componentWillUnmount() {
-    AC.appearance.disappear();
+    AC.appearance.unsubscribe();
   },
   
   addMessage(text, e) {
@@ -92,9 +92,6 @@ const GroupView = React.createClass({
         self.setState({users: updatedUsers})
         if (self.props.current_user.id == update.user_id)
           self.props.updatePresence(update.present);
-      },
-      disappear() {
-        this.perform('disappear')
       }
     })
   },
